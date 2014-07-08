@@ -69,9 +69,9 @@ def process(doc, timestamp):
         return None
 
     # Collision detection
-    conflict = collision_detector.detect(doc)
-    if conflict:
-        logger.warn("Document with id {0} and timestamp {1} from source {2} already found in database".format(doc['id'], timestamp, doc['source']))
+    # conflict = collision_detector.detect(doc)
+    # if conflict:
+    #     logger.warn("Document with id {0} and timestamp {1} from source {2} already found in database".format(doc['id'], timestamp, doc['source']))
 
     directory = '/archive/' + doc['source'].replace('/', '') + '/' + str(doc['id']).replace('/', '') + '/' + str(timestamp) + '/'
     filepath = BASE_DIR + directory + "parsed.json"
