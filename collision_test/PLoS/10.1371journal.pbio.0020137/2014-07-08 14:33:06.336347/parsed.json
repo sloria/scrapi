@@ -1,0 +1,47 @@
+{
+    "contributors": [
+        {
+            "email": "hunter@ocf.berkeley.edu", 
+            "full_name": "Hunter B Fraser"
+        }, 
+        {
+            "email": null, 
+            "full_name": "Aaron E Hirsh"
+        }, 
+        {
+            "email": null, 
+            "full_name": "Guri Giaever"
+        }, 
+        {
+            "email": null, 
+            "full_name": "Jochen Kumm"
+        }, 
+        {
+            "email": null, 
+            "full_name": "Michael B Eisen"
+        }
+    ], 
+    "id": "10.1371/journal.pbio.0020137", 
+    "meta": {}, 
+    "properties": {
+        "PDF": "http://dx.plos.org/10.1371/journal.pbio.0020137.pdf", 
+        "abstract": "All organisms have elaborate mechanisms to control rates of protein production. However, protein production is also subject to stochastic fluctuations, or \u201cnoise.\u201d Several recent studies in Saccharomyces cerevisiae and Escherichia coli have investigated the relationship between transcription and translation rates and stochastic fluctuations in protein levels, or more generally, how such randomness is a function of intrinsic and extrinsic factors. However, the fundamental question of whether stochasticity in protein expression is generally biologically relevant has not been addressed, and it remains unknown whether random noise in the protein production rate of most genes significantly affects the fitness of any organism. We propose that organisms should be particularly sensitive to variation in the protein levels of two classes of genes: genes whose deletion is lethal to the organism and genes that encode subunits of multiprotein complexes. Using an experimentally verified model of stochastic gene expression in S. cerevisiae, we estimate the noise in protein production for nearly every yeast gene, and confirm our prediction that the production of essential and complex-forming proteins involves lower levels of noise than does the production of most other genes. Our results support the hypothesis that noise in gene expression is a biologically important variable, is generally detrimental to organismal fitness, and is subject to natural selection.", 
+        "figures": [
+            "http://www.plosone.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g001&representation=PNG_M", 
+            "http://www.plosone.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g002&representation=PNG_M"
+        ], 
+        "tags": [
+            "DNA transcription", 
+            "Gene expression", 
+            "Messenger RNA", 
+            "Natural selection", 
+            "Noise reduction", 
+            "Protein complexes", 
+            "Protein translation", 
+            "Yeast"
+        ]
+    }, 
+    "source": "PLoS", 
+    "timestamp": "2014-07-08 14:33:06.336347", 
+    "title": "PLOS Biology: Noise Minimization in Eukaryotic Gene Expression"
+}
