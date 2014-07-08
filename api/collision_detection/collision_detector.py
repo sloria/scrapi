@@ -1,14 +1,21 @@
 # This file will take an input (JSON) document, and find collision in the database
 import sys
 import os
-sys.path.insert(1, os.path.join(
+import json
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    os.pardir,
+    os.pardir), os.pardir),
 ))
 from website import search
 
 
 def detect(doc):
-    results = search.search('scrapi', doc['id'])
-    if len(results) != 0:
-        return True
+
+	doc_doc = open(doc, 'r')
+	doc_json = json.loads(doc_doc.read())
+	title = doc_json['title']
+
+	print title 
+
+
+detect('../../collision_test/PLoS/10.1371journal.pbio.0020137/2014-07-08 14:33:06.336347/parsed.json')

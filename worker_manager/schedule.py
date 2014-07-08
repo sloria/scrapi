@@ -26,6 +26,7 @@ def main(config_file):
         'apscheduler.jobstores.file.class': info['scheduler-config']['class'],
         'apscheduler.jobstores.file.path': info['scheduler-config']['path']
     }
+    
     sched = Scheduler(config)
 
     sched.add_cron_job(run_scraper, day_of_week=day_of_week, hour=hour, minute=minute)
@@ -45,9 +46,7 @@ def main(config_file):
 
 def run_scraper(config_file):
     info = load_config(config_file)
-    # does this need to be added to the yaml file?
     url = info['url'] + 'consume'
-    logger.debug('!! Request to run scraper: ' + url)
     requests.post(url)
 
 
