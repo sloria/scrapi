@@ -1,0 +1,1003 @@
+
+
+ 
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+      xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:doi="http://dx.doi.org/"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema-datatypes#"
+      lang="en" xml:lang="en"
+      itemscope itemtype="http://schema.org/Article"
+      class="no-js">
+<head prefix="og: http://ogp.me/ns#">
+  <title>PLOS Biology: Noise Minimization in Eukaryotic Gene Expression</title>
+
+
+<link rel="stylesheet" type="text/css"  href="/css/global-min.css?v=izteQ6tu7kgsJZW_xmrYizvKiHM" />
+
+
+    <!--[if lte IE 7]>
+<link rel="stylesheet" type="text/css"  href="/css/lte_ie7-min.css?v=3bykQUyQmReeuobVyPozcJ9LxRc" />
+    <![endif]-->
+
+
+<link rel="stylesheet" type="text/css"  href="/css/jquery-ui-min.css?v=eXDHTEJM0lIAmDe5k0I0Ad4nxNo" />
+
+
+<link rel="stylesheet" type="text/css"  href="/css/journal.css?v=u7u6v42h8ZFnqk7CIdYTlrlWd4s" />
+
+
+<link rel="stylesheet" type="text/css" media="print" href="/css/print-min.css?v=T5lb0B3q6EXBsuDluc5V5w+AkRc" />
+
+
+  <link rel="stylesheet" href="http://f.fontdeck.com/s/css/js/www.plosbiology.org/24557.css" type="text/css"/>
+
+  <!--chartbeat -->
+  <script type="text/javascript">var _sf_startpt = (new Date()).getTime()</script>
+  <script>document.documentElement.className += ' js';</script>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9"/>
+  <meta name="description" content="PLOS Biology is an open-access, peer-reviewed journal that features works of exceptional significance in all areas of biological science, from molecules to ecosystems, including works at the interface with other disciplines."/>
+  <meta name="keywords" content="plos biology, plos biol, plos, public library of science biology, plosbiology, public library of science, open access, open-access, biology journal, free biology journals, scientific journals, online science journal, plos journal, biology, science, scientific, life science, journal, journals, magazine, biology article, biology articles, science articles, research, article, articles, info, biology news, recent biology articles, biology news articles"/>
+  <meta name="almHost" content="http://alm.plos.org/api/v3/articles"/>
+  <meta name="searchHost" content="http://api.plos.org/search" />
+  <meta name="termsHost" content="http://api.plos.org/terms" />
+  <meta name="solrApiKey" content="plos"/>
+  <meta name="almAPIKey" content="3pezRBRXdyzYW6ztfwft" />
+  <meta name="currentJournal" content="PLoSBiology" />
+  <meta name="almRequestBatchSize" content="" />
+
+  <meta name="citation_publisher" content="Public Library of Science"/>
+  <meta name="citation_doi" content="10.1371/journal.pbio.0020137"/>
+  <meta name="dc.identifier" content="10.1371/journal.pbio.0020137" />
+
+    <meta name="citation_title" content="Noise Minimization in Eukaryotic Gene Expression"/>
+    <meta itemprop="name" content="Noise Minimization in Eukaryotic Gene Expression"/>
+
+      <meta name="citation_author" content="Hunter B Fraser"/>
+            <meta name="citation_author_institution" content="Department of Molecular and Cell Biology, University of California, Berkeley, California, United States of America"/>
+      <meta name="citation_author" content="Aaron E Hirsh"/>
+            <meta name="citation_author_institution" content="Department of Biological Sciences, Stanford University, Stanford, California, United States of America"/>
+      <meta name="citation_author" content="Guri Giaever"/>
+            <meta name="citation_author_institution" content="Stanford Genome Technology Center, Stanford, California, United States of America"/>
+      <meta name="citation_author" content="Jochen Kumm"/>
+            <meta name="citation_author_institution" content="Stanford Genome Technology Center, Stanford, California, United States of America"/>
+      <meta name="citation_author" content="Michael B Eisen"/>
+            <meta name="citation_author_institution" content="Department of Molecular and Cell Biology, University of California, Berkeley, California, United States of America"/>
+            <meta name="citation_author_institution" content="Genome Sciences Department, Genomics Division, Lawrence Berkeley National Laboratory, Berkeley, California, United States of America"/>
+
+    <meta name="citation_date" content="2004/4/27"/>
+
+  <meta name="citation_pdf_url" content="http://dx.plos.org/10.1371/journal.pbio.0020137.pdf" />
+
+      <meta name="citation_journal_title" content="PLOS Biology" />
+    <meta name="citation_firstpage" content="e137"/>
+    <meta name="citation_issue" content="6"/>
+    <meta name="citation_volume" content="2"/>
+    <meta name="citation_issn" content="1545-7885"/>
+
+    <meta name="citation_journal_abbrev" content="PLoS Biol" />
+
+      <meta name="citation_reference" content="citation_title=Genome-wide analysis of mRNA translation profiles in Saccharomyces cerevisiae.; citation_author=Y Arava; citation_author=Y Wang; citation_author=JD Storey; citation_author=CL Liu; citation_author=PO Brown; citation_journal_title=Proc Natl Acad Sci U S A; citation_volume=100; citation_number=1; citation_pages=3889-3894; citation_date=2003; " />
+      <meta name="citation_reference" content="citation_title=Stochastic kinetic analysis of developmental pathway bifurcation in phage lambda-infected Escherichia coli cells.; citation_author=A Arkin; citation_author=J Ross; citation_author=HH McAdams; citation_journal_title=Genetics; citation_volume=149; citation_number=2; citation_pages=1633-1648; citation_date=1998; " />
+      <meta name="citation_reference" content="citation_title=Circadian clocks limited by noise.; citation_author=N Barkai; citation_author=S Leibler; citation_journal_title=Nature; citation_volume=403; citation_number=3; citation_pages=267-268; citation_date=2000; " />
+      <meta name="citation_reference" content="citation_title=A model for the statistical fluctuations of protein numbers in a microbial population.; citation_author=OG Berg; citation_journal_title=J Theor Biol; citation_volume=71; citation_number=4; citation_pages=587-603; citation_date=1978; " />
+      <meta name="citation_reference" content="citation_title=Noise in eukaryotic gene expression.; citation_author=WJ Blake; citation_author=M Kaern; citation_author=CR Cantor; citation_author=JJ Collins; citation_journal_title=Nature; citation_volume=422; citation_number=5; citation_pages=633-637; citation_date=2003; " />
+      <meta name="citation_reference" content="citation_title=Stochastic gene expression in a single cell.; citation_author=MB Elowitz; citation_author=AJ Levine; citation_author=ED Siggia; citation_author=PS Swain; citation_journal_title=Science; citation_volume=297; citation_number=6; citation_pages=1183-1186; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Evolutionary rate in the protein interaction network.; citation_author=HB Fraser; citation_author=AE Hirsh; citation_author=LM Steinmetz; citation_author=C Scharfe; citation_author=MW Feldman; citation_journal_title=Science; citation_volume=296; citation_number=7; citation_pages=750-752; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Functional organization of the yeast proteome by systematic analysis of protein complexes.; citation_author=AC Gavin; citation_author=M Bosche; citation_author=R Krause; citation_author=P Grandi; citation_author=M Marzioch; citation_journal_title=Nature; citation_volume=415; citation_number=8; citation_pages=141-147; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Chemogenomic profiling: Identifying the functional interactions of small molecules in yeast.; citation_author=G Giaever; citation_author=P Flaherty; citation_author=J Kumm; citation_author=M Proctor; citation_author=C Nislow; citation_journal_title=Proc Natl Acad Sci U S A; citation_volume=101; citation_number=9; citation_pages=793-798; citation_date=2004; " />
+      <meta name="citation_reference" content="citation_title=Playing Dr. Jekyll and Mr. Hyde: Combined mechanisms of phase variation in bacteria.; citation_author=B Hallet; citation_journal_title=Curr Opin Microbiol; citation_volume=4; citation_number=10; citation_pages=570-581; citation_date=2001; " />
+      <meta name="citation_reference" content="citation_title=Protein dispensability and rate of evolution.; citation_author=AE Hirsh; citation_author=HB Fraser; citation_journal_title=Nature; citation_volume=411; citation_number=11; citation_pages=1046-1049; citation_date=2001; " />
+      <meta name="citation_reference" content="citation_title=Genomic function: Rate of evolution and gene dispensability [discussion].; citation_author=AE Hirsh; citation_author=HB Fraser; citation_journal_title=Nature; citation_volume=421; citation_number=12; citation_pages=497-498; citation_date=2003; " />
+      <meta name="citation_reference" content="citation_title=Systematic identification of protein complexes in Saccharomyces cerevisiae by mass spectrometry.; citation_author=Y Ho; citation_author=A Gruhler; citation_author=A Heilbut; citation_author=GD Bader; citation_author=L Moore; citation_journal_title=Nature; citation_volume=415; citation_number=13; citation_pages=180-183; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Lethality and centrality in protein networks.; citation_author=H Jeong; citation_author=SP Mason; citation_author=AL Barabasi; citation_author=ZN Oltvai; citation_journal_title=Nature; citation_volume=411; citation_number=14; citation_pages=41-42; citation_date=2001; " />
+      <meta name="citation_reference" content="citation_title=Essential genes are more evolutionarily conserved than are nonessential genes in bacteria.; citation_author=IK Jordan; citation_author=IB Rogozin; citation_author=YI Wolf; citation_author=EV Koonin; citation_journal_title=Genome Res; citation_volume=12; citation_number=15; citation_pages=962-968; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Regulation of noise in the expression of a single gene.; citation_author=EM Ozbudak; citation_author=M Thattai; citation_author=I Kurtser; citation_author=AD Grossman; citation_author=A van Oudenaarden; citation_journal_title=Nat Genet; citation_volume=31; citation_number=16; citation_pages=69-73; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Highly expressed genes in yeast evolve slowly.; citation_author=C Pal; citation_author=B Papp; citation_author=LD Hurst; citation_journal_title=Genetics; citation_volume=158; citation_number=17; citation_pages=927-931; citation_date=2001; " />
+      <meta name="citation_reference" content="citation_title=Genomic function: Rate of evolution and gene dispensability.; citation_author=C Pal; citation_author=B Papp; citation_author=LD Hurst; citation_journal_title=Nature; citation_volume=421; citation_number=18; citation_pages=496-497; citation_date=2003; " />
+      <meta name="citation_reference" content="citation_title=Dosage sensitivity and the evolution of gene families in yeast.; citation_author=B Papp; citation_author=C Pal; citation_author=LD Hurst; citation_journal_title=Nature; citation_volume=424; citation_number=19; citation_pages=194-197; citation_date=2003; " />
+      <meta name="citation_reference" content="citation_title=Biometry.; citation_author=RR Sokal; citation_author=FJ Rohlf; citation_number=20; citation_date=1994; citation_publisher=W. H. Freeman and Company; " />
+      <meta name="citation_reference" content="citation_title=Intrinsic noise in gene regulatory networks.; citation_author=M Thattai; citation_author=A van Oudenaarden; citation_journal_title=Proc Natl Acad Sci U S A; citation_volume=98; citation_number=21; citation_pages=8614-8619; citation_date=2000; " />
+      <meta name="citation_reference" content="citation_title=Comparative assessment of large-scale data sets of protein–protein interactions.; citation_author=C von Mering; citation_author=R Krause; citation_author=B Snel; citation_author=M Cornell; citation_author=SG Oliver; citation_journal_title=Nature; citation_volume=417; citation_number=22; citation_pages=399-403; citation_date=2002; " />
+      <meta name="citation_reference" content="citation_title=Precision and functional specificity in mRNA decay.; citation_author=Y Wang; citation_author=CL Liu; citation_author=JD Storey; citation_author=RJ Tibshirani; citation_author=D Herschlag; citation_journal_title=Proc Natl Acad Sci U S A; citation_volume=99; citation_number=23; citation_pages=5860-5865; citation_date=2002; " />
+
+  <link rel="canonical" href="http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137" />
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@plosbiology"/>
+    <meta name="twitter:title" content="Noise Minimization in Eukaryotic Gene Expression"/>
+    <meta name="twitter:description" content="
+        Analysis of gene expression data for nearly every gene in yeast provides evidence that random variation in the production rate of proteins could significantly affect the fitness of an organism.
+      "/>
+      <meta name="twitter:image" content="http://dx.plos.org/10.1371/journal.pbio.0020137.g002"/>
+
+  <meta property="og:title" content="Noise Minimization in Eukaryotic Gene Expression" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137" />
+
+ <!--end articleInfoX-->
+
+  <link rel="pingback" href="http://www.plosbiology.org/pingback" />
+
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+  <link rel="home" title="home" href="/;jsessionid=E151753ED15D3C857606C601320BC08F"/>
+  <link rel="alternate" type="application/rss+xml"
+        title="PLOS Biology: New Articles"
+        href="http://www.plosbiology.org/article/feed"/>
+</head>
+<body>
+
+  <div id="page-wrap">
+    <div id="topbanner" class="cf">
+
+<!-- Div for the ad at the top of journal home page-->
+<div class="center">
+  <div class="title">Advertisement</div>
+  <iframe id='a035a937' name='a035a937'
+    src='http://ads.plos.org/www/delivery/afr.php?zoneid=333&amp;cb=2092'
+    frameborder='0' scrolling='no' width='730' height='90'>
+    <a href='http://ads.plos.org/www/delivery/ck.php?n=a035a937&amp;cb=1643'
+      target='_top'><img src='http://ads.plos.org/www/delivery/avw.php?zoneid=333&amp;cb=2523&amp;n=a035a937'
+      border='0' alt=''/>
+    </a>
+  </iframe>
+</div>    </div>
+
+    <div id="pagehdr-wrap">
+      <div id="pagehdr">
+        <div id="user" class="nav">
+          <ul>
+            <li><a href="http://www.plos.org">plos.org</a></li>
+            <li><a href="https://register.plos.org/ambra-registration/register.action">create account</a></li>
+            <li class="btn-style"><a
+              href="/user/secure/secureRedirect.action?goTo=%2Farticle%2FfetchArticle.action%3FarticleURI%3Dinfo%253Adoi%252F10.1371%252Fjournal.pbio.0020137">sign in</a>
+            </li>
+          </ul>
+        </div>
+        <div class="logo">
+          <a href="/;jsessionid=E151753ED15D3C857606C601320BC08F"><img src="/images/logo.png" alt="PLOS Biology"></a>
+        </div>
+
+<div id="db">
+  <form name="searchForm" action="/search/simple;jsessionid=E151753ED15D3C857606C601320BC08F?noSearchFlag=true&amp;query=&amp;articleURI=info%3Adoi%2F10.1371%2Fjournal.pbio.0020137" method="get" >
+<input type="hidden" name="from" value="globalSimpleSearch" id="from"/><input type="hidden" name="filterJournals" value="PLoSBiology" id="filterJournals"/>    <fieldset>
+      <legend>Search</legend>
+      <label for="search">Search</label>
+      <div class="wrap">
+        <input id="search" type="text" name="query" placeholder="Search">
+        <input type="image" alt="SEARCH" src="/images/icon.search.gif">
+      </div>
+    </fieldset>
+  </form>
+    <a id="advSearch" href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?noSearchFlag=true&amp;query=&amp;articleURI=info%3Adoi%2F10.1371%2Fjournal.pbio.0020137&filterJournals=PLoSBiology">advanced search</a>
+</div>
+<div id="nav-main" class="nav">
+  <ul>
+    <li id="mn-01"><a href="javascript:void(0);">Browse</a>
+      <div class="submenu">
+        <div class="menu">
+          <ul>
+            <li><a href="/article/browse/issue;jsessionid=E151753ED15D3C857606C601320BC08F">Current Issue</a></li>
+            <li><a href="/article/browse/volume;jsessionid=E151753ED15D3C857606C601320BC08F">Journal Archive</a></li>
+            <li><a href="http://www.ploscollections.org/static/pbioCollections">Collections</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li id="mn-02"><a href="javascript:void(0);">For Authors</a>
+      <div class="submenu">
+        <div class="menu">
+          <ul>
+            <li><a href="http://www.plos.org/journals">Publish with PLOS</a></li>
+            <li><a href="http://www.plosbiology.org/static/rcuk">Funded by RCUK</a></li>
+            <li><a href="/static/policies;jsessionid=E151753ED15D3C857606C601320BC08F">Editorial and Publishing Policies</a></li>
+            <li><a href="/static/guidelines;jsessionid=E151753ED15D3C857606C601320BC08F">Author Guidelines</a></li>
+            <li><a href="/static/figureGuidelines;jsessionid=E151753ED15D3C857606C601320BC08F">Figure and Table Guidelines</a></li>
+              <li><a href="/static/supportingInformation;jsessionid=E151753ED15D3C857606C601320BC08F">Supporting Information Guidelines</a></li>
+            <li><a href="/static/checklist;jsessionid=E151753ED15D3C857606C601320BC08F">Submit Your Paper</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li id="mn-03"><a href="javascript:void(0);">About Us</a>
+      <div class="submenu">
+        <div class="menu">
+          <ul>
+            <li><a href="/static/information;jsessionid=E151753ED15D3C857606C601320BC08F">Journal Information</a></li>
+            <li><a href="http://www.plos.org/about/people/staff/#publications-and-products">Editorial Team</a></li>
+            <li><a href="/static/edboard;jsessionid=E151753ED15D3C857606C601320BC08F">Editorial Board</a></li>
+            <li><a href="/static/reviewerGuidelines;jsessionid=E151753ED15D3C857606C601320BC08F">Reviewer Guidelines</a></li>
+            <li><a href="/static/aeGuidelines;jsessionid=E151753ED15D3C857606C601320BC08F">Academic Editor Guidelines</a></li>
+            <li><a href="/static/almInfo;jsessionid=E151753ED15D3C857606C601320BC08F">Article-Level Metrics</a></li>
+            <li><a href="/static/license;jsessionid=E151753ED15D3C857606C601320BC08F">Open-Access License</a></li>
+            <li><a href="http://www.plos.org/publish/order-reprints/">PLOS in Print</a></li>
+            <li><a href="/static/contact;jsessionid=E151753ED15D3C857606C601320BC08F">Contact Us</a></li>
+            <li><a href="/static/commentGuidelines;jsessionid=E151753ED15D3C857606C601320BC08F">Guidelines for Comments</a></li>
+            <li><a href="/static/corrections;jsessionid=E151753ED15D3C857606C601320BC08F">Corrections</a></li>
+            <li><a href="/static/help;jsessionid=E151753ED15D3C857606C601320BC08F">Help Using this Site</a></li>
+            <li><a href="/static/downloads;jsessionid=E151753ED15D3C857606C601320BC08F">Media Downloads</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+      </div>
+      <!-- pagehdr-->
+    </div>
+    <!-- pagehdr-wrap -->
+
+  <!--body and html tags gets closed in global_footer.ftl-->
+<script type="text/javascript" src="/javascript/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<div id="pagebdy-wrap">
+  <div id="pagebdy">
+
+    <div id="article-block" class="cf">
+
+<div class="article-meta cf">
+  <ul id="almSignPost" style="display: none;"></ul>
+  <div class="article-type">
+    <span class="type oa">Open Access</span>
+      <span class="type pr">Peer-Reviewed</span>
+  </div>
+</div>
+
+<div class="header" id="hdr-article">
+
+
+
+
+
+
+
+
+
+
+
+<div class="article-kicker">
+      <span id="article-type-heading">
+        Research Article
+      </span>
+
+</div>  <h1 property="dc:title" datatype="" rel="dc:type" href="http://purl.org/dc/dcmitype/Text">
+    Noise Minimization in Eukaryotic Gene Expression
+  </h1>
+
+  <ul class="authors">
+      <li>
+
+
+        <span rel="dc:creator" class="author">
+          <span class="person" property="foaf:name" typeof="foaf:Person">
+            Hunter B Fraser
+              <span class="corresponding">mail</span>, 
+          </span>
+        </span>
+
+          <div class="author_meta">
+            <div class="author_inner">
+
+
+              
+              <p><span class="email">*</span>To whom correspondence should be addressed. E-mail: <a href="mailto:hunter@ocf.berkeley.edu">hunter@ocf.berkeley.edu</a></p>
+
+                <p>Affiliation:
+                  Department of Molecular and Cell Biology, University of California, Berkeley, California, United States of America
+                </p>
+
+
+              <span class="close">X</span>
+
+            </div>
+          </div>
+      </li>
+      <li>
+
+
+        <span rel="dc:creator" class="author">
+          <span class="person" property="foaf:name" typeof="foaf:Person">
+            Aaron E Hirsh, 
+          </span>
+        </span>
+
+          <div class="author_meta">
+            <div class="author_inner">
+
+
+              
+              
+
+                <p>Affiliation:
+                  Department of Biological Sciences, Stanford University, Stanford, California, United States of America
+                </p>
+
+
+              <span class="close">X</span>
+
+            </div>
+          </div>
+      </li>
+      <li>
+
+
+        <span rel="dc:creator" class="author">
+          <span class="person" property="foaf:name" typeof="foaf:Person">
+            Guri Giaever, 
+          </span>
+        </span>
+
+          <div class="author_meta">
+            <div class="author_inner">
+
+
+              
+              
+
+                <p>Affiliation:
+                  Stanford Genome Technology Center, Stanford, California, United States of America
+                </p>
+
+
+              <span class="close">X</span>
+
+            </div>
+          </div>
+      </li>
+      <li>
+
+
+        <span rel="dc:creator" class="author">
+          <span class="person" property="foaf:name" typeof="foaf:Person">
+            Jochen Kumm, 
+          </span>
+        </span>
+
+          <div class="author_meta">
+            <div class="author_inner">
+
+
+              
+              
+
+                <p>Affiliation:
+                  Stanford Genome Technology Center, Stanford, California, United States of America
+                </p>
+
+
+              <span class="close">X</span>
+
+            </div>
+          </div>
+      </li>
+      <li>
+
+
+        <span rel="dc:creator" class="author">
+          <span class="person" property="foaf:name" typeof="foaf:Person">
+            Michael B Eisen
+          </span>
+        </span>
+
+          <div class="author_meta">
+            <div class="author_inner">
+
+
+              
+              
+
+                <p>Affiliations:
+                  Department of Molecular and Cell Biology, University of California, Berkeley, California, United States of America, 
+                  Genome Sciences Department, Genomics Division, Lawrence Berkeley National Laboratory, Berkeley, California, United States of America
+                </p>
+
+
+              <span class="close">X</span>
+
+            </div>
+          </div>
+      </li>
+  </ul>
+  <ul class="date-doi-line">
+    <li>Published: April 27, 2004</li>
+    <li>DOI: 10.1371/journal.pbio.0020137</li>
+  </ul>
+
+
+</div><!--end header-->
+<div class="main cf" id="pjax-container">
+  
+
+<div class="nav items-5" id="nav-article">
+  <ul>
+  <li>
+        <span class="active" name="article">Article</span>
+  </li>
+  <li>
+      <a href="/article/authors/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F" name="authors">About the Authors</a>
+  </li>
+  <li>
+      <a href="/article/metrics/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F" name="metrics">Metrics</a>
+  </li>
+  <li>
+      <a href="/article/comments/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F" name="comments">Comments</a>
+  </li>
+  <li>
+      <a href="/article/related/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F" name="related">Related Content</a>
+  </li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+  var selected_tab = "article";
+</script>
+  <div id="figure-thmbs" class="carousel cf">
+    <div class="wrapper">
+      <div class="slider">
+              <div class="item">
+                <a href="#pbio-0020137-g001" data-doi="info:doi/10.1371/journal.pbio.0020137" data-uri="info:doi/10.1371/journal.pbio.0020137.g001" title="Figure 1">
+                  <span class="thmb-wrap">
+                    <img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g001&representation=PNG_I" alt="">
+                  </span>
+                </a>
+              </div>
+              <div class="item">
+                <a href="#pbio-0020137-g002" data-doi="info:doi/10.1371/journal.pbio.0020137" data-uri="info:doi/10.1371/journal.pbio.0020137.g002" title="Figure 2">
+                  <span class="thmb-wrap">
+                    <img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g002&representation=PNG_I" alt="">
+                  </span>
+                </a>
+              </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-col">
+    <div class="nav" id="nav-article-page">
+      <ul>
+        <li class="nav-col-comments"><a href="/article/comments/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F">Reader Comments (0)</a></li>
+          <li id="nav-figures"><a data-doi="info:doi/10.1371/journal.pbio.0020137" >Figures</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="article">
+
+
+
+
+
+
+
+<div class="abstract"><a id="abstract0" name="abstract0" toc="abstract0" title="Abstract"></a><h2>Abstract</h2><a id="article1.front1.article-meta1.abstract1.p1" name="article1.front1.article-meta1.abstract1.p1"></a><p>All organisms have elaborate mechanisms to control rates of protein production. However, protein production is also subject to stochastic fluctuations, or “noise.” Several recent studies in <span class="genus-species">Saccharomyces cerevisiae</span> and <span class="genus-species">Escherichia coli</span> have investigated the relationship between transcription and translation rates and stochastic fluctuations in protein levels, or more generally, how such randomness is a function of intrinsic and extrinsic factors. However, the fundamental question of whether stochasticity in protein expression is generally biologically relevant has not been addressed, and it remains unknown whether random noise in the protein production rate of most genes significantly affects the fitness of any organism. We propose that organisms should be particularly sensitive to variation in the protein levels of two classes of genes: genes whose deletion is lethal to the organism and genes that encode subunits of multiprotein complexes. Using an experimentally verified model of stochastic gene expression in <span class="genus-species">S. cerevisiae</span>, we estimate the noise in protein production for nearly every yeast gene, and confirm our prediction that the production of essential and complex-forming proteins involves lower levels of noise than does the production of most other genes. Our results support the hypothesis that noise in gene expression is a biologically important variable, is generally detrimental to organismal fitness, and is subject to natural selection.</p>
+</div>
+
+
+<div class="articleinfo"><p><strong>Citation: </strong>Fraser HB, Hirsh AE, Giaever G, Kumm J, Eisen MB (2004) Noise Minimization in Eukaryotic Gene Expression. PLoS Biol 2(6):
+          e137.
+            doi:10.1371/journal.pbio.0020137</p><p><strong>Academic Editor: </strong>Ken Wolfe, University of Dublin</p><p><strong>Received:</strong> January 8, 2004; <strong>Accepted:</strong> March 9, 2004; <strong>Published:</strong> April 27, 2004</p><p><strong>Copyright:</strong> © 2004 Fraser et al. This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use of, distribution, and reproduction in any medium, provided the original work is properly cited.</p><p><strong>Competing interests:</strong>  The authors have declared that no conflicts of interest exist.</p><p><strong>Abbreviations: </strong>GFP, green fluorescent protein; tln, translation; txn, transcription</p></div>
+
+
+
+
+
+<div id="section1" class="section"><a id="s1" name="s1" toc="s1" title="Introduction"></a><h3>Introduction</h3><a id="article1.body1.sec1.p1" name="article1.body1.sec1.p1"></a><p>Stochasticity is a ubiquitous characteristic of life. Such apparent randomness, or “noise,” can be observed in a wide range of organisms, resulting in phenomena ranging from progressive loss of cell-cycle synchronization in an initially synchronized population of microbes to the pattern of hair coloration in female calico cats. An important source of stochasticity in biological systems is the random noise of transcription and translation, which can result in very different rates of synthesis of a specific protein in genetically identical cells in essentially identical environments (<a href="#pbio-0020137-Elowitz1">Elowitz et al. 2002</a>; <a href="#pbio-0020137-Ozbudak1">Ozbudak et al. 2002</a>; <a href="#pbio-0020137-Blake1">Blake et al. 2003</a>).</p>
+<a id="article1.body1.sec1.p2" name="article1.body1.sec1.p2"></a><p>Understanding how stochasticity contributes to cellular phenotypes is important to developing a more complete picture of how cells work. Accordingly, noise in gene expression and other cellular processes has been a major focus of research for more than a decade. While several cases have been described where stochasticity is advantageous (e.g., phase variation in bacteria [<a href="#pbio-0020137-Hallet1">Hallet 2001</a>] and the lysis/lysogeny decision in phage lambda [<a href="#pbio-0020137-Arkin1">Arkin et al. 1998</a>]), it is expected that noise is not advantageous in most cellular processes, as precisely controlled levels of gene expression are presumably optimal (c.f. <a href="#pbio-0020137-Barkai1">Barkai and Leibler 2000</a>). However, whether noise in expression is of consequence to organismal fitness has not previously been investigated, despite the centrality of this question to our understanding of the role of noise in biological systems.</p>
+<a id="article1.body1.sec1.p3" name="article1.body1.sec1.p3"></a><p>In this study, we investigate whether the differences in noise levels among genes are consistent with the hypothesis that noise in gene expression has been subject to natural selection to reduce its deleterious effects. We propose that random fluctuations in the expression levels of two groups of genes in yeast, essential genes and genes encoding protein complex subunits, should be particularly consequential for organismal fitness. If noise in gene expression is not an important factor to yeast—i.e., if the level of stochasticity experienced by yeast in gene expression is below that which would have negative consequences—then we would expect to see no difference in the randomness of expression in genes for which noisy expression is predicted to be relatively more or less deleterious. However, if stochasticity is an important variable on which natural selection has acted, we would expect to see the strongest signature of such selection in the expression of genes for which yeast are the most sensitive to randomness.</p>
+</div>
+
+<div id="section2" class="section"><a id="s2" name="s2" toc="s2" title="Results"></a><h3>Results</h3><a id="article1.body1.sec2.p1" name="article1.body1.sec2.p1"></a><p>If deletion of a gene has only a small deleterious effect on the fitness of yeast, then random fluctuations in the amount of protein produced from that gene are likely to have a similarly small, or even smaller, impact. In contrast, the same fluctuations in the level of a protein essential for viability may have a profound effect on fitness; in the extreme, fluctuation to levels below that required for normal cellular function could compromise viability. Considering this predicted difference in the sensitivity of yeast to randomness in expression of essential versus relatively dispensable genes, we reasoned that if noise in gene expression is a biologically important variable, selection for reduction of stochasticity in expression levels would likely be stronger for essential genes than for nonessential ones.</p>
+<a id="article1.body1.sec2.p2" name="article1.body1.sec2.p2"></a><p>A recent study linking noise in protein levels to transcription and translation rates in yeast (<a href="#pbio-0020137-Blake1">Blake et al. 2003</a>) allows us to test this prediction. In the study, noise in the expression of a green fluorescent protein (GFP) reporter gene was measured by flow cytometry; stochasticity was measured as the amount of variation in GFP levels per cell in a population. Thus if all cells in a population had very similar levels of GFP, there was little noise in the production of the GFP. The effect of transcription and translation on noise levels was studied by independently varying these two parameters and measuring the resulting noise levels for a population of cells. This experimental approach, as well as a mathematical model of protein production (<a href="#pbio-0020137-Blake1">Blake et al. 2003</a>), indicates that noise in protein production is maximized at intermediate levels of transcription (at approximately one-third of the maximal transcription rate of a gene, regardless of what that maximum is; see <a href="#s4">Materials and Methods</a>), as well as at maximal levels of translation per mRNA molecule.</p>
+<a id="article1.body1.sec2.p3" name="article1.body1.sec2.p3"></a><p>To produce a given amount of any particular protein, yeast could adopt one of three qualitatively different strategies (<a href="#pbio-0020137-Thattai1">Thattai and van Oudenaarden 2000</a>) (<a href="#pbio-0020137-g001">Figure 1</a>): (1) maximize transcription and minimize translation per mRNA, (2) maximize translation per mRNA and minimize transcription, or (3) employ intermediate levels of both transcription and translation per mRNA. Importantly, strategy 1 should result in less stochasticity than strategy 2 or 3. Strategy 2 is noisy due to the high translation, and strategy 3 is noisy due to both intermediate transcription and translation (the data currently available do not allow us to predict whether expression strategy 2 is more or less noisy than strategy 3). In contrast, noise is minimized at both transcription and translation steps for genes that exhibit strategy 1. Thus we predicted that if noise in protein production is an important factor in yeast, then genes that are essential for viability would be biased towards having high transcription rates and a low number of translations per mRNA.</p>
+<div class="figure" id="pbio-0020137-g001"><div class="img"><a name="pbio-0020137-g001" title="Click for larger image " href="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g001&amp;representation=PNG_M" data-doi="info:doi/10.1371/journal.pbio.0020137" data-uri="info:doi/10.1371/journal.pbio.0020137.g001"><img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g001&amp;representation=PNG_I" alt="thumbnail" class="thumbnail"></a></div><div class="figure-inline-download">
+            Download:
+            <ul><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/powerpoint">
+                    PPT
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/powerpoint">
+                  PowerPoint slide
+                </a></li><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/largerimage">
+                    PNG
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/largerimage">
+                  larger image
+                  (<span id="info:doi/10.1371/journal.pbio.0020137.g001.PNG_L"></span>)
+                </a></li><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/originalimage">
+                    TIFF
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g001/originalimage">
+                  original image
+                  (<span id="info:doi/10.1371/journal.pbio.0020137.g001.TIF"></span>)
+                </a></li></ul></div><p><strong>Figure 1.  <span>Strategies for Expression</span></strong></p><a id="article1.body1.sec2.fig1.caption1.p1" name="article1.body1.sec2.fig1.caption1.p1"></a><p>Three different strategies for achieving a given rate of protein production (four proteins will be produced in each case) and the amount of noise in expected to result from each strategy. Curved lines represent mRNA molecules, with ribosomes translating them; a larger number of mRNA molecules represents higher transcription, and a larger number of ribosomes per mRNA represents higher translation per mRNA.</p>
+<span>doi:10.1371/journal.pbio.0020137.g001</span></div><a id="article1.body1.sec2.p4" name="article1.body1.sec2.p4"></a><p>To test this prediction, we estimated protein production rates (proteins/s; see <a href="#s4">Materials and Methods</a>) for all yeast genes and asked whether essential genes tended to adopt strategy 1 more often than nonessential genes with similar protein production rates. It was critical to control for overall rates of protein production, as there is an overall correlation between a gene's dispensability (defined as the growth defect of a yeast strain missing that gene in rich glucose medium, i.e., an essential gene is indispensable) and its rate of protein production (<a href="#sg001">Figure S1</a>). This correlation between dispensability and the rate of protein synthesis may have nothing to do with stochasticity; most essential proteins may simply be needed in somewhat greater quantity than most nonessential proteins, so their genes must be more highly transcribed and/or translated. Since such a relationship could lead to an association between gene importance and the likelihood of adopting expression strategy 1, we employed two statistical methods to control for this possibility.</p>
+<a id="article1.body1.sec2.p5" name="article1.body1.sec2.p5"></a><p>In the first of these two methods, we binned yeast genes by their protein production rate, so that all genes in each of 15 bins had approximately equal levels of protein production (see <a href="#st001">Table S1</a> for details). The genes in each bin could have achieved their similar protein production levels by any of the three strategies listed above; our prediction was that if noise in gene expression is relevant to yeast, then essential genes would be biased towards having the highest transcription and lowest translation per mRNA (strategy 1) in each bin. Indeed, this was confirmed by the data: when the genes within each bin were separated into thirds by their number of translations per mRNA, a larger number of essential genes were in the third with the lowest number of translations (low noise) than in the third with the highest number of translations (high noise) for all but one of 15 bins (<a href="#pbio-0020137-g002">Figure 2</a>A). A Fisher's exact test (<a href="#pbio-0020137-Sokal1">Sokal and Rohlf 1994</a>) demonstrated that for all of the 14 bins with more essential genes in the low noise third than the high noise third, this difference was significant (<em>p</em> ≤ 0.02). Similar results were found when using different numbers of bins, when using halves or quartiles instead of thirds, or when separating bins by transcription rate instead of by number of translations per mRNA (data not shown). This result cannot be explained by the overall positive correlation between dispensability and rate of protein synthesis. (In the binning analysis, the third of each bin with the lowest translation rate had, on average, a slightly lower overall protein synthesis rate than the third with the highest translation rate [data not shown]; this bias is the opposite of what would be expected from the positive correlation between protein synthesis rate and fitness effect or protein complex membership, and thus it acts against our observed bias to make the results of this analysis conservative estimates of the true bias.)</p>
+<div class="figure" id="pbio-0020137-g002"><div class="img"><a name="pbio-0020137-g002" title="Click for larger image " href="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g002&amp;representation=PNG_M" data-doi="info:doi/10.1371/journal.pbio.0020137" data-uri="info:doi/10.1371/journal.pbio.0020137.g002"><img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.g002&amp;representation=PNG_I" alt="thumbnail" class="thumbnail"></a></div><div class="figure-inline-download">
+            Download:
+            <ul><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/powerpoint">
+                    PPT
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/powerpoint">
+                  PowerPoint slide
+                </a></li><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/largerimage">
+                    PNG
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/largerimage">
+                  larger image
+                  (<span id="info:doi/10.1371/journal.pbio.0020137.g002.PNG_L"></span>)
+                </a></li><li><div class="icon"><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/originalimage">
+                    TIFF
+                  </a></div><a href="/article/info:doi/10.1371/journal.pbio.0020137.g002/originalimage">
+                  original image
+                  (<span id="info:doi/10.1371/journal.pbio.0020137.g002.TIF"></span>)
+                </a></li></ul></div><p><strong>Figure 2.  <span>Essential Genes and Protein Complex Subunits Minimize Noise in Expression</span></strong></p><a id="article1.body1.sec2.fig2.caption1.p1" name="article1.body1.sec2.fig2.caption1.p1"></a><p>Binning analysis of (A) essential genes and (B) protein complex subunits. All genes for which transcription and translation rate data were available were separated into 15 bins by their protein production rate. Each bin was then separated into thirds by number of translations per mRNA. The two-thirds in each bin with the most extreme transcription and translation are shown: black bars are the number of each type of gene (essential or complex subunit) in the third of each bin with the lowest number of translations per mRNA and the highest transcription rate, and thus low noise; gray bars are the number of each type of gene in the third with the highest number of translations per mRNA and the lowest transcripton rate, and thus high noise. Bins are ordered by their rate of protein synthesis. The number of asterisks indicates the Fisher's exact test probability of observing the values for each bin under the null model of independence. *, <em>p</em> ≤ 0.02; **, <em>p</em> &lt; 0.005; ***, <em>p</em> &lt; 0.0005.</p>
+<span>doi:10.1371/journal.pbio.0020137.g002</span></div><a id="article1.body1.sec2.p6" name="article1.body1.sec2.p6"></a><p>Because binning genes still allows for a small amount of variability in protein production within each bin (see <a href="#st001">Table S1</a>), we sought to control for protein production rate in another fashion as well. We employed partial correlation, a method that allows one to examine the relationship between two variables when other, possibly confounding, variables are statistically held constant (see <a href="#s4">Materials and Methods</a>). The stochastic model of gene expression (<a href="#pbio-0020137-Blake1">Blake et al. 2003</a>) led us to the prediction that, when protein production rate is controlled for, fitness effect (<em>f</em>, where <em>f</em> = 0 indicates no effect on growth when a gene is deleted, <em>f</em> = 1 indicates that a gene is essential, and 0 &lt; <em>f</em> &lt; 1 indicates a quantitative growth defect [<a href="#pbio-0020137-Hirsh1">Hirsh and Fraser 2001</a>]) would correlate positively with transcription rate and negatively with translation rate per mRNA. Indeed, this is what we observed (<em>f</em> versus transcription [txn] rate | protein production rate, Spearman partial <em>r</em> = 0.282, <em>n</em> = 4,746, <em>p</em> = 10<sup>−87</sup>; <em>f</em> versus translations [tlns] per mRNA | protein production rate, Spearman partial <em>r</em> = −0.258, <em>n</em> = 4,746, <em>p</em> = 10<sup>−75</sup>). We also expected that the relationship between gene importance and implementation of the expression strategy that minimizes noise could additionally be seen by considering transcription rate and translation rate per mRNA together, as a ratio; a large ratio of transcription rate to translations per mRNA would indicate that transcripts are produced quickly but are translated slowly, corresponding to our expression strategy 1. Confirming this, the correlation between fitness effect and the ratio of transcription rate to translations per mRNA (controlling for protein production rate) is highly significant (<em>f</em> versus txn rate/tlns per mRNA | protein production rate, Spearman partial <em>r</em> = 0.275, <em>n</em> = 4,746, <em>p</em> = 10<sup>−86</sup>). Partial correlation analysis is thus in accordance with the trend illustrated in <a href="#pbio-0020137-g002">Figure 2</a>A: essential genes preferentially use expression strategy 1, which minimizes stochasticity.</p>
+<a id="article1.body1.sec2.p7" name="article1.body1.sec2.p7"></a><p>In addition to essential genes, genes whose protein products participate in stable protein complexes (“complex subunits”) would also be expected to exhibit sensitivity to randomness in expression: producing too little or too much of a single protein complex subunit can compromise the proper assembly of the entire complex and waste the energy invested in the production of the other complex subunits. In support of this, it has been found that both under- and overexpression of complex subunits is more likely to result in a reduced growth rate or inviability of yeast than is misexpression of other genes, and also that complex subunits tend to be more precisely coexpressed with other genes than noncomplex subunits (<a href="#pbio-0020137-Papp1">Papp et al. 2003</a>). Using data from two high-throughput studies that identified proteins involved in stable complexes (<a href="#pbio-0020137-Gavin1">Gavin et al. 2002</a>; <a href="#pbio-0020137-Ho1">Ho et al. 2002</a>), we assigned genes to two groups: those whose protein products were members of a stable complex found in either study and those whose protein products were not. (Since the protein complex data do not include all protein complexes, we expect that many protein complex subunits will not be classified as such in our list; this, as well as any false positives in the data, makes our results a conservative estimate the true strength of the effect.) We then performed the same binning analysis as described above, substituting our list of complex subunits for our list of essential genes. Again the prediction was confirmed: in all 15 bins, the third of the bin with the least translation per mRNA (and thus the lowest noise level) contained more complex subunits than the third with the most translation per mRNA (<a href="#pbio-0020137-g002">Figure 2</a>B). The association between low translation per mRNA and protein complex membership was significant (Fisher's exact test, <em>p</em> ≤ 0.02) for all but one bin. As in <a href="#pbio-0020137-g002">Figure 2</a>A, this result is robust with respect to the number of bins and the size of the divisions within bins (data not shown). Also as in <a href="#pbio-0020137-g002">Figure 2</a>A, the bias is the opposite of that expected from the positive correlation between fitness effect and protein production rate; it is also the opposite of what would be the result of highly expressed genes being more likely to appear in the list of protein complex subunits than are poorly expressed genes. (It has been found that highly expressed genes are overrepresented in protein complex data [whether this is an experimental artifact or a true relationship is unclear; <a href="#pbio-0020137-von1">von Mering et al. 2002</a>]; this would also act against our observed bias of complex subunits being overrepresented in the third with the lowest overall protein synthesis rate in each bin, thus making our results conservative.)</p>
+<a id="article1.body1.sec2.p8" name="article1.body1.sec2.p8"></a><p>When we repeated the partial correlation analysis for complex subunits (genes were assigned a value of one if they were a complex subunit, zero if not), we found similar results. When total protein synthesis was controlled for with the partial correlation, complex subunits were more likely to have a high transcription rate (complex subunit versus txn rate | protein production rate, Spearman partial <em>r</em> = 0.203, <em>n</em> = 4,900, <em>p</em> = 10<sup>−46</sup>) and a low number of translations per mRNA (complex subunit versus tlns per mRNA | protein production rate, Spearman partial <em>r</em> = −0.200, <em>n</em> = 4,900, <em>p</em> = 10<sup>−46</sup>). Using the ratio of transcription rate to translations per mRNA also yielded similar results (complex subunit versus txn rate/tlns per mRNA | protein production rate, Spearman partial <em>r</em> = 0.220, <em>n</em> = 4,900, <em>p</em> = 10<sup>−56</sup>). Thus, partial correlations confirm the finding illustrated in <a href="#pbio-0020137-g002">Figure 2</a>B.</p>
+<a id="article1.body1.sec2.p9" name="article1.body1.sec2.p9"></a><p>Since proteins that participate in many protein–protein interactions are more likely to be essential (<a href="#pbio-0020137-Jeong1">Jeong et al. 2001</a>; <a href="#pbio-0020137-Fraser1">Fraser et al. 2002</a>), it was not immediately clear whether protein fitness effect and membership in a multiprotein complex are independently associated with the expression strategy that minimizes stochastic fluctuations. To address this question, we calculated the partial correlation between fitness effect and the ratio of transcription rate to translations per mRNA, while controlling for both protein production rate and protein complex membership. Likewise, we calculated the correlation between protein complex membership and the ratio of transcription rate to translation rate per mRNA while controlling for both protein production rate and fitness effect. The two partial correlations were both quite significant (<em>f</em> versus txn rate/tlns per mRNA | protein production rate, complex membership: Spearman partial <em>r</em> = 0.227, <em>n</em> = 4,746, <em>p</em> = 10<sup>−57</sup>; complex membership versus txn rate/tlns per mRNA | protein production rate, <em>f:</em> Spearman partial <em>r</em> = 0.147, <em>n</em> = 4,746, <em>p</em> = 10<sup>−24</sup>), suggesting that fitness effect and protein complex membership are independently associated with the expression strategy that minimizes stochastic fluctuation. (However, the relative strengths of the partial correlations cannot be interpreted as their true relative contributions because of the differing quality of fitness effect and protein complex membership data.) Repeating the partial correlations above with either transcription rate or translations per mRNA in place of their ratio gave significant partial correlations with both fitness effect and protein complex membership as well (data not shown).</p>
+<a id="article1.body1.sec2.p10" name="article1.body1.sec2.p10"></a><p>The hypothesis that genes of large fitness effect are under stronger selection to reduce stochastic fluctuation in expression provides an explanation for a previously observed, but as yet unexplained, correlate of protein evolutionary rate. <a href="#pbio-0020137-Pal1">Pal et al. (2001</a>) noted a weak but significant negative correlation (<em>r</em> = −0.11, <em>p</em> = 10<sup>−9</sup>) between an mRNA's rate of decay and the evolutionary rate of the protein it encodes. This correlation was surprising, as it is precisely the opposite of what one would expect if the relationship between the rates of mRNA decay and protein evolution were mediated by the level of expression: slow decay would result in increased expression, which is known to be associated with slow evolution (<a href="#pbio-0020137-Pal1">Pal et al. 2001</a>). Thus, we would expect a positive correlation between rates of mRNA decay and protein evolution, not the negative one that is observed. However, under the present hypothesis that relatively important genes are under stronger selection to reduce noise, the relationship between mRNA decay and protein evolutionary rate is interpretable. Both genes of large fitness effect and genes that encode protein complex subunits are known to evolve slowly (<a href="#pbio-0020137-Hirsh1">Hirsh and Fraser 2001</a>; <a href="#pbio-0020137-Fraser1">Fraser et al. 2002</a>; <a href="#pbio-0020137-Jordan1">Jordan et al. 2002</a>). (While the reason why genes of large fitness effect evolve slowly has been debated [<a href="#pbio-0020137-Hirsh2">Hirsh and Fraser 2003</a>; <a href="#pbio-0020137-Pal2">Pal et al. 2003</a>], the presence of the correlation has not been disputed, and it can be seen to be much stronger than previously reported when using more accurate fitness effect and evolutionary rate data [data not shown]). Here we have shown that they are also associated with a strategy of expression that maximizes the rate of transcription and minimizes the number of translations per mRNA. Given a desired rate of protein production, one way to maximize transcription rate while minimizing the number of translations per mRNA is to maximize the mRNA decay rate. Thus, we would expect rapid mRNA decay among essential genes and protein complex subunits, both of which evolve slowly, yielding the observed negative correlation between the rates of mRNA decay and protein evolution. In support of this prediction, both essential genes and protein complex subunits have substantially shorter mRNA half-lives than the rest of the genome (e.g., mRNA half-lives of nonessential genes are 32% longer than those of essential genes, and the bias remains when controlling for protein production rate; <em>p</em> i= 10<sup>−36</sup> by the Wilcoxon test [<a href="#pbio-0020137-Sokal1">Sokal and Rohlf 1994</a>]).</p>
+</div>
+
+<div id="section3" class="section"><a id="s3" name="s3" toc="s3" title="Discussion"></a><h3>Discussion</h3><a id="article1.body1.sec3.p1" name="article1.body1.sec3.p1"></a><p>We found that noise in protein production is minimized in genes for which it is likely to be most harmful, specifically essential genes and genes encoding protein complex subunits. This finding supports the hypothesis that noise in gene expression is generally deleterious to yeast.</p>
+<a id="article1.body1.sec3.p2" name="article1.body1.sec3.p2"></a><p>Yeast appear to control the noise in their gene expression at both transcriptional and translational levels preferentially for some genes; however, this noise minimization is not without a cost, as the high transcription and high mRNA decay rates that are needed to minimize noise are energetically expensive and are thus expected to be advantageous only when the benefit of reducing noise in a particular gene's expression outweighs this cost (<a href="#pbio-0020137-Thattai1">Thattai and van Oudenaarden 2000</a>). Protein degradation rates may also play a role in controlling noise, but this cannot be tested until genome-wide protein degradation rates have been measured.</p>
+<a id="article1.body1.sec3.p3" name="article1.body1.sec3.p3"></a><p>As is the case with many genome-wide studies, it is possible that a hidden variable could bias our results. For example, it is possible that essential genes and genes encoding protein complex subunits tend to have high transcription and low translation for reasons unrelated to noise minimization. However, until such a reason is identified, the most parsimonious interpretation of our results is that yeast adaptively minimize noise in the expression of certain genes.</p>
+<a id="article1.body1.sec3.p4" name="article1.body1.sec3.p4"></a><p>As genome-wide transcription and translation rate data become available for other organisms, it will be interesting to see if the apparent tendency to minimize noise in the expression of important genes extends to organisms other than yeast. Considering that several anecdotal examples of indispensable genes with unusually low translation rates, and thus low noise in expression, have already been noted in <span class="genus-species">Escherichia coli</span> (<a href="#pbio-0020137-Ozbudak1">Ozbudak et al. 2002</a>), this could well be the case.</p>
+</div>
+
+<div id="section4" class="section"><a id="s4" name="s4" toc="s4" title="Materials and Methods"></a><h3>Materials and Methods</h3>
+<h4></h4>
+<h5>Functional genomic data sources.</h5><a id="article1.body1.sec4.sec1.sec1.p1" name="article1.body1.sec4.sec1.sec1.p1"></a><p>Transcription rates were calculated from mRNA abundances and decay rates in log-phase yeast growing in rich glucose medium (<a href="#pbio-0020137-Wang1">Wang et al. 2002</a>) according to the steady-state equation <em>R</em> = −ln(0.5) * <em>A</em>/<em>T</em>, where <em>R</em> is transcription rate, <em>A</em> is mRNA abundance, and <em>T</em> is mRNA half-life. Translation rates per mRNA in rich glucose medium were calculated from ribosome occupancy data by <a href="#pbio-0020137-Arava1">Arava et al. (2003</a>); specifically, ribosome density per mRNA present in the polysome fraction was multiplied by the fraction of each mRNA that was found in the polysome fraction to estimate the average ribosome density for all copies of each mRNA in a cell. This density is equivalent to a relative translation rate, assuming that the speed at which ribosomes produce proteins is constant over different mRNAs. An estimate of the actual translation rate was found by multiplying the relative translation rates by a constant: the speed of translation, which is approximately ten amino acids/s (<a href="#pbio-0020137-Arava1">Arava et al. 2003</a>). Protein production rate (proteins/s) was then calculated by multiplying translation rate per mRNA with mRNA abundance. Note that the protein production rate can also be represented as the product of transcription rate and number of translations per mRNA. It is this latter variable that was used to separate each bin into thirds in <a href="#pbio-0020137-g002">Figure 2</a>, since it is thought to be more directly relevant to noise in protein production than related quantities such as translation rate per mRNA (<a href="#pbio-0020137-Berg1">Berg 1978</a>); the variable was calculated by dividing protein production rate by transcription rate for each gene. However, bins could also be separated into thirds by transcription rate, transcript abundance, or translation rate per mRNA, all yielding similar results (data not shown).</p>
+<a id="article1.body1.sec4.sec1.sec1.p2" name="article1.body1.sec4.sec1.sec1.p2"></a><p>Fitness effect ranks were calculated from 12 replicate growth experiments for all viable homozygous yeast deletion strains in rich glucose medium; growth experiments were conducted using the method described in <a href="#pbio-0020137-Giaever1">Giaever et al. (2004</a>). The logarithms of deletion strain tag fluorescence intensities on high-density oligonucelotide microarrays for each growth time course were fitted to a linear model that accounted for time-course-specific effects and variable initial strain concentrations. The slope of the linear regression was then used as the relative growth rate for each strain.</p>
+
+<h5>Estimates of percent induction levels.</h5><a id="article1.body1.sec4.sec1.sec2.p1" name="article1.body1.sec4.sec1.sec2.p1"></a><p><a href="#pbio-0020137-Blake1">Blake et al. (2003</a>) showed for two different promoters in yeast, as well as in their mathematical model, that noise due to transcription peaked at approximately one-third of maximal transcriptional induction. Importantly, one of their promoters (P<sub>ADH1*</sub>) was 10-fold weaker than the other two at full induction, but all three showed very similar relationships between noise strength and percent transcriptional induction. Since we do not have genome-wide data for the percent induction for genes in rich glucose medium (or any other environment), in our analysis we make the assumption that the promoters of more highly transcribed genes tend to be at higher percent induction levels. While this certainly does not hold for all genes, we believe that it is a reasonable approximation for most genes.</p>
+
+<h5>Partial correlations.</h5><a id="article1.body1.sec4.sec1.sec3.p1" name="article1.body1.sec4.sec1.sec3.p1"></a><p>Partial correlations were calculated as described by <a href="#pbio-0020137-Sokal1">Sokal and Rohlf (1994</a>). Briefly, let <em>r<sub>XY</sub></em> be the correlation coefficient between variables <em>X</em> and <em>Y.</em> To control for a third variable <em>Z,</em></p>
+<a id="article1.body1.sec4.sec1.sec3.p2" name="article1.body1.sec4.sec1.sec3.p2"></a><p>
+						<a name="pbio-0020137-e01" id="pbio-0020137-e01"></a><span class="equation"><img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.e01&amp;representation=PNG" class="inline-graphic"></span><br>
+					</p>
+<a id="article1.body1.sec4.sec1.sec3.p3" name="article1.body1.sec4.sec1.sec3.p3"></a><p>To assess the significance of the partial correlation, it is transformed to be distributed according to a Student's <em>t</em> distribution, by the equation</p>
+<a id="article1.body1.sec4.sec1.sec3.p4" name="article1.body1.sec4.sec1.sec3.p4"></a><p>
+						<a name="pbio-0020137-e02" id="pbio-0020137-e02"></a><span class="equation"><img src="/article/fetchObject.action?uri=info:doi/10.1371/journal.pbio.0020137.e02&amp;representation=PNG" class="inline-graphic"></span><br>
+					</p>
+<a id="article1.body1.sec4.sec1.sec3.p5" name="article1.body1.sec4.sec1.sec3.p5"></a><p>The two-sided <em>p</em>-value can then be calculated according to where the <em>t</em>-value falls with respect to its expected distribution.</p>
+
+
+</div>
+
+<div id="section5" class="section"><a id="s5" name="s5" toc="s5" title="Supporting Information"></a><h3>Supporting Information</h3><div class="figshare_widget" doi="10.1371/journal.pbio.0020137"></div><a name="sg001" id="sg001"></a><p class="siTitle"><strong><a href="/article/fetchSingleRepresentation.action?uri=info:doi/10.1371/journal.pbio.0020137.sg001">Figure S1. </a>The Relationship between Fitness Effect and Protein Production Rate</strong></p><a id="article1.body1.sec5.supplementary-material1.caption1.p1" name="article1.body1.sec5.supplementary-material1.caption1.p1"></a><p class="preSiDOI">Fitness effect ranks are shown on the y-axis (the large number of points at 519.5 are the essential genes, with fitness effect = 1). Protein production rate (proteins/s) is shown on the x-axis. The Spearman rank correlation coefficient is r = –0.202 (p = 10<sup>–49</sup>).</p>
+<p class="siDoi">doi:10.1371/journal.pbio.0020137.sg001</p><a id="article1.body1.sec5.supplementary-material1.caption1.p2" name="article1.body1.sec5.supplementary-material1.caption1.p2"></a><p class="postSiDOI">(316 KB PPT).</p>
+<a name="st001" id="st001"></a><p class="siTitle"><strong><a href="/article/fetchSingleRepresentation.action?uri=info:doi/10.1371/journal.pbio.0020137.st001">Table S1. </a>Details of the Protein Production Rates (Protein/s) within Each Bin from Figure 2</strong></p><p class="siDoi">doi:10.1371/journal.pbio.0020137.st001</p><a id="article1.body1.sec5.supplementary-material2.caption1.p1" name="article1.body1.sec5.supplementary-material2.caption1.p1"></a><p class="postSiDOI">(37 KB DOC).</p>
+</div>
+
+
+
+
+
+<div><a id="ack" name="ack" toc="ack" title="Acknowledgments"></a><h3>Acknowledgments</h3>
+<a id="article1.back1.ack1.p1" name="article1.back1.ack1.p1"></a><p>We thank Otto Berg, Alan Moses, and Angela DePace for helpful comments. Bryan Zeitler and Jennifer Zeitler created the thumbnail image accompanying the paper. HBF is a NSF predoctoral fellow. MBE is a Pew Scholar in the Biomedical Sciences.</p>
+</div><div class="contributions"><a id="authcontrib" name="authcontrib" toc="authcontrib" title="Author Contributions"></a><h3>Author Contributions</h3><p> HBF conceived and performed the analyses. HBF and AEH wrote the paper. GG and JK contributed fitness data. MBE edited the paper and provided a nurturing environment.</p></div><div><a id="references" name="references" toc="references" title="References"></a><h3>References</h3><ol class="references"><li><span class="label">1.
+              </span><a name="pbio-0020137-Arava1" id="pbio-0020137-Arava1"></a>Arava Y, Wang Y, Storey JD, Liu CL, Brown PO, et al.  (2003) Genome-wide analysis of mRNA translation profiles in <span class="genus-species">Saccharomyces cerevisiae</span>. Proc Natl Acad Sci U S A  100: 3889–3894.  <ul class="find" data-citedArticleID="9616" data-doi="10.1073/pnas.0635171100"><li><a href="http://dx.doi.org/10.1073/pnas.0635171100" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">2.
+              </span><a name="pbio-0020137-Arkin1" id="pbio-0020137-Arkin1"></a>Arkin A, Ross J, McAdams HH (1998) Stochastic kinetic analysis of developmental pathway bifurcation in phage lambda-infected <span class="genus-species">Escherichia coli</span> cells. Genetics  149: 1633–1648.  <ul class="find-nolinks"></ul></li><li><span class="label">3.
+              </span><a name="pbio-0020137-Barkai1" id="pbio-0020137-Barkai1"></a>Barkai N, Leibler S (2000) Circadian clocks limited by noise. Nature  403: 267–268.  <ul class="find" data-citedArticleID="9626" data-doi="10.1038/35002258"><li><a href="http://dx.doi.org/10.1038/35002258" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">4.
+              </span><a name="pbio-0020137-Berg1" id="pbio-0020137-Berg1"></a>Berg OG (1978) A model for the statistical fluctuations of protein numbers in a microbial population. J Theor Biol  71: 587–603.  <ul class="find" data-citedArticleID="9586" data-doi="10.1016/0022-5193(78)90326-0"><li><a href="http://dx.doi.org/10.1016/0022-5193(78)90326-0" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">5.
+              </span><a name="pbio-0020137-Blake1" id="pbio-0020137-Blake1"></a>Blake WJ, Kaern M, Cantor CR, Collins JJ (2003) Noise in eukaryotic gene expression. Nature  422: 633–637.  <ul class="find" data-citedArticleID="9624" data-doi="10.1038/nature01546"><li><a href="http://dx.doi.org/10.1038/nature01546" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">6.
+              </span><a name="pbio-0020137-Elowitz1" id="pbio-0020137-Elowitz1"></a>Elowitz MB, Levine AJ, Siggia ED, Swain PS (2002) Stochastic gene expression in a single cell. Science  297: 1183–1186.  <ul class="find" data-citedArticleID="9630" data-doi="10.1126/science.1070919"><li><a href="http://dx.doi.org/10.1126/science.1070919" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">7.
+              </span><a name="pbio-0020137-Fraser1" id="pbio-0020137-Fraser1"></a>Fraser HB, Hirsh AE, Steinmetz LM, Scharfe C, Feldman MW (2002) Evolutionary rate in the protein interaction network. Science  296: 750–752.  <ul class="find" data-citedArticleID="9604" data-doi="10.1126/science.1068696"><li><a href="http://dx.doi.org/10.1126/science.1068696" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">8.
+              </span><a name="pbio-0020137-Gavin1" id="pbio-0020137-Gavin1"></a>Gavin AC, Bosche M, Krause R, Grandi P, Marzioch M, et al.  (2002) Functional organization of the yeast proteome by systematic analysis of protein complexes. Nature  415: 141–147.  <ul class="find" data-citedArticleID="9602" data-doi="10.1038/415141a"><li><a href="http://dx.doi.org/10.1038/415141a" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">9.
+              </span><a name="pbio-0020137-Giaever1" id="pbio-0020137-Giaever1"></a>Giaever G, Flaherty P, Kumm J, Proctor M, Nislow C, et al.  (2004) Chemogenomic profiling: Identifying the functional interactions of small molecules in yeast. Proc Natl Acad Sci U S A  101: 793–798.  <ul class="find" data-citedArticleID="9594" data-doi="10.1073/pnas.0307490100"><li><a href="http://dx.doi.org/10.1073/pnas.0307490100" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">10.
+              </span><a name="pbio-0020137-Hallet1" id="pbio-0020137-Hallet1"></a>Hallet B (2001) Playing Dr. Jekyll and Mr. Hyde: Combined mechanisms of phase variation in bacteria. Curr Opin Microbiol  4: 570–581.  <ul class="find" data-citedArticleID="9618" data-doi="10.1016/s1369-5274(00)00253-8"><li><a href="http://dx.doi.org/10.1016/s1369-5274(00)00253-8" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">11.
+              </span><a name="pbio-0020137-Hirsh1" id="pbio-0020137-Hirsh1"></a>Hirsh AE, Fraser HB (2001) Protein dispensability and rate of evolution. Nature  411: 1046–1049.  <ul class="find" data-citedArticleID="9614" data-doi="10.1038/35082561"><li><a href="http://dx.doi.org/10.1038/35082561" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">12.
+              </span><a name="pbio-0020137-Hirsh2" id="pbio-0020137-Hirsh2"></a>Hirsh AE, Fraser HB (2003) Genomic function: Rate of evolution and gene dispensability [discussion]. Nature  421: 497–498.  <ul class="find" data-citedArticleID="9620" data-doi="10.1038/421497a"><li><a href="http://dx.doi.org/10.1038/421497a" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">13.
+              </span><a name="pbio-0020137-Ho1" id="pbio-0020137-Ho1"></a>Ho Y, Gruhler A, Heilbut A, Bader GD, Moore L, et al.  (2002) Systematic identification of protein complexes in <span class="genus-species">Saccharomyces cerevisiae</span> by mass spectrometry. Nature  415: 180–183.  <ul class="find" data-citedArticleID="9598" data-doi="10.1038/415180a"><li><a href="http://dx.doi.org/10.1038/415180a" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">14.
+              </span><a name="pbio-0020137-Jeong1" id="pbio-0020137-Jeong1"></a>Jeong H, Mason SP, Barabasi AL, Oltvai ZN (2001) Lethality and centrality in protein networks. Nature  411: 41–42.  <ul class="find" data-citedArticleID="9622" data-doi="10.1038/35075138"><li><a href="http://dx.doi.org/10.1038/35075138" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">15.
+              </span><a name="pbio-0020137-Jordan1" id="pbio-0020137-Jordan1"></a>Jordan IK, Rogozin IB, Wolf YI, Koonin EV (2002) Essential genes are more evolutionarily conserved than are nonessential genes in bacteria. Genome Res  12: 962–968.  <ul class="find" data-citedArticleID="9590" data-doi="10.1101/gr.87702"><li><a href="http://dx.doi.org/10.1101/gr.87702" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">16.
+              </span><a name="pbio-0020137-Ozbudak1" id="pbio-0020137-Ozbudak1"></a>Ozbudak EM, Thattai M, Kurtser I, Grossman AD, van Oudenaarden A (2002) Regulation of noise in the expression of a single gene. Nat Genet  31: 69–73.  <ul class="find" data-citedArticleID="9592" data-doi="10.1038/ng869"><li><a href="http://dx.doi.org/10.1038/ng869" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">17.
+              </span><a name="pbio-0020137-Pal1" id="pbio-0020137-Pal1"></a>Pal C, Papp B, Hurst LD (2001) Highly expressed genes in yeast evolve slowly. Genetics  158: 927–931.  <ul class="find-nolinks"></ul></li><li><span class="label">18.
+              </span><a name="pbio-0020137-Pal2" id="pbio-0020137-Pal2"></a>Pal C, Papp B, Hurst LD (2003) Genomic function: Rate of evolution and gene dispensability. Nature  421: 496–497.  <ul class="find" data-citedArticleID="9588" data-doi="10.1038/421496b"><li><a href="http://dx.doi.org/10.1038/421496b" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">19.
+              </span><a name="pbio-0020137-Papp1" id="pbio-0020137-Papp1"></a>Papp B, Pal C, Hurst LD (2003) Dosage sensitivity and the evolution of gene families in yeast. Nature  424: 194–197.  <ul class="find" data-citedArticleID="9596" data-doi="10.1038/nature01771"><li><a href="http://dx.doi.org/10.1038/nature01771" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">20.
+              </span><a name="pbio-0020137-Sokal1" id="pbio-0020137-Sokal1"></a>Sokal RR, Rohlf FJ (1994) Biometry. New York: W. H. Freeman and Company. 880 p.  <ul class="find-nolinks"></ul></li><li><span class="label">21.
+              </span><a name="pbio-0020137-Thattai1" id="pbio-0020137-Thattai1"></a>Thattai M, van Oudenaarden A (2000) Intrinsic noise in gene regulatory networks. Proc Natl Acad Sci U S A  98: 8614–8619.  <ul class="find" data-citedArticleID="9606" data-doi="10.1073/pnas.151588598"><li><a href="http://dx.doi.org/10.1073/pnas.151588598" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">22.
+              </span><a name="pbio-0020137-von1" id="pbio-0020137-von1"></a>von Mering C, Krause R, Snel B, Cornell M, Oliver SG, et al.  (2002) Comparative assessment of large-scale data sets of protein–protein interactions. Nature  417: 399–403.  <ul class="find" data-citedArticleID="9610" data-doi="10.1038/nature750"><li><a href="http://dx.doi.org/10.1038/nature750" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li><li><span class="label">23.
+              </span><a name="pbio-0020137-Wang1" id="pbio-0020137-Wang1"></a>Wang Y, Liu CL, Storey JD, Tibshirani RJ, Herschlag D, et al.  (2002) Precision and functional specificity in mRNA decay. Proc Natl Acad Sci U S A  99: 5860–5865.  <ul class="find" data-citedArticleID="9600" data-doi="10.1073/pnas.092538799"><li><a href="http://dx.doi.org/10.1073/pnas.092538799" target="_new" title="Go to article in CrossRef">
+                          View Article
+                        </a></li><li><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed&amp;cmd=Search&amp;doptcmdl=Citation&amp;defaultField=Title+Word&amp;term=" target="_new" title="Go to article in PubMed">
+                          PubMed/NCBI
+                        </a></li><li><a href="http://scholar.google.com/scholar?hl=en&amp;safe=off&amp;q=%22%22" target="_new" title="Go to article in Google Scholar">
+                          Google Scholar
+                        </a></li></ul></li></ol></div>
+
+  </div>
+
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.XML" value="67718"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.PDF" value="137530"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g001.PNG_L" value="58790"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g001.PNG_M" value="27471"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g001.PNG_S" value="4189"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g001.TIF" value="86880"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g001.PNG_I" value="18054"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g002.PNG_L" value="164265"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g002.PNG_M" value="22266"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g002.PNG_S" value="10757"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g002.TIF" value="590616"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.g002.PNG_I" value="6669"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.e01.PNG" value="1843"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.e01.TIF" value="2218"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.e02.PNG" value="1084"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.e02.TIF" value="1336"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.sg001.PPT" value="323584"/>
+      <input type="hidden" class="assetSize" name="info:doi/10.1371/journal.pbio.0020137.st001.DOC" value="37888"/>
+
+</div>
+<div class="sidebar">
+
+  <div class="article-actions cf">
+      <div class="download">
+        <span class="btn"><a href="/article/fetchObject.action;jsessionid=E151753ED15D3C857606C601320BC08F?uri=info%3Adoi%2F10.1371%2Fjournal.pbio.0020137&amp;representation=PDF" title="Download" target="_blank">Download PDF</a></span>
+      </div>
+      <div class="btn-reveal dropdown">
+        <div class="dropdown-icon">
+          <span class="btn">&nbsp;</span>
+        </div>
+
+        <div class="content">
+          <ul class="bullet">
+            <li><a href="/article/citationList.action;jsessionid=E151753ED15D3C857606C601320BC08F?articleURI=info%3Adoi%2F10.1371%2Fjournal.pbio.0020137" title="Download citations">Citation</a></li>
+            <li><a href="/article/fetchObjectAttachment.action;jsessionid=E151753ED15D3C857606C601320BC08F?uri=info%3Adoi%2F10.1371%2Fjournal.pbio.0020137&amp;representation=XML" title="Download article XML">XML</a></li>
+          </ul>
+        </div>
+      </div> <!-- end btn-reveal dropdown-->
+
+
+    <div class="btn-reveal flt-l">
+        <span class="btn">Print</span>
+        <div class="content">
+            <ul class="bullet">
+                <li id="print-article"><a href="#" onclick="if(typeof(_gaq) != 'undefined'){ _gaq.push(['_trackEvent','Article', 'Print', 'Click']); } window.print(); return false;" title="Print Article">Print article</a></li>
+                <li>
+                  <a href="http://www.authorbilling.com/client.php?ID=1806" title="Order Reprints">Order Reprints</a>
+                  <img src="/images/icon.reprint.gif" width="29" height="12" alt="New">
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="btn-reveal flt-r">
+        <span class="btn">Share</span>
+        <div class="content">
+            <ul class="social">
+                <li><a href="http://www.reddit.com/submit?url=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137" target="_blank" title="Submit to Reddit"><img src="/images/icon.reddit.16.png" width="16" height="16" alt="Reddit">Reddit</a></li>
+
+                <li><a href="https://plus.google.com/share?url=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137" target="_blank" title="Share on Google+"><img src="/images/icon.gplus.16.png" width="16" height="16" alt="Google+">Google+</a></li>
+
+                <li><a href="http://www.stumbleupon.com/submit?url=http%3A%2F%2Fwww.plosbiology.org%2Farticle%2Finfo%253Adoi%252F10.1371%252Fjournal.pbio.0020137" target="_blank" title="Add to StumbleUpon"><img src="/images/icon.stumble.16.png" width="16" height="16" alt="StumbleUpon">StumbleUpon</a></li>
+
+                <li><a href="http://www.facebook.com/share.php?u=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137&amp;t=Noise%20Minimization%20in%20Eukaryotic%20Gene%20Expression" target="_blank" title="Share on Facebook"><img src="/images/icon.fb.16.png" width="16" height="16" alt="Facebook">Facebook</a></li>
+
+                <li><a href="http://www.linkedin.com/shareArticle?url=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137&title=Noise%20Minimization%20in%20Eukaryotic%20Gene%20Expression&summary=Checkout%20this%20article%20I%20found%20at%20PLOS" target="_blank" title="Add to LinkedIn"><img src="/images/icon.linkedin.16.png" width="16" height="16" alt="Mendeley">LinkedIn</a></li>
+
+                <li><a href="http://www.citeulike.org/posturl?url=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137&amp;title=Noise%20Minimization%20in%20Eukaryotic%20Gene%20Expression" target="_blank" title="Add to CiteULike"><img src="/images/icon.cul.16.png" width="16" height="16" alt="CiteULike">CiteULike</a></li>
+
+                <li><a href="http://www.mendeley.com/import/?url=http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137" target="_blank" title="Add to Mendeley"><img src="/images/icon.mendeley.16.png" width="16" height="16" alt="Mendeley">Mendeley</a></li>
+
+                <li><a href="https://www.pubchase.com/library?add_aid=10.1371%2Fjournal.pbio.0020137&amp;source=plos" target="_blank" title="Add to PubChase"><img src="/images/icon.pc.16.png" width="16" height="16" alt="PubChase">PubChase</a></li>
+
+
+                <script type="text/javascript">
+                    // replace tweet with one that's pre-shortened to 140 chars
+                    function truncateTweetText() {
+                        var twtTitle = 'Noise Minimization in Eukaryotic Gene Expression';
+                        var twtUrl = 'http://dx.plos.org/10.1371/journal.pbio.0020137';
+                        // all URLs posted to twitter get auto-shortened to 20 chars.
+                        var maxLength = 140 - (20 + 1);
+                        // truncate the title to include space for twtTag and ellipsis (here, 10 = tag length + space + ellipsis)
+                        if (twtTitle.length > maxLength) { twtTitle = twtTitle.substr(0, (maxLength - 10)) + '...'; }
+                        // set the href to use the shortened tweet
+                        $('#twitter-share-link').prop('href', 'http://twitter.com/intent/tweet?text=' + encodeURIComponent('#PLOSBiology: ' + twtTitle + ' ' + twtUrl));
+                    }
+                </script>
+                <li><a href="http://twitter.com/intent/tweet?text=#PLOSBiology%3A%20Noise%20Minimization%20in%20Eukaryotic%20Gene%20Expression http%3A%2F%2Fdx.plos.org%2F10.1371%2Fjournal.pbio.0020137" onclick="truncateTweetText();" target="_blank" title="Share on Twitter" id="twitter-share-link"><img src="/images/icon.twtr.16.png" width="16" height="16" alt="Twitter">Twitter</a></li>
+
+                <li><a href="/article/email/info%3Adoi%2F10.1371%2Fjournal.pbio.0020137;jsessionid=E151753ED15D3C857606C601320BC08F" title="Email this article"><img src="/images/icon.email.16.png" width="16" height="16" alt="Email">Email</a></li>
+            </ul>
+        </div>
+    </div><!--end btn-reveal flt-r-->
+</div><!-- end article-actions-->
+
+<!-- begin Crossmark -->
+
+<a id="open-crossmark" href="#" style="margin-top: -28px; display:block"><img style="border: 0; display: none;
+ padding: 10px 0 18px 0;"  id="crossmark-icon" src="/images/logo-crossmark-bw.png" /></a>
+<div id="crossmark-dialog" style="display: none;" title="">
+    <!-- the external CrossMark data is loaded inside this iframe -->
+    <iframe id="crossmark-dialog-frame" frameborder="0"></iframe>
+</div>
+
+<!-- end crossmark -->
+<div class="block">
+    <div class="header">
+        <h3>Related PLOS Articles</h3>
+    </div>
+      <p><a href = "/article/info:doi/10.1371/journal.pbio.0020191" title="Read Open-Access Article">Turning Down the Volume: Why Some Genes Tolerate Less Noise</a></p>
+</div>
+
+
+<div class="block" id="subject-area-sidebar-block">
+    <div class="header">
+        <h3>Subject Areas</h3><div title="More information" id="subject-area-sidebar-block-help-icon"><img align="right"
+                                                                                                           alt="info" src="/images/button_info.png"/><div id="subject-area-sidebar-block-help"><img align="right"
+                                                                                                                                                                                                    src="/images/button_info.png"/><p>
+        <b>We want your feedback.</b> Do these subject areas make sense for this article? If not, click the flag
+        next to the incorrect subject area and we will review it. Thanks for your help!
+    </p></div></div>
+    </div>
+
+
+    <ul id="subject-area-sidebar-list">
+
+
+
+
+
+
+
+
+
+
+
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22DNA+transcription%22" title="Search for articles in the subject area:'DNA transcription'"><div class="flagText">DNA transcription</div></a>
+              <div data-categoryid="20231" data-articleid="1522"
+                   data-categoryname="DNA transcription"
+                   class="flagImage" title="Flag 'DNA transcription' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Gene+expression%22" title="Search for articles in the subject area:'Gene expression'"><div class="flagText">Gene expression</div></a>
+              <div data-categoryid="17515" data-articleid="1522"
+                   data-categoryname="Gene expression"
+                   class="flagImage" title="Flag 'Gene expression' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Messenger+RNA%22" title="Search for articles in the subject area:'Messenger RNA'"><div class="flagText">Messenger RNA</div></a>
+              <div data-categoryid="18353" data-articleid="1522"
+                   data-categoryname="Messenger RNA"
+                   class="flagImage" title="Flag 'Messenger RNA' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Natural+selection%22" title="Search for articles in the subject area:'Natural selection'"><div class="flagText">Natural selection</div></a>
+              <div data-categoryid="34433" data-articleid="1522"
+                   data-categoryname="Natural selection"
+                   class="flagImage" title="Flag 'Natural selection' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Noise+reduction%22" title="Search for articles in the subject area:'Noise reduction'"><div class="flagText">Noise reduction</div></a>
+              <div data-categoryid="21737" data-articleid="1522"
+                   data-categoryname="Noise reduction"
+                   class="flagImage" title="Flag 'Noise reduction' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Protein+complexes%22" title="Search for articles in the subject area:'Protein complexes'"><div class="flagText">Protein complexes</div></a>
+              <div data-categoryid="17297" data-articleid="1522"
+                   data-categoryname="Protein complexes"
+                   class="flagImage" title="Flag 'Protein complexes' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Protein+translation%22" title="Search for articles in the subject area:'Protein translation'"><div class="flagText">Protein translation</div></a>
+              <div data-categoryid="24691" data-articleid="1522"
+                   data-categoryname="Protein translation"
+                   class="flagImage" title="Flag 'Protein translation' as inappropriate"></div>
+          </li>
+          <li>
+              <a href="/search/advanced;jsessionid=E151753ED15D3C857606C601320BC08F?unformattedQuery=subject%3A%22Yeast%22" title="Search for articles in the subject area:'Yeast'"><div class="flagText">Yeast</div></a>
+              <div data-categoryid="43039" data-articleid="1522"
+                   data-categoryname="Yeast"
+                   class="flagImage" title="Flag 'Yeast' as inappropriate"></div>
+          </li>
+    </ul>
+</div>
+
+<div class="ad">
+    <div class="title">Advertisement</div>
+
+  <iframe id='a23c0860' name='a23c0860'
+    src='http://ads.plos.org/www/delivery/afr.php?zoneid=369&amp;cb=888'
+    frameborder='0' scrolling='no' width='160' height='600'>
+    <a href='http://ads.plos.org/www/delivery/ck.php?n=a23c0860&amp;cb=4829'
+      target='_top'><img src='http://ads.plos.org/www/delivery/avw.php?zoneid=369&amp;cb=9909&amp;n=a23c0860'
+      border='0' alt=''/>
+    </a>
+  </iframe>
+
+
+
+
+
+
+
+
+</div>
+
+<div id="twitter-alm-timeline" class="twitter-alm-timeline"></div>
+
+
+</div><!-- sidebar -->
+    </div>
+  </div>
+</div>
+<script src="http://wl.figshare.com/static/p_widget.js" type="text/javascript"></script><div id="pageftr">
+  <div class="ftr-cols cf">
+    <div class="col col-1">
+      <img src="/images/logo-plos-footer.png" alt="PLOS Logo" class="logo" />
+      <p><a href="/static/releaseNotes;jsessionid=E151753ED15D3C857606C601320BC08F">Ambra 2.9.22</a> Managed Colocation provided <br />by <a href="http://www.isc.org/">Internet Systems Consortium</a>.<p>
+      <div class="nav nav-aux">
+        <a href="/static/privacy;jsessionid=E151753ED15D3C857606C601320BC08F">Privacy Policy</a> |
+        <a href="/static/terms;jsessionid=E151753ED15D3C857606C601320BC08F">Terms of Use</a> |
+        <a href="http://www.plos.org/advertise/">Advertise</a> |
+        <a href="http://www.plos.org/about/media-inquiries/">Media Inquiries</a>
+      </div>
+    </div>
+    <div class="col col-2">
+      <p><a href="http://www.plos.org/publications/journals/">Publications</a></p>
+      <div class="nav">
+        <ul>
+          <li><a href="http://www.plosbiology.org">PLOS Biology</a></li>
+          <li><a href="http://www.plosmedicine.org">PLOS Medicine</a></li>
+          <li><a href="http://www.ploscompbiol.org">PLOS Computational Biology</a></li>
+          <li><a href="http://currents.plos.org">PLOS Currents</a></li>
+          <li><a href="http://www.plosgenetics.org">PLOS Genetics</a></li>
+          <li><a href="http://www.plospathogens.org">PLOS Pathogens</a></li>
+          <li><a href="http://www.plosone.org">PLOS ONE</a></li>
+          <li><a href="http://www.plosntds.org">PLOS Neglected Tropical Diseases</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col col-3">
+      <div class="nav">
+        <p><a href="http://www.plos.org">plos.org</a></p>
+        <p><a href="http://blogs.plos.org">Blogs</a></p>
+        <p><a href="http://www.ploscollections.org">Collections</a></p>
+        <p><a href="/feedback/new;jsessionid=E151753ED15D3C857606C601320BC08F">Send us feedback</a></p>
+
+        <p>California (US) corporation #C2354500, based in San Francisco</p>
+      </div>
+    </div>
+  </div>
+</div><!-- pageftr -->
+
+</div><!-- end page-wrap, this div is in header.ftl -->
+<script type="text/javascript" src="/javascript/jquery-1.8.1-min.js?v=Tm7VCOzZz3lE03ghpkS6SWkHbyI"></script>
+<script type="text/javascript" src="/javascript/ga-min.js?v=lNQ4gt8QcPDatjsdOFl_FGpPhLY"></script>
+<script type="text/javascript" src="/javascript/jquery.hoverIntent-min.js?v=mRiGNYY9cIXxVb8u0K_MdW7hHnc"></script>
+<script type="text/javascript" src="/javascript/jquery.placeholder-min.js?v=21Pn56Ur9h1N4K4VZDa0nqI3Pxo"></script>
+<script type="text/javascript" src="/javascript/jquery.jsonp-2.4.0-min.js?v=lqTpzoHfSq3I5Ygo01qq5WankEo"></script>
+<script type="text/javascript" src="/javascript/jquery-ui-1.9.2.custom-min.js?v=raSSlfNO0YsV5uUpAKmTB9n5VTc"></script>
+<script type="text/javascript" src="/javascript/jquery.tooltip-min.js?v=cw+6Smh+mdryIA25xvqIvHMrnZM"></script>
+<script type="text/javascript" src="/javascript/jquery.uniform-min.js?v=kYUAnX6W2W_2fK3RIuQ2m_YFG9U"></script>
+<script type="text/javascript" src="/javascript/jquery.pjax-min.js?v=939kLBjL5_YKbx71T1RHjYaD4l8"></script>
+<script type="text/javascript" src="/javascript/jquery.touchswipe-min.js?v=huaek_e6HqTduvCNAN91dJolTyw"></script>
+<script type="text/javascript" src="/javascript/jquery.base64-min.js?v=VwV1zeVqKZj5FCAdlK0q5NRxbBg"></script>
+<script type="text/javascript" src="/javascript/imagesloaded-min.js?v=XeuAp8Gc3mvQUo+wZCSF8ttPwvw"></script>
+<script type="text/javascript" src="/javascript/figviewer-min.js?v=yPUa0sUQ_iHkI+IRv2i9bjyZJFo"></script>
+<script type="text/javascript" src="/javascript/global-min.js?v=0Q3PwjeaWtXYDnqIsQvnL_ou0qs"></script>
+<script type="text/javascript" src="/javascript/alm-min.js?v=Y5gm6B0b4Kx2YHNObNrgEeBgXlY"></script>
+<script type="text/javascript" src="/javascript/twitter-min.js?v=xKgcxLsQFXy+at1ao1NVke8nFlM"></script>
+<script type="text/javascript" src="/javascript/crossmark.1.4-min.js?v=3FO4k0SjwTaGNnKGNSqthar1080"></script>
+
+</body>
+</html>

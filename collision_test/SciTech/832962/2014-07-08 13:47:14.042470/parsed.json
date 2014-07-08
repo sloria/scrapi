@@ -1,0 +1,20 @@
+{
+    "contributors": "Fraser, Hunter B.; Hirsh, Aaron E.; Giaever, Guri; Kumm, Jochen; Eisen, Michael B.", 
+    "id": "832962", 
+    "meta": {}, 
+    "properties": {
+        "article_type": "Journal Article", 
+        "date_entered": "2009-12-16", 
+        "date_published": "2004-01-15", 
+        "date_retrieved": "2014-07-08", 
+        "description": "All organisms have elaborate mechanisms to control rates of protein production. However, protein production is also subject to stochastic fluctuations, or noise. Several recent studies in Saccharomyces cerevisiae and Escherichia coli have investigated the relationship between transcription and translation rates and stochastic fluctuations in protein levels, or more generally, how such randomness is a function of intrinsic and extrinsic factors. However, the fundamental question of whether stochasticity in protein expression is generally biologically relevant has not been addressed, and it remains unknown whether random noise in the protein production rate of most genes significantly affects the fitness of any organism. We propose that organisms should be particularly sensitive to variation in the protein levels of two classes of genes: genes whose deletion is lethal to the organism and genes that encode subunits of multiprotein complexes. Using an experimentally verified model of stochastic gene expression in S. cerevisiae, we estimate the noise in protein production for nearly every yeast gene, and confirm our prediction that the production of essential and complex-forming proteins involves lower levels of noise than does the production of most other genes. Our results support the hypothesis that noise in gene expression is a biologically important variable, is generally detrimental to organismal fitness, and is subject to natural selection.", 
+        "doi": "10.1371/journal.pbio.0020137", 
+        "research_org": "Ernest Orlando Lawrence Berkeley National Laboratory, Berkeley, CA (US)", 
+        "research_sponsor": "US Department of Energy; PEW Charitable Trusts (US)", 
+        "tags": "12 MANAGEMENT OF RADIOACTIVE WASTES, AND NON-RADIOACTIVE WASTES FROM NUCLEAR FACILITIES; 60 APPLIED LIFE SCIENCES; ESCHERICHIA COLI; FLUCTUATIONS; FORECASTING; GENES; HYPOTHESIS; MINIMIZATION; PRODUCTION; PROTEINS; RANDOMNESS; SACCHAROMYCES CEREVISIAE; TRANSCRIPTION; YEASTS", 
+        "url": "http://www.osti.gov/scitech/servlets/purl/832962"
+    }, 
+    "source": "SciTech", 
+    "timestamp": "2014-07-08 13:47:14.042470", 
+    "title": "Noise minimization in eukaryotic gene expression"
+}
