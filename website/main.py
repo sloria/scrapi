@@ -9,6 +9,10 @@ sys.path.insert(1, os.path.join(
 
 from api import process_docs
 import search
+import logging
+
+logger = logging.getLogger('werkzeug')
+logger.setLevel(logging.WARN)
 
 app = Flask(__name__)
 

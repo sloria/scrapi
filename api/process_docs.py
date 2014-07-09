@@ -55,7 +55,8 @@ def process(doc, timestamp):
         Format specification:
         {
             'title': {PROJECT_TITLE},
-            'contributors: [{PROJECT_CONTRIBUTORS}],
+            'contributors: {["email": EMAIL,
+                            "full_name": PROJECT AUTHOR]},
             'properties': {
                 {VALID_NODE_PROPERTY}: {NODE_PROPERTY_VALUE},
             },
