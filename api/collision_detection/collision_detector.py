@@ -34,18 +34,13 @@ def detect(doc):
             author_ratio = fuzz.token_sort_ratio(original_author_string, compare_author_string)
             if author_ratio >= 70:
                 print "\"" + str(compare_title) + "\"" + " is a COLLISION with " + "\"" + str(original_title) + "\""
+                return True
             else:
                 print "\"" + str(compare_title) + "\"" + " is NOT A COLLISION with " + "\"" + str(original_title) + "\""
+                return False
         else: 
             print "\"" + str(compare_title) + "\"" + " is NOT A COLLISION with " + "\"" + str(original_title) + "\""
+            return False
 
+# detect('collision_test/PLoS/10.1371journal.pone.0094835/2014-07-09 13:22:14.748995/parsed.json')
 
-detect('collision_test/PLoS/10.1371journal.pone.0094835/2014-07-09 13:22:14.748995/parsed.json')
-
-
-#TODO
-# collect the search results into some kinda list
-# from dat list see what search results have bigword in their title
-# if bigword is in the title
-    # check the whole title with fuzzy wuzzy to see if they are the same/close
-        # check some other stuffz (author etc)
