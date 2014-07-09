@@ -1,5 +1,7 @@
 # This file will take an input (JSON) document, and find collision in the database
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import os
 import json
 from fuzzywuzzy import fuzz
@@ -31,14 +33,14 @@ def detect(doc):
             compare_author_string = ','.join(compare_authors)
             author_ratio = fuzz.token_sort_ratio(original_author_string, compare_author_string)
             if author_ratio >= 70:
-                print "COLLISION"
+                print "\"" + str(compare_title) + "\"" + " is a COLLISION with " + "\"" + str(original_title) + "\""
             else:
-                print "NOT A COLLISION"
+                print "\"" + str(compare_title) + "\"" + " is NOT A COLLISION with " + "\"" + str(original_title) + "\""
         else: 
-            print "NOT A COLLISION"
+            print "\"" + str(compare_title) + "\"" + " is NOT A COLLISION with " + "\"" + str(original_title) + "\""
 
 
-detect('collision_test/PLoS/10.1371journal.pbio.0020137/2014-07-08 14:33:06.336347/parsed.json')
+detect('collision_test/PLoS/10.1371journal.pone.0094835/2014-07-09 13:22:14.748995/parsed.json')
 
 
 #TODO
