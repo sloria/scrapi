@@ -1,0 +1,15 @@
+---
+
+days: 'mon-sun'
+hour: 23
+minute: 58
+
+directory: 'fakeconsumer'
+
+name: 'Journal of Scientific Openness'
+
+git-url: 'https://github.com/csheldonhess/FakeConsumer.git'
+
+file-format: '.xml'
+
+...
