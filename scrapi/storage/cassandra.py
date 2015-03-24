@@ -8,7 +8,7 @@ from cqlengine import columns, Model
 
 from scrapi import events
 from scrapi import database  # noqa
-from scrapi.processing.base import BaseProcessor
+from scrapi.storage.base import BaseProcessor
 
 
 logger = logging.getLogger(__name__)
