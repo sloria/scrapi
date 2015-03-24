@@ -4,12 +4,12 @@ import json
 import logging
 from uuid import uuid4
 
-from cqlengine import columns, Model
+from cqlengine import columns, Model, Token
 
 from scrapi import events
 from scrapi import database  # noqa
+from scrapi.linter import RawDocument
 from scrapi.storage.base import BaseProcessor
-
 
 logger = logging.getLogger(__name__)
 logging.getLogger('cqlengine.cql').setLevel(logging.WARN)
@@ -58,6 +58,23 @@ class CassandraProcessor(BaseProcessor):
 
     def different(self, old, new):
         return not all([new[key] == old[key] for key in new.keys() if key != 'timestamps'])
+
+    def iter_raws(self):
+        count = 0
+        query = DocumentModel.objects.all().limit(1000)
+        page = list(query)
+
+        while len(page) > 0:
+            for doc in page:
+                count += 1
+                yield RawDocument({
+                    'doc': doc.doc,
+                    'docID': doc.docID,
+                    'source': doc.source,
+                    'filetype': doc.filetype,
+                    'timestamps': doc.timestamps
+                })
+            page = list(query.filter(pk__token__gt=Token(page[-1].pk)))
 
 
 @database.register_model
