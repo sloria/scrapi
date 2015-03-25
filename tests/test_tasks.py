@@ -120,7 +120,7 @@ def test_begin_normalize_starts(raw_docs, monkeypatch):
 def test_process_raw_calls(raw_doc, monkeypatch):
     pmock = mock.Mock()
 
-    monkeypatch.setattr('scrapi.tasks.processing.process_raw', pmock)
+    monkeypatch.setattr('scrapi.tasks.storage.process_raw', pmock)
 
     tasks.process_raw(raw_doc)
 
@@ -130,7 +130,7 @@ def test_process_raw_calls(raw_doc, monkeypatch):
 def test_process_norm_calls(raw_doc, monkeypatch):
     pmock = mock.Mock()
 
-    monkeypatch.setattr('scrapi.tasks.processing.process_normalized', pmock)
+    monkeypatch.setattr('scrapi.tasks.storage.process_normalized', pmock)
 
     tasks.process_normalized(raw_doc, raw_doc)
 

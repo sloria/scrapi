@@ -18,7 +18,7 @@ if not settings.USE_FLUENTD:
     logger.warning('USE_FLUENTD is set to False; logs will not be stored')
 
 # Events
-PROCESSING = 'processing'
+PROCESSING = 'storage'
 HARVESTER_RUN = 'runHarvester'
 CHECK_ARCHIVE = 'checkArchive'
 NORMALIZATION = 'normalization'

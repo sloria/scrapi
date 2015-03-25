@@ -1,7 +1,7 @@
 import os
 
 from scrapi import settings
-from scrapi.processing.base import BaseProcessor
+from scrapi.storage.base import BaseProcessor
 
 __all__ = []
 for mod in os.listdir(os.path.dirname(__file__)):
