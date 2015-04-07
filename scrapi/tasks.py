@@ -8,7 +8,7 @@ from scrapi import events
 from scrapi import database
 from scrapi import settings
 from scrapi import registry
-from scrapi import processing
+from scrapi import storage
 from scrapi.util import timestamp
 
 
@@ -76,7 +76,7 @@ def spawn_tasks(raw, timestamps, harvester_name):
 @app.task
 @events.logged(events.PROCESSING, 'raw')
 def process_raw(raw_doc, **kwargs):
-    processing.process_raw(raw_doc, kwargs)
+    storage.process_raw(raw_doc, kwargs)
 
 
 @app.task
@@ -99,8 +99,8 @@ def normalize(raw_doc, harvester_name):
 @events.logged(events.PROCESSING, 'normalized')
 def process_normalized(normalized_doc, raw_doc, **kwargs):
     if not normalized_doc:
-        raise events.Skip('Not processing document with id {}'.format(raw_doc['docID']))
-    processing.process_normalized(raw_doc, normalized_doc, kwargs)
+        raise events.Skip('Not storage document with id {}'.format(raw_doc['docID']))
+    storage.process_normalized(raw_doc, normalized_doc, kwargs)
 
 
 @app.task

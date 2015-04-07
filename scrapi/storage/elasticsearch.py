@@ -7,7 +7,7 @@ from elasticsearch.exceptions import ConnectionError
 
 from scrapi import settings
 from scrapi import registry
-from scrapi.processing.base import BaseProcessor
+from scrapi.storage.base import BaseProcessor
 
 
 logger = logging.getLogger(__name__)
