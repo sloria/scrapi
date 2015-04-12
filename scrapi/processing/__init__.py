@@ -3,6 +3,7 @@ import os
 from scrapi import settings
 from scrapi.processing.base import BaseProcessor
 
+
 __all__ = []
 for mod in os.listdir(os.path.dirname(__file__)):
     root, ext = os.path.splitext(mod)
@@ -29,10 +30,14 @@ def process_normalized(raw_doc, normalized, kwargs):
         extras = kwargs.get(p, {})
 
         try:
-            get_processor(p).process_normalized(raw_doc, normalized, **extras)
+            from scrapi.tasks import process_specific_normalized
+            process_specific_normalized.delay(get_processor(p), raw_doc, normalized, **extras)
+            # get_processor(p).process_normalized(raw_doc, normalized, **extras)
         except Exception:
             if settings.DEBUG:
                 raise
+            else:
+                logger.exception(e)
 
 
 def process_raw(raw_doc, kwargs):
@@ -40,6 +45,8 @@ def process_raw(raw_doc, kwargs):
         extras = kwargs.get(p, {})
         try:
             get_processor(p).process_raw(raw_doc, **extras)
-        except Exception:
+        except Exception as e:
             if settings.DEBUG:
                 raise
+            else:
+                logger.exception(e)

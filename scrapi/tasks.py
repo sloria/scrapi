@@ -108,3 +108,14 @@ def update_pubsubhubbub():
     payload = {'hub.mode': 'publish', 'hub.url': '{url}rss/'.format(url=settings.OSF_APP_URL)}
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     return requests.post('https://pubsubhubbub.appspot.com', headers=headers, params=payload)
+
+
+@app.task
+def process_specific_normalized(processor, raw_doc, normalized, **extras):
+    try:
+        processor.process_normalized(raw_doc, normalized, **extras)
+    except Exception as e:
+        if settings.DEBUG:
+            raise
+        else:
+            logger.exception(e)
