@@ -72,7 +72,7 @@ class FakeJSONHarvester(JSONHarvester):
     def harvest(self, days_back=0):
         """Typically, you need to define base URL and fetch it multiple
         times with different page ranges. Each fetch will return a JSON
-        containing a list of documents.See harvesters.crossref.harvest.
+        containing a list of documents. See harvesters.crossref.harvest.
         In this case, we just fake it..."""
 
         if local.DEBUG:
