@@ -17,11 +17,8 @@ from __future__ import unicode_literals
 import json
 import logging
 
-from datetime import date, timedelta
-
 from dateutil.parser import parse
 
-from scrapi import requests
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
 from scrapi.settings import local
@@ -83,11 +80,10 @@ class FakeJSONHarvester(JSONHarvester):
 
         doc_list = []
         for i in xrange(total):
-            doc_id = 'fake-json-{}'.format(i)  # normally fetched/parsed
             doc = RawDocument({
                 'doc': fake_json(i),
                 'source': self.short_name,
-                'docID': 'fake-json-{}'.format(i),
+                'docID': 'fake-json-{}'.format(i),  # normally fetched/parsed
                 'filetype': 'json'
             })
             doc_list.append(doc)
