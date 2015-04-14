@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 
 import logging
 import textwrap
-import xml
 
 from dateutil.parser import parse
 
