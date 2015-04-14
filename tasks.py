@@ -90,7 +90,7 @@ def beat():
 @task
 def worker():
     from scrapi.tasks import app
-    app.worker_main(['worker', '--loglevel', 'info'])
+    app.worker_main(['worker', '--loglevel', 'warn'])
 
 
 @task
