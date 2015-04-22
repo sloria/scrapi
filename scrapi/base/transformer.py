@@ -73,7 +73,7 @@ class XMLTransformer(BaseTransformer):
 
     def _transform_string(self, string, doc):
         val = doc.xpath(string, namespaces=self.namespaces)
-        return unicode(val[0]) if len(val) == 1 else [unicode(v) for v in val] or ''
+        return val  # Downstream processors need Element objects.
 
     @abc.abstractproperty
     def namespaces(self):
