@@ -7,9 +7,16 @@ from scrapi.linter import RawDocument
 from scrapi.processing.elasticsearch import es
 from scrapi.tasks import normalize, process_normalized, process_raw
 
+from celery import Celery
+
+app = Celery()
+app.config_from_object(settings)
+
+
 logger = logging.getLogger(__name__)
 
 
+@app.task
 def rename(source, target, dry=True):
     assert source != target, "Can't rename {} to {}, names are the same".format(source, target)
     count = 0
