@@ -17,6 +17,7 @@ def rename(source, target, dry=True):
     exceptions = []
 
     for doc in documents(source):
+        # import ipdb; ipdb.set_trace()
         count += 1
         try:
             raw = RawDocument({

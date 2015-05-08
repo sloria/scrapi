@@ -39,9 +39,14 @@ def renormalize(sources=None):
 
 
 @task
-def rename(source, target, dry=True):
-    from scripts.rename import rename
-    rename(source, target, dry)
+def rename(source, target, dry=True, async=False):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import rename
+
+    if not registry.get(source):
+        raise ValueError('No such harvester {}'.format(source))
+
+    rename.delay(source, target, dry)
 
 
 @task
