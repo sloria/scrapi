@@ -12,7 +12,6 @@ from scrapi import events
 from scrapi import database  # noqa
 from scrapi.util import copy_to_unicode
 from scrapi.processing.base import BaseProcessor
-from scrapi.linter.document import NormalizedDocument, RawDocument
 
 
 logger = logging.getLogger(__name__)
