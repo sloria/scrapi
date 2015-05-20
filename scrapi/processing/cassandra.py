@@ -12,6 +12,7 @@ from scrapi import events
 from scrapi import database  # noqa
 from scrapi.util import copy_to_unicode
 from scrapi.processing.base import BaseProcessor
+from scrapi.linter.document import NormalizedDocument, RawDocument
 
 
 logger = logging.getLogger(__name__)
@@ -42,28 +43,26 @@ class CassandraProcessor(BaseProcessor):
             version=copy_to_unicode(json.dumps(normalized.get('version'), {})),
             otherProperties=copy_to_unicode(json.dumps(normalized.get('otherProperties', {}))),
             shareProperties=copy_to_unicode(json.dumps(normalized['shareProperties']))
-        ).save()
+        )
 
     @events.logged(events.PROCESSING, 'raw.cassandra')
     def process_raw(self, raw_doc):
-        self.send_to_database(**raw_doc.attributes).save()
+        self.send_to_database(**raw_doc.attributes)
 
     def send_to_database(self, docID, source, **kwargs):
-        documents = DocumentModel.objects(docID=docID, source=source)
+        documents = DocumentModelV2.objects(docID=docID, source=source)
         if documents:
             document = documents[0]
             if self.different(dict(document), dict(docID=docID, source=source, **kwargs)):
                 # Create new version, get UUID of new version, update
-                versions = document.versions + kwargs.pop('versions', [])
-                version = VersionModel(key=uuid4(), **dict(document))
-                version.save()
-                versions.append(version.key)
-                return document.update(versions=versions, **kwargs)
+                version = VersionModel(key=uuid4(), **dict(document)).save()
+                versions = document.versions + kwargs.pop('versions', []) + [version.key]
+                return document.update(versions=versions, **kwargs).save()
             else:
                 raise events.Skip("No changees detected for document with ID {0} and source {1}.".format(docID, source))
         else:
             # create document
-            return DocumentModel.create(docID=docID, source=source, **kwargs)
+            return DocumentModelV2.create(docID=docID, source=source, **kwargs).save()
 
     def different(self, old, new):
         try:
@@ -87,6 +86,49 @@ class DocumentModel(models.Model):
     # Raw
     docID = columns.Text(primary_key=True)
     source = columns.Text(primary_key=True, clustering_order="DESC")
+
+    doc = columns.Bytes()
+    filetype = columns.Text()
+    timestamps = columns.Map(columns.Text, columns.Text)
+
+    # Normalized
+    uris = columns.Text()
+    title = columns.Text()
+    contributors = columns.Text()  # TODO
+    providerUpdatedDateTime = columns.DateTime()
+
+    description = columns.Text()
+    freeToRead = columns.Text()  # TODO
+    languages = columns.List(columns.Text())
+    licenses = columns.Text()  # TODO
+    publisher = columns.Text()  # TODO
+    subjects = columns.List(columns.Text())
+    tags = columns.List(columns.Text())
+    sponsorships = columns.Text()  # TODO
+    version = columns.Text()  # TODO
+    otherProperties = columns.Text()  # TODO
+    shareProperties = columns.Text()  # TODO
+
+    # Additional metadata
+    versions = columns.List(columns.UUID)
+
+
+# Better models start here
+@database.register_model
+class DocumentModelV2(models.Model):
+    '''
+    Defines the schema for a metadata document in cassandra
+
+    The schema contains denormalized raw document, denormalized
+    normalized (so sorry for the terminology clash) document, and
+    a list of version IDs that refer to previous versions of this
+    metadata.
+    '''
+    __table_name__ = 'documents_v2'
+
+    # Raw
+    source = columns.Text(primary_key=True)
+    docID = columns.Text(primary_key=True)
 
     doc = columns.Bytes()
     filetype = columns.Text()
@@ -142,7 +184,7 @@ class VersionModel(models.Model):
 
     description = columns.Text()
     freeToRead = columns.Text()  # TODO
-    languages = columns.List(columns.Text())
+    languages = columns.List(columns.Text)
     licenses = columns.Text()  # TODO
     publisher = columns.Text()  # TODO
     subjects = columns.List(columns.Text())
@@ -154,3 +196,44 @@ class VersionModel(models.Model):
 
     # Additional metadata
     versions = columns.List(columns.UUID)
+
+
+def as_normalized(doc):
+    required = [
+        "title",
+        "contributors",
+        "uris",
+        "providerUpdatedDateTime"
+    ]
+    if not doc.providerUpdatedDateTime:
+        return None
+    try:
+        otherProperties = json.loads(doc.otherProperties or '{}')
+    except ValueError:
+        otherProperties = None
+    return NormalizedDocument(dict(filter(lambda x: x[1] or x[0] in required, dict(
+        contributors=json.loads(doc.contributors or '{}'),
+        description=doc.description,
+        uris=json.loads(doc.uris or '{}'),
+        providerUpdatedDateTime=doc.providerUpdatedDateTime.isoformat(),
+        freeToRead=json.loads(doc.freeToRead or '{}'),
+        languages=doc.languages,
+        licenseRef=json.loads(doc.licenses or '{}'),
+        publisher=json.loads(doc.publisher or '{}'),
+        sponsorships=json.loads(doc.sponsorships or '{}'),
+        title=doc.title,
+        version=json.loads(doc.version or '{}'),
+        otherProperties=otherProperties,
+        shareProperties=json.loads(doc.shareProperties or '{}')
+    ).items())))
+
+
+def as_raw(doc):
+    return RawDocument(dict(
+        doc=doc.doc,
+        docID=doc.docID,
+        source=doc.source,
+        filetype=doc.filetype,
+        timestamps=doc.timestamps,
+        versions=doc.versions
+    ))
