@@ -126,8 +126,8 @@ class DocumentModelV2(models.Model):
     __table_name__ = 'documents_v2'
 
     # Raw
-    source = columns.Text(primary_key=True)
-    docID = columns.Text(primary_key=True)
+    source = columns.Text(primary_key=True, partition_key=True)
+    docID = columns.Text(primary_key=True, index=True, clustering_order='ASC')
 
     doc = columns.Bytes()
     filetype = columns.Text()
