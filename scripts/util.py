@@ -1,8 +1,6 @@
 import time
 import logging
 
-from cassandra.cqlengine.query import Token
-
 from scrapi.database import _manager
 from scrapi.processing.cassandra import DocumentModel, DocumentModelV2
 
