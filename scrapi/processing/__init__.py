@@ -34,3 +34,12 @@ def process_raw(raw_doc, kwargs):
     for p in settings.RAW_PROCESSING:
         extras = kwargs.get(p, {})
         get_processor(p).process_raw(raw_doc, **extras)
+
+
+def process_response(response):
+    for p in settings.RESPONSE_PROCESSING:
+        get_processor(p).process_response(response)
+
+
+def get_response(url=None, method=None):
+    return [get_processor(p).get_response(url=url, method=method) for p in settings.RESPONSE_PROCESSING]

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import json
 import logging
 from uuid import uuid4
+from datetime import datetime as dt
 
 from dateutil.parser import parse
 
@@ -68,6 +69,12 @@ class CassandraProcessor(BaseProcessor):
             return not all([new[key] == old[key] or (not new[key] and not old[key]) for key in new.keys() if key != 'timestamps'])
         except Exception:
             return True  # If the document fails to load/compare for some reason, accept a new version
+
+    def process_response(self, response):
+        return ResponseModel.create(**dict(response)).save()
+
+    def get_response(self, url=None, method=None):
+        return ResponseModel.get(url=url, method=method)
 
 
 @database.register_model
@@ -195,3 +202,20 @@ class VersionModel(models.Model):
 
     # Additional metadata
     versions = columns.List(columns.UUID)
+
+
+@database.register_model
+class ResponseModel(models.Model):
+
+    __table_name__ = 'responses'
+
+    method = columns.Text(primary_key=True)
+    url = columns.Text(primary_key=True, required=True)
+
+    # Raw request data
+    ok = columns.Boolean()
+    content = columns.Bytes()
+    encoding = columns.Text()
+    headers_str = columns.Text()
+    status_code = columns.Integer()
+    time_made = columns.DateTime(default=dt.now)
