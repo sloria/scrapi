@@ -17,32 +17,38 @@ def rename(source, target, dry=True):
     exceptions = []
 
     for doc in documents(source):
-        # import ipdb; ipdb.set_trace()
-        count += 1
-        try:
-            raw = RawDocument({
-                'doc': doc.doc,
-                'docID': doc.docID,
-                'source': target,
-                'filetype': doc.filetype,
-                'timestamps': doc.timestamps,
-                'versions': doc.versions
-            })
-            if not dry:
-                process_raw(raw)
-                process_normalized(normalize(raw, raw['source']), raw)
-            logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
-        except Exception as e:
-            logger.exception(e)
-            exceptions.append(e)
-        else:
-            if not dry:
-                es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
-                es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
-            logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+        after_count, exceptions = rename_one.delay(doc, source, target, count, exceptions)
+
     if dry:
         logger.info('Dry run complete')
 
     for ex in exceptions:
-        logger.exception(e)
+        logger.exception(ex)
     logger.info('{} documents processed, with {} exceptions'.format(count, len(exceptions)))
+
+
+def rename_one(doc, source, target, count, exceptions, dry=True):
+    count += 1
+    try:
+        raw = RawDocument({
+            'doc': doc.doc,
+            'docID': doc.docID,
+            'source': target,
+            'filetype': doc.filetype,
+            'timestamps': doc.timestamps,
+            'versions': doc.versions
+        })
+        if not dry:
+            process_raw(raw)
+            process_normalized(normalize(raw, raw['source']), raw)
+        logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
+    except Exception as e:
+        logger.exception(e)
+        exceptions.append(e)
+    else:
+        if not dry:
+            es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
+            es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
+        logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+
+    return count, exceptions
