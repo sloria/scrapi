@@ -22,9 +22,6 @@ def ModelIteratorFactory(model, next_page):
                 page = try_forever(next_page, query, page)
     return model_iterator
 
-documents_v1 = ModelIteratorFactory(DocumentModel, next_page_v1)
-documents_v2 = ModelIteratorFactory(DocumentModelV2, next_page_v2)
-
 
 def next_page_v1(query, page):
     return list(query.filter(pk__token__gt=Token(page[-1].pk)))
@@ -32,6 +29,9 @@ def next_page_v1(query, page):
 
 def next_page_v2(query, page):
     return list(query.filter(docID__gt=page[-1].docID))
+
+documents_v1 = ModelIteratorFactory(DocumentModel, next_page_v1)
+documents_v2 = ModelIteratorFactory(DocumentModelV2, next_page_v2)
 
 
 def try_forever(action, *args, **kwargs):
