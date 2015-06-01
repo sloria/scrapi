@@ -133,7 +133,7 @@ def rename_inner(source, target, dry=True):
     count = 0
     for doc in documents(source):
         count += 1
-        rename_one.apply_async((doc, source, target))
+        rename_one.apply_async((doc, source, target, dry))
 
     if dry:
         logger.info('Dry run complete')
@@ -142,20 +142,23 @@ def rename_inner(source, target, dry=True):
 
 
 @app.task(default_retry_delay=30, max_retries=5)
-def rename_one(doc, source, target, dry=False):
+def rename_one(doc, source, target, dry):
     try:
-        raw = RawDocument({
-            'doc': doc.doc,
-            'docID': doc.docID,
-            'source': target,
-            'filetype': doc.filetype,
-            'timestamps': doc.timestamps,
-            'versions': doc.versions
-        })
-        if not dry:
-            process_raw(raw)
-            process_normalized(normalize(raw, raw['source']), raw)
-            logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
+        try:
+            raw = RawDocument({
+                'doc': doc.doc,
+                'docID': doc.docID,
+                'source': target,
+                'filetype': doc.filetype,
+                'timestamps': doc.timestamps,
+                'versions': doc.versions
+            })
+            if not dry:
+                process_raw(raw)
+                process_normalized(normalize(raw, raw['source']), raw)
+                logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
+        except Exception as e:
+            logger.exception(e)
         else:
             if not dry:
                 es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
