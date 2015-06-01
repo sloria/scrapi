@@ -1,5 +1,6 @@
 import logging
 import platform
+import os
 from datetime import date, timedelta
 
 import urllib
@@ -85,6 +86,22 @@ def test(cov=True, verbose=False, debug=False):
         cmd += ' --cov-report term-missing --cov-config .coveragerc --cov scrapi'
 
     run(cmd, pty=True)
+
+
+@task
+def test_harvesters(cov=True, verbose=False, debug=False):
+    """
+    Runs all harvester tests in the 'tests/' directory
+    """
+    cmd = 'py.test tests'
+    args = ''
+    if verbose:
+        args += ' -v'
+    if debug:
+        args += ' -s'
+    if cov:
+        args += ' --cov-report term-missing --cov-config .coveragerc --cov scrapi'
+    map(lambda x: run('py.test tests/' + x + args) if('harvester' in x) else(), os.listdir('tests'))
 
 
 @task
