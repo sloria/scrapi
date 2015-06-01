@@ -12,18 +12,23 @@ from cassandra.cqlengine import columns, models
 from scrapi import events
 from scrapi import database  # noqa
 from scrapi.util import copy_to_unicode
-from scrapi.processing.base import BaseProcessor
+from scrapi.processing.base import BaseProcessor, CanonicalBackend
 
 
 logger = logging.getLogger(__name__)
 logging.getLogger('cqlengine.cql').setLevel(logging.WARN)
 
 
-class CassandraProcessor(BaseProcessor):
+class CassandraProcessor(BaseProcessor, CanonicalBackend):
     '''
     Cassandra processor for scrapi. Handles versioning and storing documents in Cassandra
     '''
     NAME = 'cassandra'
+
+    def delete(source, docID):
+        documents = DocumentModelV2.objects(docID=docID, source=source)
+        if documents:
+            documents[0].delete()
 
     @events.logged(events.PROCESSING, 'normalized.cassandra')
     def process_normalized(self, raw_doc, normalized):
@@ -75,6 +80,24 @@ class CassandraProcessor(BaseProcessor):
 
     def get_response(self, url=None, method=None):
         return ResponseModel.get(url=url, method=method)
+
+    def get_raw(source, docID):
+        raise NotImplementedError  # Need deserialization to work first
+
+    def get_normalized(source, docID):
+        raise NotImplementedError  # Need deserialization to work first
+        return DocumentModelV2.get(source=source, docID=docID)
+
+    def iter_raws(source=None):
+        q = DocumentModelV2.objects.timeout(500).all().limit(1000)
+        if source:
+            q = q.filter(source=source)
+
+        page = list(q)
+        while len(page) > 0:
+            for doc in page:
+                yield doc
+            page = list(q.filter(docID__gt=page[-1].docID))
 
 
 @database.register_model
