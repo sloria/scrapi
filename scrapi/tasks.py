@@ -133,8 +133,7 @@ def rename_inner(source, target, dry=True):
     count = 0
     exceptions = []
     for doc in documents(source):
-        x = rename_one.apply_async((doc, source, target, count, exceptions))
-        import pdb; pdb.set_trace()
+        rename_one.apply_async((doc, source, target, count, exceptions))
 
     if dry:
         logger.info('Dry run complete')
@@ -145,7 +144,7 @@ def rename_inner(source, target, dry=True):
 
 
 @app.task
-def rename_one(doc, source, target, count, exceptions, dry=True):
+def rename_one(doc, source, target, count, exceptions, dry=False):
     count += 1
     try:
         raw = RawDocument({
