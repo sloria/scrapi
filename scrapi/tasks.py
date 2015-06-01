@@ -24,7 +24,7 @@ database.setup()
 logger = logging.getLogger(__name__)
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.creates_task(events.HARVESTER_RUN)
 def run_harvester(harvester_name, start_date=None, end_date=None):
     logger.info('Running harvester "{}"'.format(harvester_name))
@@ -39,7 +39,7 @@ def run_harvester(harvester_name, start_date=None, end_date=None):
     (start_harvest | normalization).apply_async()
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.logged(events.HARVESTER_RUN)
 def harvest(harvester_name, job_created, start_date=None, end_date=None):
     harvest_started = timestamp()
@@ -60,7 +60,7 @@ def harvest(harvester_name, job_created, start_date=None, end_date=None):
     }
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 def begin_normalization((raw_docs, timestamps), harvester_name):
     '''harvest_ret is harvest return value:
         a tuple contaiing list of rawDocuments and
@@ -84,13 +84,13 @@ def spawn_tasks(raw, timestamps, harvester_name):
         process_raw.delay(raw)
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.logged(events.PROCESSING, 'raw')
 def process_raw(raw_doc, **kwargs):
     processing.process_raw(raw_doc, kwargs)
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.logged(events.NORMALIZATION)
 def normalize(raw_doc, harvester_name):
     normalized_started = timestamp()
@@ -106,7 +106,7 @@ def normalize(raw_doc, harvester_name):
     return normalized  # returns a single normalized document
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.logged(events.PROCESSING, 'normalized')
 def process_normalized(normalized_doc, raw_doc, **kwargs):
     if not normalized_doc:
@@ -114,7 +114,7 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
 
 
-@app.task(default_retry_delay=300, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 def update_pubsubhubbub():
     payload = {'hub.mode': 'publish', 'hub.url': '{url}rss/'.format(url=settings.OSF_APP_URL)}
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -127,25 +127,22 @@ def update_pubsubhubbub():
 #     rename(source, target, dry)
 
 
-@app.task
+@app.task(default_retry_delay=30, max_retries=5)
 def rename_inner(source, target, dry=True):
     assert source != target, "Can't rename {} to {}, names are the same".format(source, target)
     count = 0
-    exceptions = []
     for doc in documents(source):
-        rename_one.apply_async((doc, source, target, count, exceptions))
+        count += 1
+        rename_one.apply_async((doc, source, target))
 
     if dry:
         logger.info('Dry run complete')
 
-    for ex in exceptions:
-        logger.exception(ex)
-    logger.info('{} documents processed, with {} exceptions'.format(count, len(exceptions)))
+    logger.info('{} documents processed'.format(count))
 
 
-@app.task
-def rename_one(doc, source, target, count, exceptions, dry=False):
-    count += 1
+@app.task(default_retry_delay=30, max_retries=5)
+def rename_one(doc, source, target, dry=False):
     try:
         raw = RawDocument({
             'doc': doc.doc,
@@ -158,14 +155,13 @@ def rename_one(doc, source, target, count, exceptions, dry=False):
         if not dry:
             process_raw(raw)
             process_normalized(normalize(raw, raw['source']), raw)
-        logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
-    except Exception as e:
-        logger.exception(e)
-        exceptions.append(e)
-    else:
-        if not dry:
-            es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
-            es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
-        logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+            logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
+        else:
+            if not dry:
+                es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
+                es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
+            logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
 
-    return count, exceptions
+    except Exception as e:
+        logger.info('Retrying with exception {}'.format(e))
+        rename_one.retry(exc=e)
