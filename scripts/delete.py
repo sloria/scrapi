@@ -1,6 +1,6 @@
 import logging
 
-from scripts.util import documents
+from scripts.util import documents_v2
 
 from scrapi import settings
 from scrapi.processing.elasticsearch import es
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def delete_by_source(source):
     count = 0
     exceptions = []
-    for doc in documents(source):
+    for doc in documents_v2(source):
         count += 1
         try:
             doc.delete()

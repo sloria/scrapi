@@ -1,6 +1,6 @@
 import logging
 
-from scripts.util import documents
+from scripts.util import documents_v2
 
 from scrapi import settings
 from scrapi.linter import RawDocument
@@ -15,7 +15,7 @@ def rename(source, target, dry=True):
     count = 0
     exceptions = []
 
-    for doc in documents(source):
+    for doc in documents_v2(source):
         count += 1
         try:
             raw = RawDocument({
