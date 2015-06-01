@@ -47,7 +47,7 @@ def process_response(response):
 
 
 def get_response(url=None, method=None):
-    return [p.get_response(url=url, method=method) for p in response_processors]
+    return filter(lambda x: x, [p.get_response(url=url, method=method) for p in response_processors])
 
 
 def delete(source, docID):
