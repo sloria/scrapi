@@ -159,6 +159,8 @@ def rename_one(doc, source, target, dry):
                 logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
         except Exception as e:
             logger.exception(e)
+            logger.info('Retrying with exception {}'.format(e))
+            rename_one.retry(exc=e)
         else:
             if not dry:
                 es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
