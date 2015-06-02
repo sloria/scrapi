@@ -53,7 +53,6 @@ class ElasticsearchProcessor(BaseProcessor):
             index=index,
             doc_type=raw_doc['source'],
             id=raw_doc['docID'],
-            timeout=30
         )
         self.process_normalized_v1(raw_doc, normalized)
 
@@ -83,8 +82,7 @@ class ElasticsearchProcessor(BaseProcessor):
             refresh=True,
             index=index,
             doc_type=raw_doc['source'],
-            id=raw_doc['docID'],
-            timeout=30
+            id=raw_doc['docID']
         )
 
 
