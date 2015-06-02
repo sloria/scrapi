@@ -65,5 +65,3 @@ archive/*
 
 # Emacs edited files:
 *.*~
-
-.ipynb_checkpoints/
