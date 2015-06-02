@@ -1,4 +1,5 @@
 import logging
+import functools
 from datetime import date, timedelta
 
 import requests
@@ -22,6 +23,19 @@ app.config_from_object(settings)
 
 database.setup()
 logger = logging.getLogger(__name__)
+
+
+def task_autoretry(*args_task, **kwargs_task):
+    def real_decorator(func):
+        @app.task(*args_task, **kwargs_task)
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                func(*args, **kwargs)
+            except kwargs_task.get('autoretry_on', Exception), exc:
+                wrapper.retry(exc=exc)
+        return wrapper
+    return real_decorator
 
 
 @app.task(default_retry_delay=30, max_retries=5)
@@ -121,14 +135,8 @@ def update_pubsubhubbub():
     return requests.post('https://pubsubhubbub.appspot.com', headers=headers, params=payload)
 
 
-# @app.task
-# def rename_inner(source, target, dry=True):
-#     from scripts.rename import rename
-#     rename(source, target, dry)
-
-
 @app.task(default_retry_delay=30, max_retries=5)
-def rename_inner(source, target, dry=True):
+def rename(source, target, dry=True):
     assert source != target, "Can't rename {} to {}, names are the same".format(source, target)
     count = 0
     for doc in documents(source):
@@ -141,32 +149,21 @@ def rename_inner(source, target, dry=True):
     logger.info('{} documents processed'.format(count))
 
 
-@app.task(default_retry_delay=30, max_retries=5)
+@task_autoretry(default_retry_delay=30, max_retries=5)
 def rename_one(doc, source, target, dry):
-    try:
-        try:
-            raw = RawDocument({
-                'doc': doc.doc,
-                'docID': doc.docID,
-                'source': target,
-                'filetype': doc.filetype,
-                'timestamps': doc.timestamps,
-                'versions': doc.versions
-            })
-            if not dry:
-                process_raw(raw)
-                process_normalized(normalize(raw, raw['source']), raw)
-                logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
-        except Exception as e:
-            logger.exception(e)
-            logger.info('Retrying with exception {}'.format(e))
-            rename_one.retry(exc=e)
-        else:
-            if not dry:
-                es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
-                es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
-            logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+    raw = RawDocument({
+        'doc': doc.doc,
+        'docID': doc.docID,
+        'source': target,
+        'filetype': doc.filetype,
+        'timestamps': doc.timestamps,
+        'versions': doc.versions
+    })
+    if not dry:
+        process_raw(raw)
+        process_normalized(normalize(raw, raw['source']), raw)
+        logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
 
-    except Exception as e:
-        logger.info('Retrying with exception {}'.format(e))
-        rename_one.retry(exc=e)
+        es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
+        es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
+    logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
