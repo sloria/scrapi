@@ -39,7 +39,8 @@ def task_autoretry(*args_task, **kwargs_task):
     return actual_decorator
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task
 @events.creates_task(events.HARVESTER_RUN)
 def run_harvester(harvester_name, start_date=None, end_date=None):
     logger.info('Running harvester "{}"'.format(harvester_name))
@@ -75,7 +76,8 @@ def harvest(harvester_name, job_created, start_date=None, end_date=None):
     }
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task
 def begin_normalization((raw_docs, timestamps), harvester_name):
     '''harvest_ret is harvest return value:
         a tuple contaiing list of rawDocuments and
@@ -91,21 +93,23 @@ def begin_normalization((raw_docs, timestamps), harvester_name):
 @events.creates_task(events.PROCESSING)
 @events.creates_task(events.NORMALIZATION)
 def spawn_tasks(raw, timestamps, harvester_name):
-        raw['timestamps'] = timestamps
-        raw['timestamps']['normalizeTaskCreated'] = timestamp()
-        chain = (normalize.si(raw, harvester_name) | process_normalized.s(raw))
+    raw['timestamps'] = timestamps
+    raw['timestamps']['normalizeTaskCreated'] = timestamp()
+    chain = (normalize.si(raw, harvester_name) | process_normalized.s(raw))
 
-        chain.apply_async()
-        process_raw.delay(raw)
+    chain.apply_async()
+    process_raw.delay(raw)
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task
 @events.logged(events.PROCESSING, 'raw')
 def process_raw(raw_doc, **kwargs):
     processing.process_raw(raw_doc, kwargs)
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task
 @events.logged(events.NORMALIZATION)
 def normalize(raw_doc, harvester_name):
     normalized_started = timestamp()
@@ -121,12 +125,17 @@ def normalize(raw_doc, harvester_name):
     return normalized  # returns a single normalized document
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 @events.logged(events.PROCESSING, 'normalized')
 def process_normalized(normalized_doc, raw_doc, **kwargs):
-    if not normalized_doc:
-        raise events.Skip('Not processing document with id {}'.format(raw_doc['docID']))
-    processing.process_normalized(raw_doc, normalized_doc, kwargs)
+    try:
+        if not normalized_doc:
+            raise events.Skip('Not processing document with id {}'.format(raw_doc['docID']))
+        processing.process_normalized(raw_doc, normalized_doc, kwargs)
+    except Exception as e:
+        logger.info('Retrying withiin PROCESS NORMALIZED with exception {}'.format(e))
+        process_normalized.retry(exc=e)
 
 
 @task_autoretry(default_retry_delay=30, max_retries=5)
@@ -136,13 +145,32 @@ def update_pubsubhubbub():
     return requests.post('https://pubsubhubbub.appspot.com', headers=headers, params=payload)
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task
 def rename(source, target, dry=True):
     assert source != target, "Can't rename {} to {}, names are the same".format(source, target)
     count = 0
-    for doc in documents(source):
-        count += 1
-        rename_one.apply_async((doc, source, target, dry))
+
+    group = rename_one.chunks(
+        util.create_rename_iterable(
+            documents(source),
+            source,
+            target,
+            dry),
+        10
+    ).group()
+
+    group.skew(start=1, stop=10)()
+
+    # .apply_async(countdown=10)
+
+    # for doc in documents(source):
+    #     count += 1
+    #     rename_one.apply_async((doc, source, target, dry))
+
+    # for doc in documents(source):
+    #     count += 1
+    #     rename_one.s(doc, source, target, dry).apply_async()
 
     if dry:
         logger.info('Dry run complete')
@@ -150,21 +178,27 @@ def rename(source, target, dry=True):
     logger.info('{} documents processed'.format(count))
 
 
-@task_autoretry(default_retry_delay=30, max_retries=5)
+# @task_autoretry(default_retry_delay=30, max_retries=5)
+@app.task(default_retry_delay=30, max_retries=5)
 def rename_one(doc, source, target, dry):
-    raw = RawDocument({
-        'doc': doc.doc,
-        'docID': doc.docID,
-        'source': target,
-        'filetype': doc.filetype,
-        'timestamps': doc.timestamps,
-        'versions': doc.versions
-    })
-    if not dry:
-        process_raw(raw)
-        process_normalized(normalize(raw, raw['source']), raw)
-        logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
+    try:
+        logger.info('STARTING THE TASK!!!!')
+        raw = RawDocument({
+            'doc': doc.doc,
+            'docID': doc.docID,
+            'source': target,
+            'filetype': doc.filetype,
+            'timestamps': doc.timestamps,
+            'versions': doc.versions
+        })
+        if not dry:
+            process_raw(raw)
+            process_normalized(normalize(raw, raw['source']), raw)
+            logger.info('Processed document from {} with id {}'.format(source, raw['docID']))
 
-        es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
-        es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
-    logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+            es.delete(index=settings.ELASTIC_INDEX, doc_type=source, id=raw['docID'], ignore=[404])
+            es.delete(index='share_v1', doc_type=source, id=raw['docID'], ignore=[404])
+        logger.info('Deleted document from {} with id {}'.format(source, raw['docID']))
+    except Exception as e:
+        logger.info('Retrying with exception {}'.format(e))
+        rename_one.retry(exc=e)
