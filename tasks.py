@@ -47,6 +47,26 @@ def rename(source, target, dry=True, async=False):
 
 
 @task
+def migrate(migration, kwargs_string, dry=True, async=False):
+    settings.CELERY_ALWAYS_EAGER = not async
+
+    from scrapi import migrations
+    from scrapi.tasks import migrate
+
+    kwargs = {
+        key.strip(): val.strip() for key, val in map(lambda x: x.split(':'), kwargs_string.split(','))
+    }
+
+    migrate_func = migrations.__dict__[migration]
+
+    if migration == rename:
+        if not registry.get(kwargs['source']):
+            raise ValueError('No such harvester {}'.format(kwargs['source']))
+
+    migrate(migrate_func, source=kwargs['source'], target=kwargs['target'], dry=dry)
+
+
+@task
 def delete(source):
     from scripts.delete import delete_by_source
     delete_by_source(source)
