@@ -8,39 +8,66 @@ import json
 import time
 import logging
 import functools
-from datetime import datetime
 
 import furl
 import requests
-from cassandra.cqlengine import columns, models
 from requests.structures import CaseInsensitiveDict
 
 from scrapi import events
-from scrapi import database
 from scrapi import settings
+from scrapi.processing import process_response, get_response
 
 logger = logging.getLogger(__name__)
 logging.getLogger('cqlengine.cql').setLevel(logging.WARN)
 
 
-@database.register_model
-class HarvesterResponse(models.Model):
+class HarvesterResponse(object):
     """A parody of requests.response but stored in cassandra
     Should reflect all methods of a response object
     Contains an additional field time_made, self-explanitory
     """
-    __table_name__ = 'responses'
 
-    method = columns.Text(primary_key=True)
-    url = columns.Text(primary_key=True, required=True)
+    class DoesNotExist(Exception):
+        pass
 
-    # Raw request data
-    ok = columns.Boolean()
-    content = columns.Bytes()
-    encoding = columns.Text()
-    headers_str = columns.Text()
-    status_code = columns.Integer()
-    time_made = columns.DateTime(default=datetime.now)
+    def __init__(self, method=None, url=None, ok=None, content=None, encoding=None, headers_str=None, status_code=None, time_made=None):
+        if not method or not url:
+            pass  # TODO
+        self.method = method
+        self.url = url
+        self.ok = ok
+        self.content = content
+        self.encoding = encoding
+        self.headers_str = headers_str
+        self.status_code = status_code
+        self.time_made = time_made
+
+    def __iter__(self):
+        for k, v in self.__dict__.items():
+            yield k, v
+
+    def save(self):
+        process_response(self)
+        return self
+
+    @classmethod
+    def get(cls, url=None, method=None):
+        """
+            Returns a list of matching responses
+            if multiple response backends are enabled,
+            will return the first one  # TODO
+        """
+        try:
+            responses = get_response(url=url, method=method)
+        except Exception:  # TODO
+            responses = []
+        if not responses:
+            raise cls.DoesNotExist
+        return cls(**dict(responses[0]))
+
+    def update(self, **kwargs):
+        self.__dict__.update(**kwargs)
+        return self
 
     def json(self):
         return json.loads(self.content)

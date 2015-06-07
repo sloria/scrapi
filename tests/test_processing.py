@@ -4,8 +4,6 @@ import pytest
 from scrapi import settings
 
 settings.DEBUG = False
-settings.RAW_PROCESSING = ['storage', 'osf', 'foo', 'bar']
-settings.NORMALIZED_PROCESSING = ['storage', 'osf', 'foo', 'bar']
 
 from scrapi import processing
 
@@ -26,17 +24,30 @@ def raise_exception(x):
 
 
 def test_normalized_calls_all(get_processor):
+    stored_methods = []
+    for processor in processing.normalized_processors:
+        stored_methods.append(processor.process_normalized)
+        processor.process_normalized = mock.Mock()
+
     processing.process_normalized(mock.MagicMock(), mock.MagicMock(), {})
 
-    for processor in settings.NORMALIZED_PROCESSING:
-        get_processor.assert_any_call(processor)
+    for fn, processor in zip(stored_methods, processing.normalized_processors):
+        processor.process_normalized.assert_called
+        processor.process_normalized = fn
+
 
 
 def test_raw_calls_all(get_processor):
+    stored_methods = []
+    for processor in processing.raw_processors:
+        stored_methods.append(processor.process_raw)
+        processor.process_raw = mock.Mock()
+
     processing.process_raw(mock.MagicMock(), {})
 
-    for processor in settings.RAW_PROCESSING:
-        get_processor.assert_any_call(processor)
+    for fn, processor in zip(stored_methods, processing.raw_processors):
+        processor.process_raw.assert_called
+        processor.process_raw = fn
 
 
 def test_normalized_calls_all_throwing(get_processor):

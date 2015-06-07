@@ -40,6 +40,15 @@ except ConnectionError:  # pragma: no cover
 class ElasticsearchProcessor(BaseProcessor):
     NAME = 'elasticsearch'
 
+    def delete(source, docID):
+        es.delete(
+            index=settings.ELASTIC_INDEX,
+            doc_type=source,
+            id=docID,
+            refresh=True,
+            ignore=[404]
+        )
+
     def process_normalized(self, raw_doc, normalized, index=settings.ELASTIC_INDEX):
         normalized['providerUpdatedDateTime'] = self.version(raw_doc, normalized)
         data = {
@@ -49,10 +58,10 @@ class ElasticsearchProcessor(BaseProcessor):
 
         es.index(
             body=data,
-            refresh=True,
             index=index,
             doc_type=raw_doc['source'],
             id=raw_doc['docID'],
+            refresh=True
         )
         self.process_normalized_v1(raw_doc, normalized)
 

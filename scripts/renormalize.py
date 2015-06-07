@@ -1,6 +1,6 @@
 import logging
 
-from scripts.util import documents
+from scripts.util import documents_v2
 
 from scrapi.linter import RawDocument
 from scrapi.tasks import normalize, process_normalized
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def renormalize(sources=()):
     count = 0
     exceptions = []
-    for doc in documents(*sources):
+    for doc in documents_v2(*sources):
         count += 1
         try:
             raw = RawDocument({

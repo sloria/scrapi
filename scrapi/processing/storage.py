@@ -8,6 +8,7 @@ To use add this to settings.local:
 
 import os
 import json
+import shutil
 
 from scrapi.processing.base import BaseProcessor
 
@@ -22,6 +23,9 @@ class StorageProcessor(BaseProcessor):
 
         with open(filename, 'w') as f:
             f.write(json.dumps(raw.attributes, indent=4))
+
+    def delete(self, source, docID):
+        shutil.rmtree('archive/{}/{}'.format(source, docID))
 
     def process_normalized(self, raw, normalized):
         filename = 'archive/{}/{}/normalized.json'.format(raw['source'], raw['docID'], raw['filetype'])
