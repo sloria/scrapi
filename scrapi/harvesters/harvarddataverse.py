@@ -11,14 +11,13 @@ from __future__ import unicode_literals
 import json
 import logging
 from dateutil.parser import parse
-from datetime import date, timedelta
+from datetime import timedelta
 import datetime
 
 from scrapi import requests
-from scrapi import settings
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
-from scrapi.base.helpers import default_name_parser, build_properties, single_result
+from scrapi.base.helpers import  build_properties
 
 logger = logging.getLogger(__name__)
 
@@ -68,19 +67,19 @@ class harvardDataverseHarvester(JSONHarvester):
         if end_date is None:
             end_date = datetime.datetime.now()
 
-
-        start = 0
         base_url = 'https://dataverse.harvard.edu/api/search?q=*&sort=date&order=desc&key=0b684d79-3c44-4ace-8583-dba5e0f11600&start={}'
-        total = requests.get(base_url.format(start)).json()['data']['total_count']
+        total = requests.get(base_url.format(0)).json()['data']['total_count']
         logger.info('{} documents to be harvested'.format(total))
 
         doc_list = []
-        for i in xrange(start, total):
+        condition = True
+        start = 0
+
+        while(condition):
             records = requests.get(base_url.format(start)).json()['data']['items']
-            logger.info('Harvested {} documents'.format(i + len(records)))
             for record in records:
-                if  start_date< parse(record['published_at']).date() <= end_date:
-                    doc_id = record['url']
+                if  start_date < parse(record['published_at']).date() <= end_date:
+                   doc_id = record['url']
                     doc_list.append(RawDocument({
                         'doc': json.dumps(record),
                         'source': self.short_name,
@@ -88,7 +87,6 @@ class harvardDataverseHarvester(JSONHarvester):
                         'filetype': 'json'
                     }))
                 else:
-                    return doc_list
+                    condition = False
             start += 10
-
         return doc_list
