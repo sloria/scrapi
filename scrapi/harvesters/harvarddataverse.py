@@ -75,11 +75,13 @@ class harvardDataverseHarvester(JSONHarvester):
         condition = True
         start = 0
 
+
+        #This api won't allow you to set a date range for your search, this is and attempt to fix that"
         while(condition):
             records = requests.get(base_url.format(start)).json()['data']['items']
             for record in records:
                 if  start_date < parse(record['published_at']).date() <= end_date:
-                   doc_id = record['url']
+                    doc_id = record['url']
                     doc_list.append(RawDocument({
                         'doc': json.dumps(record),
                         'source': self.short_name,
