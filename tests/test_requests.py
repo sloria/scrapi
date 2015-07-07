@@ -1,4 +1,3 @@
-import vcr
 import mock
 import json
 import pytest
@@ -156,13 +155,12 @@ class TestCassandraIntegration(object):
         assert resp.status_code == 400
 
     @pytest.mark.cassandra
-    @vcr.use_cassette('vcr/dinosaurs.yaml')
     def test_record_or_load_throttle_throttles(self, mock_requests, monkeypatch):
         mock_sleep = mock.Mock()
         monkeypatch.setattr(requests.time, 'sleep', mock_sleep)
         mock_requests.request.return_value = mock.Mock(encoding='utf-8', content='Snapcity', status_code=200, headers={'tota': 'dyle'})
 
-        resp = requests.get('dinosaurs.sexy', throttle=2)
+        resp = requests.get('dusty.rhodes', throttle=2)
 
         mock_sleep.assert_called_once_with(2)
         assert mock_requests.request.called is True
