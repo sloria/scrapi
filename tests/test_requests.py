@@ -1,3 +1,4 @@
+import vcr
 import mock
 import json
 import pytest
@@ -155,6 +156,7 @@ class TestCassandraIntegration(object):
         assert resp.status_code == 400
 
     @pytest.mark.cassandra
+    @vcr.use_cassette('vcr/dinosaurs.yaml')
     def test_record_or_load_throttle_throttles(self, mock_requests, monkeypatch):
         mock_sleep = mock.Mock()
         monkeypatch.setattr(requests.time, 'sleep', mock_sleep)
@@ -186,6 +188,7 @@ class TestCassandraIntegration(object):
 
         assert resp.status_code == 200
         assert resp.url == 'dinosaurs.sexy?test=foo'
+
 
 class TestRequestsApi(object):
 
