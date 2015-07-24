@@ -7,6 +7,10 @@ python:
 services:
   - cassandra
   - elasticsearch
+  - postgres
+
+addons:
+  postgresql: "9.4"
 
 install:
   - pip install -r dev-requirements.txt
@@ -18,6 +22,7 @@ before_script: flake8 .
 script:
   - invoke provider_map
   - invoke test
+  - invoke apitest
 
 after_success:
   coveralls
