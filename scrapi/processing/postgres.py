@@ -24,10 +24,10 @@ class PostgresProcessor(BaseProcessor):
 
         modified_doc = copy.deepcopy(raw_doc.attributes)
         if modified_doc.get('versions'):
-            modified_doc['versions'] = modified_doc['versions'].encode('utf8')
+            modified_doc['versions'] = str(modified_doc['versions'])
+            modified_doc['doc'] = str(modified_doc['doc'])
 
         document.raw = modified_doc
-        document.doc = document.doc.encode('utf8')
 
         document.save()
 
