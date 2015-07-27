@@ -23,7 +23,8 @@ before_script:
 
 script:
   - invoke provider_map
-  - python manage.py test
+  - invoke test
+  # - python manage.py
 
 after_success:
   coveralls
