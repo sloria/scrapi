@@ -10,7 +10,7 @@ from scrapi.base.helpers import updated_schema, build_properties, single_result
 
 
 RAW_DOC = {
-    'doc': b'{}',
+    'doc': '{}',
     'docID': 'someID',
     'timestamps': {
         'harvestFinished': '2012-11-30T17:05:48+00:00',
