@@ -10,6 +10,18 @@ from scrapi.base.helpers import updated_schema, build_properties, single_result
 
 
 RAW_DOC = {
+    'doc': b'{}',
+    'docID': 'someID',
+    'timestamps': {
+        'harvestFinished': '2012-11-30T17:05:48+00:00',
+        'harvestStarted': '2012-11-30T17:05:48+00:00',
+        'harvestTaskCreated': '2012-11-30T17:05:48+00:00'
+    },
+    'filetype': 'json',
+    'source': 'test'
+}
+
+POSTGRES_RAW_DOC = {
     'doc': '{}',
     'docID': 'someID',
     'timestamps': {
