@@ -11,5 +11,3 @@ class Document(models.Model):
 
     raw = JsonField()
     normalized = JsonField()
-
-    url_logs = JsonField()
