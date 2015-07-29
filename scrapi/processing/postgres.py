@@ -53,13 +53,9 @@ class PostgresProcessor(BaseProcessor):
 class UriProcessor(BaseProcessor):
     NAME = 'postgres_uri'
 
-    def process_raw(self, raw_doc):
-        pass
-
     def process_normalized(self, raw_doc, normalized):
         try:
             document = Document.objects.get(source=raw_doc['source'], docID=raw_doc['docID'])
-            # normalized_document = json.loads(document.normalized)
 
             processed_normalized = self.save_status_of_canonical_uri(document.normalized)
             processed_normalized = self.save_status_of_object_uris(processed_normalized)
@@ -92,8 +88,7 @@ class UriProcessor(BaseProcessor):
         try:
             all_object_uris = normalized['uris']['object_uris']
         except KeyError:
-            all_object_uris = []
-            current_list = []
+            return normalized
 
         for uri in all_object_uris:
             current_list = []
@@ -110,5 +105,6 @@ class UriProcessor(BaseProcessor):
         try:
             normalized['shareProperties']['uri_logs']['object_status'].append(current_list)
         except KeyError:
-            normalized['shareProperties']['uri_logs'] = {}
             normalized['shareProperties']['uri_logs']['object_status'] = [current_list]
+
+        return normalized
