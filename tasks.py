@@ -230,3 +230,5 @@ def reset_all():
     os.system('python manage.py migrate')
 
     os.system("curl -XDELETE '{}/share*'".format(settings.ELASTIC_URI))
+    os.system("invoke alias share share_v2")
+    os.system("invoke provider_map")
