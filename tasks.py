@@ -1,3 +1,4 @@
+import os
 import base64
 import logging
 import platform
@@ -220,3 +221,12 @@ def provider_map(delete=False):
             refresh=True
         )
     print(es.count('share_providers', body={'query': {'match_all': {}}})['count'])
+
+
+@task
+def reset_all():
+    os.system('psql -c "DROP DATABASE scrapi;"')
+    os.system('psql -c "CREATE DATABASE scrapi;"')
+    os.system('python manage.py migrate')
+
+    os.system("curl -XDELETE '{}/share*'".format(settings.ELASTIC_URI))
