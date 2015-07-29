@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import os
-import json
 import datetime
 import requests
 
@@ -60,9 +59,9 @@ class UriProcessor(BaseProcessor):
     def process_normalized(self, raw_doc, normalized):
         try:
             document = Document.objects.get(source=raw_doc['source'], docID=raw_doc['docID'])
-            normalized_document = json.loads(document.normalized.attributes)
+            # normalized_document = json.loads(document.normalized)
 
-            processed_normalized = self.save_status_of_canonical_uri(normalized_document)
+            processed_normalized = self.save_status_of_canonical_uri(document.normalized)
             processed_normalized = self.save_status_of_object_uris(processed_normalized)
 
             document.normalized = processed_normalized
@@ -84,12 +83,17 @@ class UriProcessor(BaseProcessor):
         try:
             normalized['shareProperties']['uri_logs']['cannonical_status'].append(cannonical_status)
         except KeyError:
+            normalized['shareProperties']['uri_logs'] = {}
             normalized['shareProperties']['uri_logs']['cannonical_status'] = [cannonical_status]
 
         return normalized
 
     def save_status_of_object_uris(self, normalized):
-        all_object_uris = normalized['uris']['object_uris']
+        try:
+            all_object_uris = normalized['uris']['object_uris']
+        except KeyError:
+            all_object_uris = []
+            current_list = []
 
         for uri in all_object_uris:
             current_list = []
@@ -106,4 +110,5 @@ class UriProcessor(BaseProcessor):
         try:
             normalized['shareProperties']['uri_logs']['object_status'].append(current_list)
         except KeyError:
+            normalized['shareProperties']['uri_logs'] = {}
             normalized['shareProperties']['uri_logs']['object_status'] = [current_list]
