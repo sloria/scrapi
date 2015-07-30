@@ -1,10 +1,9 @@
 from __future__ import absolute_import
 
 import os
+import copy
 import datetime
 import requests
-
-import copy
 import logging
 
 from scrapi import events
@@ -70,6 +69,7 @@ class UriProcessor(BaseProcessor):
         cannonical_uri_status = requests.get(normalized['uris']['canonicalUri'])
 
         cannonical_status = {
+            'actual_uri': normalized['uris']['canonicalUri'],
             'resolved_uri': cannonical_uri_status.url,
             'resolved_datetime': datetime.datetime.now(),
             'resolved_status': cannonical_uri_status.status_code,
@@ -95,6 +95,7 @@ class UriProcessor(BaseProcessor):
             uri_resolved = requests.get(uri)
 
             uri_status = {
+                'actual_uri': uri,
                 'resolved_uri': uri_resolved.url,
                 'resolved_datetime': datetime.datetime.now(),
                 'resolved_status': uri_resolved.status_code,
