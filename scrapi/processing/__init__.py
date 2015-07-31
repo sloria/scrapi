@@ -34,3 +34,9 @@ def process_raw(raw_doc, kwargs):
     for p in settings.RAW_PROCESSING:
         extras = kwargs.get(p, {})
         get_processor(p).process_raw(raw_doc, **extras)
+
+
+def post_process(raw_doc, normalized, kwargs):
+    for p in settings.POST_PROCESSING:
+        extras = kwargs.get(p, {})
+        get_processor(p).process_normalized(raw_doc, normalized, **extras)
