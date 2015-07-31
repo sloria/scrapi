@@ -15,4 +15,4 @@ DATABASES = {
     }
 }
 
-STATIC_URL = '{}/static/'.format(DOMAIN)
+STATIC_URL = '/static/'
