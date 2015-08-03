@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class UriProcessor(BaseProcessor):
-    NAME = 'postgres_uri'
+    NAME = 'uri_logging'
 
     def process_normalized(self, raw_doc, normalized):
         try:
