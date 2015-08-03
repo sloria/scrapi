@@ -101,6 +101,12 @@ def process_raw(raw_doc, **kwargs):
     processing.process_raw(raw_doc, kwargs)
 
 
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES)
+@events.logged(events.PROCESSSING_URIS, 'post_processing')
+def process_uris():
+    processing.process_uris()
+
+
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES, throws=events.Skip)
 @events.logged(events.NORMALIZATION)
 def normalize(raw_doc, harvester_name):

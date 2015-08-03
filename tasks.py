@@ -229,6 +229,14 @@ def provider_map(delete=False):
 
 
 @task
+def process_uris(async=False):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import process_uris
+
+    process_uris.delay()
+
+
+@task
 def reset_all():
     os.system('psql -c "DROP DATABASE scrapi;"')
     os.system('psql -c "CREATE DATABASE scrapi;"')
