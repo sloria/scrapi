@@ -1,15 +1,11 @@
 from __future__ import absolute_import
 
-import os
 import datetime
 import requests
 import logging
 
 from scrapi.processing.base import BaseProcessor
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
-# from django.core.exceptions import ObjectDoesNotExist
-# from api.webview.models import Document
 
 logger = logging.getLogger(__name__)
 
