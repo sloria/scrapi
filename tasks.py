@@ -188,6 +188,14 @@ def harvesters(async=False, start=None, end=None):
 
 
 @task
+def process_uris(async=False, start=None, end=None):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import process_uris
+
+    process_uris.delay(async=async, start=start, end=None)
+
+
+@task
 def lint_all():
     for name in registry.keys():
         lint(name)
@@ -226,14 +234,6 @@ def provider_map(delete=False):
             refresh=True
         )
     print(es.count('share_providers', body={'query': {'match_all': {}}})['count'])
-
-
-@task
-def process_uris(async=False):
-    settings.CELERY_ALWAYS_EAGER = not async
-    from scrapi.tasks import process_uris
-
-    process_uris.delay()
 
 
 @task
