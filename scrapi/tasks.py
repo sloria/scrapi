@@ -1,3 +1,4 @@
+import os
 import logging
 import functools
 from itertools import islice
@@ -101,12 +102,6 @@ def process_raw(raw_doc, **kwargs):
     processing.process_raw(raw_doc, kwargs)
 
 
-@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES)
-@events.logged(events.PROCESSSING_URIS, 'post_processing')
-def process_uris():
-    processing.process_uris()
-
-
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES, throws=events.Skip)
 @events.logged(events.NORMALIZATION)
 def normalize(raw_doc, harvester_name):
@@ -129,6 +124,16 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     if not normalized_doc:
         raise events.Skip('Not processing document with id {}'.format(raw_doc['docID']))
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES)
+@events.logged(events.PROCESSSING_URIS, 'post_processing')
+def process_uris(**kwargs):
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
+    from api.webview.models import Document
+
+    for document in Document.objects.all():
+        processing.process_uris(document, kwargs)
 
 
 @app.task
