@@ -8,8 +8,8 @@ import logging
 from scrapi.processing.base import BaseProcessor
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
-from django.core.exceptions import ObjectDoesNotExist
-from api.webview.models import Document
+# from django.core.exceptions import ObjectDoesNotExist
+# from api.webview.models import Document
 
 logger = logging.getLogger(__name__)
 
@@ -17,17 +17,15 @@ logger = logging.getLogger(__name__)
 class UriProcessor(BaseProcessor):
     NAME = 'uri_logging'
 
-    def process_uris(self, raw_doc, normalized):
+    def process_uris(self, document):
         try:
-            document = Document.objects.get(source=raw_doc['source'], docID=raw_doc['docID'])
-
             processed_normalized = self.save_status_of_canonical_uri(document.normalized)
             processed_normalized = self.save_status_of_object_uris(processed_normalized)
 
             document.normalized = processed_normalized
 
             document.save()
-        except ObjectDoesNotExist:
+        except TypeError:
             pass
 
     def save_status_of_canonical_uri(self, normalized):
