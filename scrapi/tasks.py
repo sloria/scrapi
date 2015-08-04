@@ -131,9 +131,12 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
 def process_uris(**kwargs):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
     from api.webview.models import Document
-
-    for document in Document.objects.all():
-        processing.process_uris(document, kwargs)
+    if kwargs.get('source'):
+        for document in Document.objects.filter(source=kwargs['source']):
+            processing.process_uris(document, kwargs)
+    else:
+        for document in Document.objects.all():
+            processing.process_uris(document, kwargs)
 
 
 @app.task

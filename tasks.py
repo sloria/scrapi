@@ -188,11 +188,11 @@ def harvesters(async=False, start=None, end=None):
 
 
 @task
-def process_uris(async=False, start=None, end=None):
+def process_uris(async=False, start=None, end=None, source=None):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import process_uris
 
-    process_uris.delay(async=async, start=start, end=None)
+    process_uris.delay(async=async, start=start, end=end, source=source)
 
 
 @task
