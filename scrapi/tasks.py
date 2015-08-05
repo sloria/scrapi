@@ -1,4 +1,5 @@
 import os
+import re  
 import logging
 import functools
 from itertools import islice
@@ -126,11 +127,32 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
 
 
-@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=settings.CELERY_MAX_RETRIES)
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
 @events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris(**kwargs):
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
     from api.webview.models import Document
+
+    URL_RE = re.compile(r'(https?:\/\/[^\/]*)')
+
+    if kwargs.get('async'):
+        uri_buckets = []
+        for source in registry.keys():
+            source_dict = {'source': source, 'uris': [{}]}
+            for document in Document.objects.filter(source=source):
+                if document.normalized:
+                    cannonical_uri = document.normalized['canonicalUri']
+                    base_uri = URL_RE.search(cannonical_uri).group()
+                    for entry in source_dict['uris']:
+                        if base_uri == entry.get('base_uri'):
+                            entry['base_uri']['individual_uris'].append(cannonical_uri)
+                        else:
+                            entry['base_uri'] = base_uri
+                            entry['individual_uris'] = [cannonical_uri]
+            uri_buckets.append(source_dict)
+
+        print(uri_buckets)
+
     if kwargs.get('source'):
         for document in Document.objects.filter(source=kwargs['source']):
             processing.process_uris(document, kwargs)
