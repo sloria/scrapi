@@ -1,5 +1,6 @@
 import os
-import re  
+import re
+import json
 import logging
 import functools
 from itertools import islice
@@ -127,38 +128,32 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
 
 
-@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
-@events.logged(events.PROCESSSING_URIS, 'post_processing')
+# @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+# @events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris(**kwargs):
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
-    from api.webview.models import Document
-
-    URL_RE = re.compile(r'(https?:\/\/[^\/]*)')
 
     if kwargs.get('async'):
-        uri_buckets = []
-        for source in registry.keys():
-            source_dict = {'source': source, 'uris': [{}]}
-            for document in Document.objects.filter(source=source):
-                if document.normalized:
-                    cannonical_uri = document.normalized['canonicalUri']
-                    base_uri = URL_RE.search(cannonical_uri).group()
-                    for entry in source_dict['uris']:
-                        if base_uri == entry.get('base_uri'):
-                            entry['base_uri']['individual_uris'].append(cannonical_uri)
-                        else:
-                            entry['base_uri'] = base_uri
-                            entry['individual_uris'] = [cannonical_uri]
-            uri_buckets.append(source_dict)
+        all_buckets = []
+        if kwargs.get('source'):
+            uri_buckets = util.parse_urls_into_groups(kwargs.get('source'))
+            all_buckets.append(uri_buckets)
+        else:
+            for source in registry.keys():
+                uri_buckets = util.parse_urls_into_groups(source)
+                all_buckets.append(uri_buckets)
 
-        print(uri_buckets)
+        print(json.dumps(all_buckets, indent=4))
 
-    if kwargs.get('source'):
-        for document in Document.objects.filter(source=kwargs['source']):
-            processing.process_uris(document, kwargs)
-    else:
-        for document in Document.objects.all():
-            processing.process_uris(document, kwargs)
+        for source_dict in uri_buckets:
+            for group in source_dict['uris']:
+                process_uris_at_one_base_uri(group['individual_uris'])
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+@events.logged(events.PROCESSSING_URIS, 'post_processing')
+def process_uris_at_one_base_uri(uri_list):
+    for uri in uri_list:
+        processing.process_uris(source=uri['source'], docID=uri['docID'], uri=uri['uri'])
 
 
 @app.task
