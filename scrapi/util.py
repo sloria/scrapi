@@ -1,7 +1,14 @@
 from datetime import datetime
 
+import os
+import re
 import six
 import pytz
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
+from api.webview.models import Document
+
+URL_RE = re.compile(r'(https?:\/\/[^\/]*)')
 
 
 def timestamp():
@@ -51,3 +58,58 @@ def json_without_bytes(jobj):
         if isinstance(v, six.binary_type):
             jobj[k] = v.decode('utf8')
     return jobj
+
+
+def parse_urls_into_groups(source):
+
+    uri_buckets = []
+    for document in Document.objects.filter(source=source):
+        if document.normalized:
+            cannonical_uri = document.normalized['uris']['canonicalUri']
+            provider_uris = document.normalized['uris'].get('providerUris')
+            descriptor_uris = document.normalized['uris'].get('descriptorUris')
+            object_uris = document.normalized['uris'].get('objectUris')
+
+        uri_buckets.append(cannonical_uri_processing(cannonical_uri, document.normalized))
+
+        if provider_uris:
+            uri_buckets = other_uri_processing(provider_uris, 'providerUris', uri_buckets)
+        if descriptor_uris:
+            uri_buckets = other_uri_processing(descriptor_uris, 'descriptorUris', uri_buckets)
+        if object_uris:
+            uri_buckets = other_uri_processing(object_uris, 'objectUris', uri_buckets)
+
+    return uri_buckets
+
+
+def other_uri_processing(uri, uritype, uri_buckets):
+    pass
+
+
+def cannonical_uri_processing(cannonical_uri, normalized):
+    source_dict = {'source': source, 'uris': [{}]}
+    base_uri = URL_RE.search(cannonical_uri).group()
+    for entry in source_dict['uris']:
+        if base_uri == entry.get('base_uri'):
+            if entry.get('individual_uris'):
+                entry['individual_uris'].append({
+                    'uri': cannonical_uri,
+                    'source': normalized['shareProperties']['source'],
+                    'docID': normalized['shareProperties']['docID'],
+                    'type': 'cannonicalUri'
+                })
+            else:
+                entry['individual_uris'] = [{
+                    'uri': cannonical_uri,
+                    'source': normalized['shareProperties']['source'],
+                    'docID': normalized['shareProperties']['docID'],
+                    'type': 'cannonicalUri'
+                }]
+        else:
+            entry['base_uri'] = base_uri
+            entry['individual_uris'] = [{
+                'uri': cannonical_uri,
+                'source': normalized['shareProperties']['source'],
+                'docID': normalized['shareProperties']['docID'],
+                'type': 'cannonicalUri'
+            }]
