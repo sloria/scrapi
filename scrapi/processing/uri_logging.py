@@ -1,10 +1,14 @@
 from __future__ import absolute_import
 
+import os
 import datetime
 import requests
 import logging
 
 from scrapi.processing.base import BaseProcessor
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
+from api.webview.models import Document
 
 
 logger = logging.getLogger(__name__)
@@ -13,10 +17,11 @@ logger = logging.getLogger(__name__)
 class UriProcessor(BaseProcessor):
     NAME = 'uri_logging'
 
-    def process_uris(self, document):
+    def process_uris(self, source, docID, uri):
         try:
-            processed_normalized = self.save_status_of_canonical_uri(document.normalized)
-            processed_normalized = self.save_status_of_object_uris(processed_normalized)
+            document = Document.objects.get(source=source, docID=docID)
+            processed_normalized = self.save_status_of_canonical_uri(document.normalized, uri)
+            # processed_normalized = self.save_status_of_object_uris(processed_normalized)
 
             document.normalized = processed_normalized
 
@@ -24,11 +29,11 @@ class UriProcessor(BaseProcessor):
         except TypeError:
             pass
 
-    def save_status_of_canonical_uri(self, normalized):
-        cannonical_uri_status = requests.get(normalized['uris']['canonicalUri'])
+    def save_status_of_canonical_uri(self, normalized, uri):
+        cannonical_uri_status = requests.get(uri)
 
         cannonical_status = {
-            'actual_uri': normalized['uris']['canonicalUri'],
+            'actual_uri': uri,
             'resolved_uri': cannonical_uri_status.url,
             'resolved_datetime': datetime.datetime.now(),
             'resolved_status': cannonical_uri_status.status_code,
