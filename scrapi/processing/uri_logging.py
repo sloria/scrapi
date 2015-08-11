@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 class UriProcessor(BaseProcessor):
     NAME = 'uri_logging'
 
-    def process_uris(self, source, docID, uri):
+    def process_uris(self, source, docID, uri, uritype):
         try:
             document = Document.objects.get(source=source, docID=docID)
-            processed_normalized = self.save_status_of_canonical_uri(document.normalized, uri)
+            processed_normalized = self.save_status_of_uri(document.normalized, uri, uritype)
             # processed_normalized = self.save_status_of_object_uris(processed_normalized)
 
             document.normalized = processed_normalized
@@ -29,47 +29,22 @@ class UriProcessor(BaseProcessor):
         except TypeError:
             pass
 
-    def save_status_of_canonical_uri(self, normalized, uri):
-        cannonical_uri_status = requests.get(uri)
+    def save_status_of_uri(self, normalized, uri, uritype):
+        uri_status = requests.get(uri)
 
-        cannonical_status = {
+        status = {
             'actual_uri': uri,
-            'resolved_uri': cannonical_uri_status.url,
+            'uritype': uritype,
+            'resolved_uri': uri_status.url,
             'resolved_datetime': datetime.datetime.now(),
-            'resolved_status': cannonical_uri_status.status_code,
+            'resolved_status': uri_status.status_code,
             'is_doi': True if 'dx.doi.org' in normalized['uris']['canonicalUri'] else False
         }
 
         try:
-            normalized['shareProperties']['uri_logs']['cannonical_status'].append(cannonical_status)
+            normalized['shareProperties']['uri_logs']['status'].append(status)
         except KeyError:
             normalized['shareProperties']['uri_logs'] = {}
-            normalized['shareProperties']['uri_logs']['cannonical_status'] = [cannonical_status]
-
-        return normalized
-
-    def save_status_of_object_uris(self, normalized):
-        try:
-            all_object_uris = normalized['uris']['object_uris']
-        except KeyError:
-            return normalized
-
-        for uri in all_object_uris:
-            current_list = []
-            uri_resolved = requests.get(uri)
-
-            uri_status = {
-                'actual_uri': uri,
-                'resolved_uri': uri_resolved.url,
-                'resolved_datetime': datetime.datetime.now(),
-                'resolved_status': uri_resolved.status_code,
-                'is_doi': True if 'dx.doi.org' in uri else False
-            }
-            current_list.append(uri_status)
-
-        try:
-            normalized['shareProperties']['uri_logs']['object_status'].append(current_list)
-        except KeyError:
-            normalized['shareProperties']['uri_logs']['object_status'] = [current_list]
+            normalized['shareProperties']['uri_logs']['status'] = [status]
 
         return normalized
