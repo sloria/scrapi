@@ -98,7 +98,7 @@ def uri_processing(uri, source, docID, source_dict, uritype):
                     'uri': uri,
                     'source': source,
                     'docID': docID,
-                    'type': uritype
+                    'uritype': uritype
                 })
     else:
         source_dict['uris'].append({
@@ -107,7 +107,7 @@ def uri_processing(uri, source, docID, source_dict, uritype):
                 'uri': uri,
                 'source': source,
                 'docID': docID,
-                'type': uritype
+                'uritype': uritype
             }]
         })
         source_dict['all_bases'].append(base_uri)
