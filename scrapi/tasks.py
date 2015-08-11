@@ -128,23 +128,20 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
 
 
-# @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
-# @events.logged(events.PROCESSSING_URIS, 'post_processing')
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+@events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris(**kwargs):
-
     if kwargs.get('async'):
         all_buckets = []
         if kwargs.get('source'):
-            uri_buckets = util.parse_urls_into_groups(kwargs.get('source'))
-            all_buckets.append(uri_buckets)
+            source_buckets = util.parse_urls_into_groups(kwargs['source'])
+            all_buckets.append(source_buckets)
         else:
             for source in registry.keys():
-                uri_buckets = util.parse_urls_into_groups(source)
-                all_buckets.append(uri_buckets)
+                source_buckets = util.parse_urls_into_groups(source)
+                all_buckets.append(source_buckets)
 
-        print(json.dumps(all_buckets, indent=4))
-
-        for source_dict in uri_buckets:
+        for source_dict in all_buckets:
             for group in source_dict['uris']:
                 process_uris_at_one_base_uri(group['individual_uris'])
 
@@ -153,7 +150,12 @@ def process_uris(**kwargs):
 @events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris_at_one_base_uri(uri_list):
     for uri in uri_list:
-        processing.process_uris(source=uri['source'], docID=uri['docID'], uri=uri['uri'])
+        processing.process_uris(
+            source=uri['source'],
+            docID=uri['docID'],
+            uri=uri['uri'],
+            uritype=uri['uritype']
+        )
 
 
 @app.task
