@@ -243,6 +243,12 @@ def apiserver():
 
 @task
 def reset_all():
+    try:
+        input = raw_input
+    except Exception:
+        pass
+    if input('Are you sure? y/N ') != 'y':
+        return
     os.system('psql -c "DROP DATABASE scrapi;"')
     os.system('psql -c "CREATE DATABASE scrapi;"')
     os.system('python manage.py migrate')
