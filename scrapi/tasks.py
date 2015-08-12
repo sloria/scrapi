@@ -128,26 +128,31 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
 @events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris(**kwargs):
-    if kwargs.get('async'):
-        all_buckets = []
-        if kwargs.get('source'):
-            source_buckets = util.parse_urls_into_groups(kwargs['source'])
+    all_buckets = []
+    if kwargs.get('source'):
+        source_buckets = util.parse_urls_into_groups(kwargs['source'])
+        all_buckets.append(source_buckets)
+    else:
+        for source in registry.keys():
+            source_buckets = util.parse_urls_into_groups(source)
             all_buckets.append(source_buckets)
-        else:
-            for source in registry.keys():
-                source_buckets = util.parse_urls_into_groups(source)
-                all_buckets.append(source_buckets)
 
-        for source_dict in all_buckets:
-            for group in source_dict['uris']:
+    for source_dict in all_buckets:
+        for group in source_dict['uris']:
+            if kwargs.get('async'):
+                process_uris_at_one_base_uri.delay(group['individual_uris'], kwargs['async'])
+            else:
                 process_uris_at_one_base_uri(group['individual_uris'])
 
 
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
 @events.logged(events.PROCESSSING_URIS, 'post_processing')
-def process_uris_at_one_base_uri(uri_list):
+def process_uris_at_one_base_uri(uri_list, async=False):
     for uri in uri_list:
-        process_one_uri(uri)
+        if async:
+            process_one_uri.delay(uri)
+        else:
+            process_one_uri(uri)
 
 
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0, rate_limit='5/s')
