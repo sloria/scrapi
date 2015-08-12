@@ -7,5 +7,5 @@ class BaseProcessor(object):
     def process_normalized(self, raw_doc, normalized, **kwargs):
         pass  # pragma: no cover
 
-    def post_process(raw_doc, normalized, kwargs):
-        pass
+    def process_uris(self, source, docID, uri, uritype, **kwargs):
+        pass  # pragma: no cover

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class UriProcessor(BaseProcessor):
     NAME = 'uri_logging'
 
-    def process_uris(self, source, docID, uri, uritype):
+    def process_uris(self, source, docID, uri, uritype, **kwargs):
         try:
             document = Document.objects.get(source=source, docID=docID)
             processed_normalized = self.save_status_of_uri(document.normalized, uri, uritype)
