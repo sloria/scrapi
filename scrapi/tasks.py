@@ -1,6 +1,3 @@
-import os
-import re
-import json
 import logging
 import functools
 from itertools import islice
@@ -150,12 +147,18 @@ def process_uris(**kwargs):
 @events.logged(events.PROCESSSING_URIS, 'post_processing')
 def process_uris_at_one_base_uri(uri_list):
     for uri in uri_list:
-        processing.process_uris(
-            source=uri['source'],
-            docID=uri['docID'],
-            uri=uri['uri'],
-            uritype=uri['uritype']
-        )
+        process_one_uri(uri)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0, rate_limit='5/s')
+@events.logged(events.PROCESSSING_URIS, 'post_processing')
+def process_one_uri(uri):
+    processing.process_uris(
+        source=uri['source'],
+        docID=uri['docID'],
+        uri=uri['uri'],
+        uritype=uri['uritype']
+    )
 
 
 @app.task
