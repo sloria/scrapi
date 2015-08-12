@@ -237,6 +237,11 @@ def provider_map(delete=False):
 
 
 @task
+def apiserver():
+    os.system('python manage.py runserver')
+
+
+@task
 def reset_all():
     os.system('psql -c "DROP DATABASE scrapi;"')
     os.system('psql -c "CREATE DATABASE scrapi;"')
