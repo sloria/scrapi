@@ -21,7 +21,6 @@ class UriProcessor(BaseProcessor):
         try:
             document = Document.objects.get(source=source, docID=docID)
             processed_normalized = self.save_status_of_uri(document.normalized, uri, uritype)
-            # processed_normalized = self.save_status_of_object_uris(processed_normalized)
 
             document.normalized = processed_normalized
 
