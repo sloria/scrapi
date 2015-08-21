@@ -6,7 +6,7 @@ import requests
 import logging
 # from furl import furl
 
-from scrapi.processing import scrapers
+# from scrapi.processing import scrapers
 from scrapi.processing.base import BaseProcessor
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
@@ -48,12 +48,12 @@ class UriProcessor(BaseProcessor):
             normalized['shareProperties']['uri_logs'] = {}
             normalized['shareProperties']['uri_logs']['status'] = [status]
 
-        extra_info = scrapers.collect_scraped(uri)
+        # extra_info = scrapers.collect_scraped(uri)
 
-        if extra_info:
-            try:
-                normalized['shareProperties']['scraped_properties'].append(extra_info)
-            except KeyError:
-                normalized['shareProperties']['scraped_properties'] = [extra_info]
+        # if extra_info:
+        #     try:
+        #         normalized['shareProperties']['scraped_properties'].append(extra_info)
+        #     except KeyError:
+        #         normalized['shareProperties']['scraped_properties'] = [extra_info]
 
         return normalized

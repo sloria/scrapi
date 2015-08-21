@@ -83,7 +83,12 @@ def parse_urls_into_groups(source):
                     source_dict = uri_processing(uri, source, docID, source_dict, 'descriptorUris')
             if document.normalized['uris'].get('objectUris'):
                 for uri in document.normalized['uris']['objectUris']:
-                    source_dict = uri_processing(uri, source, docID, source_dict, 'objectUris')
+                    if uri:
+                        if isinstance(uri, list):
+                            for element in uri:
+                                source_dict = uri_processing(element, source, docID, source_dict, 'objectUris')
+                        else:
+                            source_dict = uri_processing(uri, source, docID, source_dict, 'objectUris')
 
     return source_dict
 
