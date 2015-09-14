@@ -7,17 +7,11 @@ Example API calls for each service in each harvester
 
 from __future__ import unicode_literals
 
-import furl
-from lxml import etree
-from datetime import timedelta, date
 
-from scrapi import util
-from scrapi import settings
-from scrapi.base import OAIHarvester
-from scrapi.linter.document import RawDocument
+from scrapi.base import PensoftHarvester
 
 
-class BiodiversityDataJournalHarvester(OAIHarvester):
+class BiodiversityDataJournalHarvester(PensoftHarvester):
     '''Harvester for Biodiversity Data Journal
     Sample API Call = http://bdj.pensoft.net/oai.php?set=bdj?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -27,42 +21,9 @@ class BiodiversityDataJournalHarvester(OAIHarvester):
     url = 'http://bdj.pensoft.net'
 
     base_url = 'http://bdj.pensoft.net/oai.php?set=bdj'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class ZooKeysHarvester(OAIHarvester):
+class ZooKeysHarvester(PensoftHarvester):
     '''Harvester for ZooKeys
     Sample API Call = http://zookeys.pensoft.net/oai.php?set=zookeys?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -72,42 +33,9 @@ class ZooKeysHarvester(OAIHarvester):
     url = 'http://zookeys.pensoft.net'
 
     base_url = 'http://zookeys.pensoft.net/oai.php?set=zookeys'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class PhytoKeysHarvester(OAIHarvester):
+class PhytoKeysHarvester(PensoftHarvester):
     '''Harvester for PhytoKeys
     Sample API Call = http://phytokeys.pensoft.net/oai.php?set=phytokeys?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -117,42 +45,9 @@ class PhytoKeysHarvester(OAIHarvester):
     url = 'http://phytokeys.pensoft.net'
 
     base_url = 'http://phytokeys.pensoft.net/oai.php?set=phytokeys'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class MycoKeysHarvester(OAIHarvester):
+class MycoKeysHarvester(PensoftHarvester):
     '''Harvester for MycoKeys
     Sample API Call = http://mycokeys.pensoft.net/oai.php?set=mycokeys?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -162,42 +57,9 @@ class MycoKeysHarvester(OAIHarvester):
     url = 'http://mycokeys.pensoft.net'
 
     base_url = 'http://mycokeys.pensoft.net/oai.php?set=mycokeys'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class BioRiskHarvester(OAIHarvester):
+class BioRiskHarvester(PensoftHarvester):
     '''Harvester for BioRisk
     Sample API Call = http://biorisk.pensoft.net/oai.php?set=biorisk?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -207,42 +69,9 @@ class BioRiskHarvester(OAIHarvester):
     url = 'http://biorisk.pensoft.net'
 
     base_url = 'http://biorisk.pensoft.net/oai.php?set=biorisk'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class ComparativeCytogeneticsHarvester(OAIHarvester):
+class ComparativeCytogeneticsHarvester(PensoftHarvester):
     '''Harvester for Comparative Cytogenetics
     Sample API Call = http://compcytogen.pensoft.net/oai.php?set=compcytogen?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -252,42 +81,9 @@ class ComparativeCytogeneticsHarvester(OAIHarvester):
     url = 'http://compcytogen.pensoft.net'
 
     base_url = 'http://compcytogen.pensoft.net/oai.php?set=compcytogen'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class InternationalJournalofMyriapodologyHarvester(OAIHarvester):
+class InternationalJournalofMyriapodologyHarvester(PensoftHarvester):
     '''Harvester for International Journal of Myriapodology
     Sample API Call = http://ijm.pensoft.net/oai.php?set=ijm?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -297,42 +93,9 @@ class InternationalJournalofMyriapodologyHarvester(OAIHarvester):
     url = 'http://ijm.pensoft.net'
 
     base_url = 'http://ijm.pensoft.net/oai.php?set=ijm'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class JournalofHymenopteraResearchHarvester(OAIHarvester):
+class JournalofHymenopteraResearchHarvester(PensoftHarvester):
     '''Harvester for Journal of Hymenoptera Research
     Sample API Call = http://jhr.pensoft.net/oai.php?set=jhr?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -342,42 +105,9 @@ class JournalofHymenopteraResearchHarvester(OAIHarvester):
     url = 'http://jhr.pensoft.net'
 
     base_url = 'http://jhr.pensoft.net/oai.php?set=jhr'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class NatureConservationHarvester(OAIHarvester):
+class NatureConservationHarvester(PensoftHarvester):
     '''Harvester for Nature Conservation
     Sample API Call = http://natureconservation.pensoft.net/oai.php?set=natureconservation?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -387,42 +117,9 @@ class NatureConservationHarvester(OAIHarvester):
     url = 'http://natureconservation.pensoft.net'
 
     base_url = 'http://natureconservation.pensoft.net/oai.php?set=natureconservation'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class NeoBiotaHarvester(OAIHarvester):
+class NeoBiotaHarvester(PensoftHarvester):
     '''Harvester for NeoBiota
     Sample API Call = http://neobiota.pensoft.net/oai.php?set=neobiota?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -432,42 +129,9 @@ class NeoBiotaHarvester(OAIHarvester):
     url = 'http://neobiota.pensoft.net'
 
     base_url = 'http://neobiota.pensoft.net/oai.php?set=neobiota'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class SubterraneanBiologyHarvester(OAIHarvester):
+class SubterraneanBiologyHarvester(PensoftHarvester):
     '''Harvester for Subterranean Biology
     Sample API Call = http://subtbiol.pensoft.net/oai.php?set=subtbiol?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -477,42 +141,9 @@ class SubterraneanBiologyHarvester(OAIHarvester):
     url = 'http://subtbiol.pensoft.net'
 
     base_url = 'http://subtbiol.pensoft.net/oai.php?set=subtbiol'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class DeutscheEntomologischeZeitschriftHarvester(OAIHarvester):
+class DeutscheEntomologischeZeitschriftHarvester(PensoftHarvester):
     '''Harvester for Deutsche Entomologische Zeitschrift
     Sample API Call = http://dez.pensoft.net/oai.php?set=dez?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -522,42 +153,9 @@ class DeutscheEntomologischeZeitschriftHarvester(OAIHarvester):
     url = 'http://dez.pensoft.net'
 
     base_url = 'http://dez.pensoft.net/oai.php?set=dez'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
 
 
-class ZoosystematicsandEvolutionHarvester(OAIHarvester):
+class ZoosystematicsandEvolutionHarvester(PensoftHarvester):
     '''Harvester for Zoosystematics and Evolution
     Sample API Call = http://zse.pensoft.net/oai.php?set=zse?verb=ListRecords&metadataPrefix=oai_dc
     '''
@@ -567,36 +165,3 @@ class ZoosystematicsandEvolutionHarvester(OAIHarvester):
     url = 'http://zse.pensoft.net'
 
     base_url = 'http://zse.pensoft.net/oai.php?set=zse'
-    property_list = ['format', 'rights', 'source', 'relation', 'date', 'identifier', 'type', 'setSpec']
-    timezone_granularity = False
-
-    def harvest(self, start_date=None, end_date=None):
-
-        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
-        end_date = (end_date or date.today()).isoformat()
-
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
-        url = furl.furl(self.base_url)
-        url.args['verb'] = 'ListRecords'
-        url.args['metadataPrefix'] = 'oai_dc'
-        url.args['from'] = start_date
-        # don't include the end date for pensoft harvesters
-
-        records = self.get_records(url.url, start_date)
-
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
-                'filetype': 'xml'
-            }))
-
-        return rawdoc_list
