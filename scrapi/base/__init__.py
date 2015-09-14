@@ -196,7 +196,7 @@ class OAIHarvester(XMLHarvester):
 
         return rawdoc_list
 
-    def get_records(self, url, start_date, end_date):
+    def get_records(self, url, start_date, end_date=None):
         url = furl(url)
         all_records, token = oai_get_records_and_token(url.url, self.timeout, self.force_request_update, self.namespaces, self.verify)
 
