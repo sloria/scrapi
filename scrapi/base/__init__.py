@@ -165,7 +165,7 @@ class OAIHarvester(XMLHarvester):
         ret = dc + ns0
         return ret[0] if len(ret) == 1 else ret
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, resume=True):
 
         start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
         end_date = (end_date or date.today()).isoformat()
@@ -180,7 +180,7 @@ class OAIHarvester(XMLHarvester):
         url.args['from'] = start_date
         url.args['until'] = end_date
 
-        records = self.get_records(url.url, start_date, end_date)
+        records = self.get_records(url.url, start_date, end_date, resume)
 
         rawdoc_list = []
         for record in records:
@@ -196,17 +196,18 @@ class OAIHarvester(XMLHarvester):
 
         return rawdoc_list
 
-    def get_records(self, url, start_date, end_date):
+    def get_records(self, url, start_date, end_date, resume):
         url = furl(url)
         all_records, token = oai_get_records_and_token(url.url, self.timeout, self.force_request_update, self.namespaces, self.verify)
 
-        while token:
-            url.remove('from')
-            url.remove('until')
-            url.remove('metadataPrefix')
-            url.args['resumptionToken'] = token[0]
-            records, token = oai_get_records_and_token(url.url, self.timeout, self.force_request_update, self.namespaces, self.verify)
-            all_records += records
+        if resume:
+            while token:
+                url.remove('from')
+                url.remove('until')
+                url.remove('metadataPrefix')
+                url.args['resumptionToken'] = token[0]
+                records, token = oai_get_records_and_token(url.url, self.timeout, self.force_request_update, self.namespaces, self.verify)
+                all_records += records
 
         return all_records
 
