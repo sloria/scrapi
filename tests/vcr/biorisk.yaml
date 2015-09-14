@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.4.1 CPython/2.7.9 Darwin/13.4.0]
+    method: GET
+    uri: http://biorisk.pensoft.net/oai.php?set=biorisk&verb=ListRecords&metadataPrefix=oai_dc&from=2014-05-12
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate, post-check=0, pre-check=0']
+      content-encoding: [gzip]
+      content-length: ['1758']
+      content-type: [text/xml]
+      date: ['Mon, 14 Sep 2015 19:29:11 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      pragma: [no-cache]
+      server: [Apache/2.2.22 (Debian)]
+      set-cookie: [PHPSESSID=icosamecv2vrv9bje708mfrf36; path=/; domain=.pensoft.net]
+      vary: ['Host,Accept-Encoding']
+      x-powered-by: [PHP/5.4.41-0+deb7u1]
+    status: {code: 200, message: OK}
+version: 1
