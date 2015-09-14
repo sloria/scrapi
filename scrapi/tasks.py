@@ -1,4 +1,5 @@
 import logging
+import json
 import functools
 from itertools import islice
 from datetime import date, timedelta
@@ -123,6 +124,49 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
     if not normalized_doc:
         raise events.Skip('Not processing document with id {}'.format(raw_doc['docID']))
     processing.process_normalized(raw_doc, normalized_doc, kwargs)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+@events.logged(events.PROCESSSING_URIS, 'uri_processing')
+def process_uris(async, **kwargs):
+    settings.CELERY_ALWAYS_EAGER = not async
+
+    all_buckets = []
+    if kwargs.get('source'):
+        source_buckets = util.parse_urls_into_groups(kwargs['source'])
+        all_buckets.append(source_buckets)
+    else:
+        for source in registry.keys():
+            source_buckets = util.parse_urls_into_groups(source)
+            all_buckets.append(source_buckets)
+
+    with open('all_sources.json', 'w') as outfile:
+        json.dump(all_buckets, outfile)
+
+    # for source_dict in all_buckets:
+    #     for group in source_dict['uris']:
+    #         process_uris_at_one_base_uri.delay(group['individual_uris'], async, kwargs=kwargs)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+@events.logged(events.PROCESSSING_URIS, 'uri_processing')
+def process_uris_at_one_base_uri(uri_list, async=False, **kwargs):
+    settings.CELERY_ALWAYS_EAGER = not async
+
+    for uri in uri_list:
+        process_one_uri.delay(uri, kwargs=kwargs)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0, rate_limit='5/s')
+@events.logged(events.PROCESSSING_URIS, 'uri_processing')
+def process_one_uri(uri, **kwargs):
+    processing.process_uris(
+        source=uri['source'],
+        docID=uri['docID'],
+        uri=uri['uri'],
+        uritype=uri['uritype'],
+        kwargs=kwargs
+    )
 
 
 @app.task

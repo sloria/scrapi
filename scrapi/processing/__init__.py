@@ -34,3 +34,9 @@ def process_raw(raw_doc, kwargs):
     for p in settings.RAW_PROCESSING:
         extras = kwargs.get(p, {})
         get_processor(p).process_raw(raw_doc, **extras)
+
+
+def process_uris(source, docID, uri, uritype, kwargs):
+    for p in settings.POST_PROCESSING:
+        extras = kwargs.get(p, {})
+        get_processor(p).process_uris(source, docID, uri, uritype, **extras)

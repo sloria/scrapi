@@ -1,7 +1,14 @@
 from datetime import datetime
 
+import os
+import re
 import six
 import pytz
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
+from api.webview.models import Document
+
+URL_RE = re.compile(r'(https?:\/\/[^\/]*)')
 
 
 def timestamp():
@@ -51,3 +58,63 @@ def json_without_bytes(jobj):
         if isinstance(v, six.binary_type):
             jobj[k] = v.decode('utf8')
     return jobj
+
+
+def parse_urls_into_groups(source):
+
+    source_dict = {'source': source, 'uris': [], 'all_bases': []}
+    for document in Document.objects.filter(source=source):
+        if document.normalized:
+            docID = document.normalized['shareProperties']['docID']
+
+            source_dict = uri_processing(
+                document.normalized['uris']['canonicalUri'],
+                source,
+                docID,
+                source_dict,
+                'cannonicalUri'
+            )
+
+            if document.normalized['uris'].get('providerUris'):
+                for uri in document.normalized['uris']['providerUris']:
+                    source_dict = uri_processing(uri, source, docID, source_dict, 'providerUris')
+            if document.normalized['uris'].get('descriptorUris'):
+                for uri in document.normalized['uris']['descriptorUris']:
+                    source_dict = uri_processing(uri, source, docID, source_dict, 'descriptorUris')
+            if document.normalized['uris'].get('objectUris'):
+                for uri in document.normalized['uris']['objectUris']:
+                    if uri:
+                        if isinstance(uri, list):
+                            for element in uri:
+                                source_dict = uri_processing(element, source, docID, source_dict, 'objectUris')
+                        else:
+                            source_dict = uri_processing(uri, source, docID, source_dict, 'objectUris')
+
+    return source_dict
+
+
+def uri_processing(uri, source, docID, source_dict, uritype):
+    base_uri = URL_RE.search(uri).group()
+
+    if base_uri in source_dict['all_bases']:
+        for entry in source_dict['uris']:
+            if base_uri == entry['base_uri']:
+                entry['individual_uris'].append({
+                    'uri': uri,
+                    'source': source,
+                    'docID': docID,
+                    'uritype': uritype
+                })
+    else:
+        source_dict['uris'].append({
+            'base_uri': base_uri,
+            'individual_uris': [{
+                'uri': uri,
+                'source': source,
+                'docID': docID,
+                'uritype': uritype
+            }]
+        })
+        source_dict['all_bases'].append(base_uri)
+
+    return source_dict

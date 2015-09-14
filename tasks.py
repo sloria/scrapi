@@ -1,3 +1,4 @@
+import os
 import base64
 import logging
 import platform
@@ -13,19 +14,20 @@ from scrapi import linter
 from scrapi import registry
 from scrapi import settings
 
-from scrapi.processing.elasticsearch import es
 
 logger = logging.getLogger()
 
 
 @task
 def reindex(src, dest):
+    from scrapi.processing.elasticsearch import es
     helpers.reindex(es, src, dest)
     es.indices.delete(src)
 
 
 @task
 def alias(alias, index):
+    from scrapi.processing.elasticsearch import es
     es.indices.delete_alias(index=alias, name='_all', ignore=404)
     es.indices.put_alias(alias, index)
 
@@ -122,7 +124,7 @@ def test(cov=True, verbose=False, debug=False):
     if debug:
         cmd += ' -s'
     if cov:
-        cmd += ' --cov-report term-missing --cov-config .coveragerc --cov scrapi'
+        cmd += ' --cov-report term-missing --cov-config .coveragerc --cov scrapi --cov api'
 
     run(cmd, pty=True)
 
@@ -186,6 +188,14 @@ def harvesters(async=False, start=None, end=None):
 
 
 @task
+def process_uris(async=False, source=None):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import process_uris
+
+    process_uris.delay(async=async, source=source)
+
+
+@task
 def lint_all():
     for name in registry.keys():
         lint(name)
@@ -224,3 +234,25 @@ def provider_map(delete=False):
             refresh=True
         )
     print(es.count('share_providers', body={'query': {'match_all': {}}})['count'])
+
+
+@task
+def apiserver():
+    os.system('python manage.py runserver')
+
+
+@task
+def reset_all():
+    try:
+        input = raw_input
+    except Exception:
+        pass
+    if input('Are you sure? y/N ') != 'y':
+        return
+    os.system('psql -c "DROP DATABASE scrapi;"')
+    os.system('psql -c "CREATE DATABASE scrapi;"')
+    os.system('python manage.py migrate')
+
+    os.system("curl -XDELETE '{}/share*'".format(settings.ELASTIC_URI))
+    os.system("invoke alias share share_v2")
+    os.system("invoke provider_map")
