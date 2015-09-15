@@ -17,7 +17,7 @@ def test_harvester(monkeypatch, harvester_name, *args, **kwargs):
     harvester = registry[harvester_name]
 
     with vcr.use_cassette('tests/vcr/{}.yaml'.format(harvester_name), match_on=['host'], record_mode='none'):
-        harvested = harvester.harvest()
+        harvested = harvester.harvest(resume=False)
         assert len(harvested) > 0
 
     normalized = list(filter(lambda x: x is not None, map(harvester.normalize, harvested[:25])))
