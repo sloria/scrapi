@@ -48,7 +48,7 @@ class PlosHarvester(XMLHarvester):
     MAX_ROWS_PER_REQUEST = 999
     BASE_URL = 'http://api.plos.org/search'
 
-    def fetch_rows(self, start_date, end_date):
+    def fetch_rows(self, start_date, end_date, resume):
         query = 'publication_date:[{}T00:00:00Z TO {}T00:00:00Z]'.format(start_date, end_date)
 
         resp = requests.get(self.BASE_URL, params={
@@ -72,9 +72,12 @@ class PlosHarvester(XMLHarvester):
             for doc in etree.XML(response.content).xpath('//doc'):
                 yield doc
 
-            current_row += self.MAX_ROWS_PER_REQUEST
+            if resume:
+                current_row += self.MAX_ROWS_PER_REQUEST
+            else:
+                break
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, resume=True):
 
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
         end_date = end_date or date.today()
@@ -90,7 +93,7 @@ class PlosHarvester(XMLHarvester):
                 'docID': row.xpath("str[@name='id']")[0].text,
             })
             for row in
-            self.fetch_rows(start_date.isoformat(), end_date.isoformat())
+            self.fetch_rows(start_date.isoformat(), end_date.isoformat(), resume)
             if row.xpath("arr[@name='abstract']")
             or row.xpath("str[@name='author_display']")
         ]
