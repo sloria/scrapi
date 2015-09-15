@@ -75,6 +75,25 @@ def test_run_harvester_daysback(monkeypatch):
     mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=True)
 
 
+def test_run_harvester_no_resume(monkeypatch):
+    mock_harvest = mock.MagicMock()
+    mock_begin_norm = mock.MagicMock()
+
+    monkeypatch.setattr('scrapi.tasks.harvest', mock_harvest)
+    monkeypatch.setattr('scrapi.tasks.begin_normalization', mock_begin_norm)
+
+    start_date = date(2015, 3, 14)
+    end_date = date(2015, 3, 16)
+
+    tasks.run_harvester('test', start_date=start_date, end_date=end_date, resume=False)
+
+    assert mock_harvest.si.called
+    assert mock_begin_norm.s.called
+
+    mock_begin_norm.s.assert_called_once_with('test')
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=False)
+
+
 @pytest.mark.usefixtures('harvester')
 def test_harvest_runs_harvest(harvester):
     tasks.harvest('test', 'TIME')
