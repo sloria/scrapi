@@ -96,7 +96,7 @@ class BiomedCentralHarvester(JSONHarvester):
         date_number = end_date - start_date
 
         search_url = self.URL.format(date_number.days)
-        records = self.get_records(search_url)
+        records = self.get_records(search_url, resume)
 
         record_list = []
         for record in records:
