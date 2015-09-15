@@ -85,14 +85,14 @@ class OSFHarvester(JSONHarvester):
             )
         }
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, resume=True):
         # Always harvest a 2 day period starting 2 days back to honor time given
         # to contributors to cancel a public registration
         start_date = start_date or date.today() - timedelta(4)
         end_date = end_date or date.today() - timedelta(2)
 
         search_url = self.URL.format(start_date.isoformat(), end_date.isoformat())
-        records = self.get_records(search_url)
+        records = self.get_records(search_url, resume)
 
         record_list = []
         for record in records:
@@ -111,7 +111,7 @@ class OSFHarvester(JSONHarvester):
 
         return record_list
 
-    def get_records(self, search_url):
+    def get_records(self, search_url, resume):
         records = requests.get(search_url)
 
         try:
@@ -128,6 +128,10 @@ class OSFHarvester(JSONHarvester):
                 all_records.append(record)
 
             from_arg += 1000
-            records = requests.get(search_url + '&from={}'.format(str(from_arg)), throttle=10)
+
+            if resume:
+                records = requests.get(search_url + '&from={}'.format(str(from_arg)), throttle=10)
+            else:
+                break
 
         return all_records
