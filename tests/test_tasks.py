@@ -53,7 +53,7 @@ def test_run_harvester_calls(monkeypatch):
     start_date = end_date - timedelta(settings.DAYS_BACK)
 
     mock_begin_norm.s.assert_called_once_with('test')
-    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date)
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=True)
 
 
 def test_run_harvester_daysback(monkeypatch):
@@ -72,7 +72,7 @@ def test_run_harvester_daysback(monkeypatch):
     assert mock_begin_norm.s.called
 
     mock_begin_norm.s.assert_called_once_with('test')
-    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date)
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=True)
 
 
 @pytest.mark.usefixtures('harvester')
@@ -95,7 +95,7 @@ def test_harvest_days_back(harvester):
         assert key in timestamps.keys()
 
     assert harvester.harvest.called
-    harvester.harvest.assert_called_once_with(start_date=start_date, end_date=end_date)
+    harvester.harvest.assert_called_once_with(start_date=start_date, end_date=end_date, resume=True)
 
 
 @pytest.mark.usefixtures('harvester')
