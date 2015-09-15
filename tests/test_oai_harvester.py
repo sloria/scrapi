@@ -13,6 +13,7 @@ from .utils import TEST_OAI_DOC
 
 request_url = 'http://validOAI.edu/?sonofaplumber'
 
+
 @pytest.fixture(autouse=True)
 def mock_maybe_load_response(monkeypatch):
     mock_mlr = mock.Mock()
@@ -48,11 +49,11 @@ class TestHarvester(OAIHarvester):
     property_list = ['type', 'source', 'publisher', 'format', 'date']
     verify = True
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, resume=True):
         start_date = date(2015, 3, 14)
         end_date = date(2015, 3, 16)
 
-        records = self.get_records(request_url, start_date, end_date)
+        records = self.get_records(request_url, start_date, end_date, resume)
 
         return [RawDocument({
             'doc': TEST_OAI_DOC,
