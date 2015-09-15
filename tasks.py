@@ -151,7 +151,7 @@ def worker(loglevel='INFO', hostname='%h'):
 
 
 @task
-def harvester(harvester_name, async=False, start=None, end=None):
+def harvester(harvester_name, async=False, start=None, end=None, resume=True):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import run_harvester
 
@@ -161,11 +161,11 @@ def harvester(harvester_name, async=False, start=None, end=None):
     start = parse(start).date() if start else date.today() - timedelta(settings.DAYS_BACK)
     end = parse(end).date() if end else date.today()
 
-    run_harvester.delay(harvester_name, start_date=start, end_date=end)
+    run_harvester.delay(harvester_name, start_date=start, end_date=end, resume=resume)
 
 
 @task
-def harvesters(async=False, start=None, end=None):
+def harvesters(async=False, start=None, end=None, resume=True):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import run_harvester
 
@@ -175,7 +175,7 @@ def harvesters(async=False, start=None, end=None):
     exceptions = []
     for harvester_name in registry.keys():
         try:
-            run_harvester.delay(harvester_name, start_date=start, end_date=end)
+            run_harvester.delay(harvester_name, start_date=start, end_date=end, resume=resume)
         except Exception as e:
             logger.exception(e)
             exceptions.append(e)
