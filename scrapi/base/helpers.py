@@ -106,6 +106,7 @@ def format_tags(all_tags, sep=','):
 
 
 def oai_process_uris(*args, **kwargs):
+    use_doi = kwargs.get('use_doi', False)
     identifiers = []
     for arg in args:
         if isinstance(arg, list):
@@ -135,7 +136,7 @@ def oai_process_uris(*args, **kwargs):
                 provider_uris.append(found_url)
 
     try:
-        if kwargs.get('use_doi') and len(object_uris) > 0:
+        if use_doi and len(object_uris) > 0:
             canonical_uri = object_uris[0]
         else:
             canonical_uri = (provider_uris + object_uris)[0].strip().replace(']', '')
