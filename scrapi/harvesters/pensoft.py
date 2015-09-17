@@ -36,10 +36,6 @@ class PensoftHarvester(OAIHarvester):
         start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
         end_date = (end_date or date.today()).isoformat()
 
-        if self.timezone_granularity:
-            start_date += 'T00:00:00Z'
-            end_date += 'T00:00:00Z'
-
         furled_baseurl = furl(self.base_url)
         furled_baseurl.args['verb'] = 'ListRecords'
         furled_baseurl.args['metadataPrefix'] = 'oai_dc'
@@ -47,19 +43,14 @@ class PensoftHarvester(OAIHarvester):
 
         records = self.get_records(furled_baseurl.url, start_date)
 
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
+        return [
+            RawDocument({
+                'doc': etree.tostring(record, encoding=self.record_encoding),
+                'source': self.short_name,
+                'docID': record.xpath('ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text,
                 'filetype': 'xml'
-            }))
-
-        return rawdoc_list
+            }) for record in records
+        ]
 
 
 class BiodiversityDataJournalHarvester(PensoftHarvester):
