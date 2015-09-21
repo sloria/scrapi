@@ -53,7 +53,7 @@ def test_run_harvester_calls(monkeypatch):
     start_date = end_date - timedelta(settings.DAYS_BACK)
 
     mock_begin_norm.s.assert_called_once_with('test')
-    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=True)
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, page_limit=None)
 
 
 def test_run_harvester_daysback(monkeypatch):
@@ -72,10 +72,10 @@ def test_run_harvester_daysback(monkeypatch):
     assert mock_begin_norm.s.called
 
     mock_begin_norm.s.assert_called_once_with('test')
-    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=True)
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, page_limit=None)
 
 
-def test_run_harvester_no_resume(monkeypatch):
+def test_run_harvester_page_limit(monkeypatch):
     mock_harvest = mock.MagicMock()
     mock_begin_norm = mock.MagicMock()
 
@@ -85,13 +85,13 @@ def test_run_harvester_no_resume(monkeypatch):
     start_date = date(2015, 3, 14)
     end_date = date(2015, 3, 16)
 
-    tasks.run_harvester('test', start_date=start_date, end_date=end_date, resume=False)
+    tasks.run_harvester('test', start_date=start_date, end_date=end_date, page_limit=2)
 
     assert mock_harvest.si.called
     assert mock_begin_norm.s.called
 
     mock_begin_norm.s.assert_called_once_with('test')
-    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, resume=False)
+    mock_harvest.si.assert_called_once_with('test', 'TIME', start_date=start_date, end_date=end_date, page_limit=2)
 
 
 @pytest.mark.usefixtures('harvester')
@@ -114,7 +114,7 @@ def test_harvest_days_back(harvester):
         assert key in timestamps.keys()
 
     assert harvester.harvest.called
-    harvester.harvest.assert_called_once_with(start_date=start_date, end_date=end_date, resume=True)
+    harvester.harvest.assert_called_once_with(start_date=start_date, end_date=end_date, page_limit=None)
 
 
 @pytest.mark.usefixtures('harvester')
