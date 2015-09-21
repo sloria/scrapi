@@ -128,7 +128,7 @@ class CrossRefHarvester(JSONHarvester):
                     'filetype': 'json'
                 }))
 
-            if page_limit and int(page_limit) == i/1000:
+            if page_limit and int(page_limit) == i / 1000:
                 break
 
         return doc_list

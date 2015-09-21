@@ -166,7 +166,7 @@ class ClinicalTrialsHarvester(XMLHarvester):
                 official_count += 1
                 count += 1
                 if count % 100 == 0:
-                    if page_limit and page_limit == official_count/100:
+                    if page_limit and page_limit == official_count / 100:
                         break
                     logger.info("You've requested {} studies, keep going!".format(official_count))
                     count = 0

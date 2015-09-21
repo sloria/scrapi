@@ -72,7 +72,7 @@ class PlosHarvester(XMLHarvester):
             for doc in etree.XML(response.content).xpath('//doc'):
                 yield doc
 
-            if page_limit and int(page_limit) == current_row/self.MAX_ROWS_PER_REQUEST:
+            if page_limit and int(page_limit) == current_row / self.MAX_ROWS_PER_REQUEST:
                 break
             else:
                 current_row += self.MAX_ROWS_PER_REQUEST

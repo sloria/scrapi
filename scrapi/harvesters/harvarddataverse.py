@@ -100,7 +100,7 @@ class HarvardDataverseHarvester(JSONHarvester):
             for record in record_list:
                 all_records.append(record)
 
-            if page_limit and int(page_limit) == start/self.MAX_ITEMS_PER_REQUEST:
+            if page_limit and int(page_limit) == start / self.MAX_ITEMS_PER_REQUEST:
                 break
             else:
                 start += self.MAX_ITEMS_PER_REQUEST

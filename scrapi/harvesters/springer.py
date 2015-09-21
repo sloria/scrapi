@@ -124,7 +124,7 @@ class SpringerlHarvester(JSONHarvester):
                 record_list = records['records']
                 all_records += record_list
                 index += 100
-                if page_limit and int(page_limit) == index/100:
+                if page_limit and int(page_limit) == index / 100:
                     break
                 else:
                     records = requests.get(search_url + '&s={}'.format(str(index), throttle=10)).json()

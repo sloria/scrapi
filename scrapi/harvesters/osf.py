@@ -114,7 +114,7 @@ class OSFHarvester(JSONHarvester):
 
             from_arg += 1000
 
-            if page_limit and int(page_limit) == from_arg/1000:
+            if page_limit and int(page_limit) == from_arg / 1000:
                 break
             else:
                 records = requests.get(search_url + '&from={}'.format(str(from_arg)), throttle=10)

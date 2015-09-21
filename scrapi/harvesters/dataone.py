@@ -184,7 +184,7 @@ class DataOneHarvester(XMLHarvester):
             for doc in docs:
                 yield doc
 
-            if page_limit and int(page_limit) == n/1000:
+            if page_limit and int(page_limit) == n / 1000:
                 break
             else:
                 n += 1000
