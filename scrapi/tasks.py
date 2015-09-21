@@ -36,14 +36,14 @@ def task_autoretry(*args_task, **kwargs_task):
 
 @app.task
 @events.creates_task(events.HARVESTER_RUN)
-def run_harvester(harvester_name, start_date=None, end_date=None, resume=True):
+def run_harvester(harvester_name, start_date=None, end_date=None, page_limit=None):
     logger.info('Running harvester "{}"'.format(harvester_name))
 
     start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
     end_date = end_date or date.today()
 
     normalization = begin_normalization.s(harvester_name)
-    start_harvest = harvest.si(harvester_name, timestamp(), start_date=start_date, end_date=end_date, resume=resume)
+    start_harvest = harvest.si(harvester_name, timestamp(), start_date=start_date, end_date=end_date, page_limit=page_limit)
 
     # Form and start a celery chain
     (start_harvest | normalization).apply_async()
@@ -51,7 +51,7 @@ def run_harvester(harvester_name, start_date=None, end_date=None, resume=True):
 
 @app.task
 @events.logged(events.HARVESTER_RUN)
-def harvest(harvester_name, job_created, start_date=None, end_date=None, resume=True):
+def harvest(harvester_name, job_created, start_date=None, end_date=None, page_limit=None):
     harvest_started = timestamp()
     harvester = registry[harvester_name]
 
@@ -60,7 +60,7 @@ def harvest(harvester_name, job_created, start_date=None, end_date=None, resume=
 
     logger.info('Harvester "{}" has begun harvesting'.format(harvester_name))
 
-    result = harvester.harvest(start_date=start_date, end_date=end_date, resume=resume)
+    result = harvester.harvest(start_date=start_date, end_date=end_date, page_limit=page_limit)
 
     # result is a list of all of the RawDocuments harvested
     return result, {
