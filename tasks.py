@@ -155,21 +155,21 @@ def worker(loglevel='INFO', hostname='%h'):
 
 
 @task
-def harvester(harvester_name, async=False, start=None, end=None):
+def harvester(harvester_name, async=False, start=None, end=None, page_limit=None):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import run_harvester
 
     if not registry.get(harvester_name):
-        raise ValueError('No such harvesters {}'.format(harvester_name))
+        raise ValueError('No such harvester {}'.format(harvester_name))
 
     end = parse(end).date() if end else date.today()
     start = parse(start).date() if start else end - timedelta(settings.DAYS_BACK)
 
-    run_harvester.delay(harvester_name, start_date=start, end_date=end)
+    run_harvester.delay(harvester_name, start_date=start, end_date=end, page_limit=page_limit)
 
 
 @task
-def harvesters(async=False, start=None, end=None):
+def harvesters(async=False, start=None, end=None, page_limit=None):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import run_harvester
 
@@ -179,7 +179,7 @@ def harvesters(async=False, start=None, end=None):
     exceptions = []
     for harvester_name in registry.keys():
         try:
-            run_harvester.delay(harvester_name, start_date=start, end_date=end)
+            run_harvester.delay(harvester_name, start_date=start, end_date=end, page_limit=page_limit)
         except Exception as e:
             logger.exception(e)
             exceptions.append(e)

@@ -84,7 +84,7 @@ class SpringerlHarvester(JSONHarvester):
             )
         }
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
 
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
         end_date = end_date or date.today()
@@ -101,7 +101,7 @@ class SpringerlHarvester(JSONHarvester):
 
             search_urls.append(self.URL.url)
 
-        records = self.get_records(search_urls)
+        records = self.get_records(search_urls, page_limit)
 
         return [
             RawDocument({
@@ -112,7 +112,7 @@ class SpringerlHarvester(JSONHarvester):
             }) for record in records
         ]
 
-    def get_records(self, search_urls):
+    def get_records(self, search_urls, page_limit):
         all_records_from_all_days = []
         for search_url in search_urls:
             records = requests.get(search_url).json()
@@ -124,7 +124,11 @@ class SpringerlHarvester(JSONHarvester):
                 record_list = records['records']
                 all_records += record_list
                 index += 100
-                records = requests.get(search_url + '&s={}'.format(str(index), throttle=10)).json()
+                if page_limit and int(page_limit) == index / 100:
+                    break
+                else:
+                    records = requests.get(search_url + '&s={}'.format(str(index), throttle=10)).json()
+
             all_records_from_all_days = all_records_from_all_days + all_records
 
         return all_records_from_all_days

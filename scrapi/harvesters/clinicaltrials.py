@@ -104,7 +104,7 @@ class ClinicalTrialsHarvester(XMLHarvester):
     def namespaces(self):
         return None
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
         """ First, get a list of all recently updated study urls,
         then get the xml one by one and save it into a list
         of docs including other information """
@@ -166,6 +166,8 @@ class ClinicalTrialsHarvester(XMLHarvester):
                 official_count += 1
                 count += 1
                 if count % 100 == 0:
+                    if page_limit and page_limit == official_count / 100:
+                        break
                     logger.info("You've requested {} studies, keep going!".format(official_count))
                     count = 0
 

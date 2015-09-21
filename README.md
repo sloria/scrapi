@@ -214,6 +214,14 @@ Either --start or --end can also be used on their own. Not supplying arguments w
 
 If --end is given with no --start, start will default to the number of days specified in ```settings.DAYS_BACK``` before the given end date.
 
+You can also use the ```page_limit``` (or ```-p```)argument to limit your harvest to a certain number of pages. This is useful for large datasets and for testing locally.
+
+To only harvest 2 pages of data from MIT, run:
+
+```bash
+$ invoke harvester mit --page_limit 2
+```
+
 
 ### Automated OAI PMH Harvester Creation
 Writing a harvester for inclusion with scrAPI?  If the provider makes their metadata available using the OAI-PMH standard, then [autooai](https://github.com/erinspace/autooai) is a utility that will do most of the work for you.

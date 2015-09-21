@@ -57,7 +57,7 @@ class HarvardDataverseHarvester(JSONHarvester):
         )
     }
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
         start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
         end_date = (end_date or date.today()).isoformat()
 
@@ -69,7 +69,7 @@ class HarvardDataverseHarvester(JSONHarvester):
         query.args['order'] = 'asc'
         query.args['fq'] = 'dateSort:[{}T00:00:00Z TO {}T00:00:00Z]'.format(start_date, end_date)
 
-        records = self.get_records(query.url)
+        records = self.get_records(query.url, page_limit)
         record_list = []
         for record in records:
             doc_id = record['global_id']
@@ -87,7 +87,7 @@ class HarvardDataverseHarvester(JSONHarvester):
 
         return record_list
 
-    def get_records(self, search_url):
+    def get_records(self, search_url, page_limit):
         records = requests.get(search_url)
         total_records = records.json()['data']['total_count']
         start = 0
@@ -100,6 +100,9 @@ class HarvardDataverseHarvester(JSONHarvester):
             for record in record_list:
                 all_records.append(record)
 
-            start += self.MAX_ITEMS_PER_REQUEST
+            if page_limit and int(page_limit) == start / self.MAX_ITEMS_PER_REQUEST:
+                break
+            else:
+                start += self.MAX_ITEMS_PER_REQUEST
 
         return all_records

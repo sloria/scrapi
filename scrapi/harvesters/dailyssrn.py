@@ -27,7 +27,7 @@ class DailyssrnHarvester(XMLHarvester):
         }
     }
 
-    def harvest(self, start_date=None, end_date=None):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
 
         url = 'http://dailyssrn.com/rss/rss-all-2.0.xml'
 
