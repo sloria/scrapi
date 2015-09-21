@@ -139,12 +139,12 @@ class DataOneHarvester(XMLHarvester):
         'description': ("str[@name='abstract']/node()", single_result)
     }
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
 
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
         end_date = end_date or date.today()
 
-        records = self.get_records(start_date, end_date, resume)
+        records = self.get_records(start_date, end_date, page_limit)
 
         xml_list = []
         for record in records:
@@ -159,7 +159,7 @@ class DataOneHarvester(XMLHarvester):
 
         return xml_list
 
-    def get_records(self, start_date, end_date, resume):
+    def get_records(self, start_date, end_date, page_limit):
         ''' helper function to get a response from the DataONE
         API, with the specified number of rows.
         Returns an etree element with results '''
@@ -184,7 +184,7 @@ class DataOneHarvester(XMLHarvester):
             for doc in docs:
                 yield doc
 
-            if resume:
-                n += 1000
-            else:
+            if page_limit and int(page_limit) == n/1000:
                 break
+            else:
+                n += 1000

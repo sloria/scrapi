@@ -41,7 +41,7 @@ class SciTechHarvester(XMLHarvester):
 
     schema = DOESCHEMA
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
         """A function for querying the SciTech Connect database for raw XML.
         The XML is chunked into smaller pieces, each representing data
         about an article/report. If there are multiple pages of results,
@@ -54,10 +54,10 @@ class SciTechHarvester(XMLHarvester):
                 'doc': etree.tostring(record),
                 'docID': six.u(record.xpath('dc:ostiId/node()', namespaces=self.namespaces)[0]),
             })
-            for record in self._fetch_records(start_date, end_date, resume)
+            for record in self._fetch_records(start_date, end_date, page_limit)
         ]
 
-    def _fetch_records(self, start_date, end_date, resume):
+    def _fetch_records(self, start_date, end_date, page_limit):
         page = 0
         morepages = True
 
@@ -76,8 +76,8 @@ class SciTechHarvester(XMLHarvester):
             for record in xml.xpath('records/record'):
                 yield record
 
-            if resume:
+            if page_limit and int(page_limit) == page:
+                break
+            else:
                 page += 1
                 morepages = xml.xpath('//records/@morepages')[0] == 'true'
-            else:
-                break

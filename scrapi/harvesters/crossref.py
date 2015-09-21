@@ -106,7 +106,7 @@ class CrossRefHarvester(JSONHarvester):
             )
         }
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
         end_date = end_date or date.today()
 
@@ -128,7 +128,7 @@ class CrossRefHarvester(JSONHarvester):
                     'filetype': 'json'
                 }))
 
-            if resume:
+            if page_limit and int(page_limit) == i/1000:
                 break
 
         return doc_list

@@ -87,7 +87,7 @@ class BiomedCentralHarvester(JSONHarvester):
             )
         }
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
 
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
 
@@ -96,7 +96,7 @@ class BiomedCentralHarvester(JSONHarvester):
         date_number = end_date - start_date
 
         search_url = self.URL.format(date_number.days)
-        records = self.get_records(search_url, resume)
+        records = self.get_records(search_url, page_limit)
 
         record_list = []
         for record in records:
@@ -115,7 +115,7 @@ class BiomedCentralHarvester(JSONHarvester):
 
         return record_list
 
-    def get_records(self, search_url, resume):
+    def get_records(self, search_url, page_limit):
         now = datetime.now()
         records = requests.get(search_url + "#{}".format(date.today()))
         page = 1
@@ -132,11 +132,11 @@ class BiomedCentralHarvester(JSONHarvester):
                     continue
                 all_records.append(record)
 
-            if resume:
+            if page_limit and int(page_limit) == page:
+                break
+            else:
                 page += 1
                 records = requests.get(search_url + '&page={}#{}'.format(str(page), date.today()), throttle=10)
                 current_records = len(records.json()['entries'])
-            else:
-                break
 
         return all_records

@@ -50,7 +50,7 @@ class FigshareHarvester(JSONHarvester):
         )
     }
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
         """ Figshare should always have a 24 hour delay because they
         manually go through and check for test projects. Most of them
         are removed within 24 hours.
@@ -67,7 +67,7 @@ class FigshareHarvester(JSONHarvester):
             end_date.isoformat()
         )
 
-        records = self.get_records(search_url, resume)
+        records = self.get_records(search_url, page_limit)
 
         record_list = []
         for record in records:
@@ -86,7 +86,7 @@ class FigshareHarvester(JSONHarvester):
 
         return record_list
 
-    def get_records(self, search_url, resume):
+    def get_records(self, search_url, page_limit):
         records = requests.get(search_url)
         total_records = records.json()['items_found']
         page = 1
@@ -99,10 +99,10 @@ class FigshareHarvester(JSONHarvester):
                 if len(all_records) < total_records:
                     all_records.append(record)
 
-            if resume:
+            if page_limit and int(page_limit) == page:
+                break
+            else:
                 page += 1
                 records = requests.get(search_url + '&page={}'.format(str(page)), throttle=3)
-            else:
-                break
 
         return all_records

@@ -25,7 +25,7 @@ class DoepagesHarvester(XMLHarvester):
         'dcq': 'http://purl.org/dc/terms/'
     }
 
-    def harvest(self, start_date=None, end_date=None, resume=True):
+    def harvest(self, start_date=None, end_date=None, page_limit=None):
 
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
         end_date = end_date or date.today()
