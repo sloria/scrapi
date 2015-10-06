@@ -5,7 +5,6 @@ from django_pgjson.fields import JsonField
 class Person(models.Model):
     name = models.CharField(max_length=255)
     institution = models.CharField(max_length=255, null=True)
-    email = models.CharField(max_length=100)
     ids = JsonField(null=True)
 
 
@@ -28,7 +27,7 @@ class HarvesterResponse(models.Model):
 class URL(models.Model):
     url = models.CharField(max_length=500)
     status = JsonField(null=True)
-    response = models.ForeignKey(HarvesterResponse, related_name='response')
+    response = models.ForeignKey(HarvesterResponse, related_name='response', null=True)
 
 
 class Document(models.Model):
