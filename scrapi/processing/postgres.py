@@ -8,7 +8,7 @@ import logging
 
 import django
 
-from api.webview.models import HarvesterResponse, Document, URL
+from api.webview.models import HarvesterResponse, Document, URL, Person
 
 from scrapi import events
 from scrapi.util import json_without_bytes
@@ -122,8 +122,28 @@ class PostgresProcessor(BaseProcessor):
         document.urls.add(url)
         document.save()
 
-    def process_contributors(self):
-        pass
+    def process_contributor(self, source, docID, contributor_dict):
+        document = Document.objects.get(source=source, docID=docID)
+
+        id_osf = None
+        id_orcid = None
+        id_email = None
+        if contributor_dict.get('sameAs'):
+            for identifier in contributor_dict['sameAs']:
+                if 'osf.io' in identifier:
+                    id_osf = identifier
+                if 'orcid' in identifier:
+                    id_orcid = identifier
+
+        if contributor_dict.get('email'):
+            id_email = contributor_dict['email']
+
+        #  TODO check to see if the person exists first, if they do, don't make a new one
+        person = Person(name=contributor_dict['name'], id_osf=id_osf, id_email=id_email, id_orcid=id_orcid)
+        person.save()
+
+        document.contributors.add(person)
+        document.save()
 
 
 class HarvesterResponseModel(BaseHarvesterResponse):
