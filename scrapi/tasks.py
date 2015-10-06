@@ -125,6 +125,43 @@ def process_normalized(normalized_doc, raw_doc, **kwargs):
 
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
 @events.logged(events.PROCESSSING_URIS, 'uri_processing')
+def process_contributors(async, **kwargs):
+    settings.CELERY_ALWAYS_EAGER = not async
+
+    all_buckets = []
+    if kwargs.get('source'):
+        source_buckets = util.gather_contributors(kwargs['source'])
+        all_buckets.append(source_buckets)
+    else:
+        for source in registry.keys():
+            source_buckets = util.gather_contributors(source)
+            all_buckets.append(source_buckets)
+
+    for source in all_buckets:
+        process_contributors_from_one_source.delay(source['contributors'], async, kwargs=kwargs)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+def process_contributors_from_one_source(contributors, async=False, **kwargs):
+    settings.CELERY_ALWAYS_EAGER = not async
+
+    for person in contributors:
+        process_one_person.delay(person)
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0, rate_limit='5/s')
+@events.logged(events.PROCESSSING_URIS, 'uri_processing')
+def process_one_person(person, **kwargs):
+    processing.process_contributors(
+        source=person['source'],
+        docID=person['docID'],
+        contributor_dict=person['contributor'],
+        kwargs=kwargs
+    )
+
+
+@task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
+@events.logged(events.PROCESSSING_URIS, 'uri_processing')
 def process_uris(async, **kwargs):
     settings.CELERY_ALWAYS_EAGER = not async
 
