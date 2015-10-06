@@ -16,7 +16,6 @@ furl==0.4.4
 jsonschema==2.4.0
 jsonpointer==1.7
 pycountry==1.10
-<<<<<<< Temporary merge branch 1
 djangorestframework==3.1.3
 Django==1.8.2
 django-pgjson==0.3.1
