@@ -8,7 +8,7 @@ import logging
 
 import django
 
-from api.webview.models import Document
+from api.webview.models import HarvesterResponse, Document
 
 from scrapi import events
 from scrapi.util import json_without_bytes
