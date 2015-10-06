@@ -1,5 +1,4 @@
 import logging
-import json
 import functools
 from itertools import islice
 from datetime import date, timedelta
@@ -138,12 +137,13 @@ def process_uris(async, **kwargs):
             source_buckets = util.parse_urls_into_groups(source)
             all_buckets.append(source_buckets)
 
-    with open('all_sources.json', 'w') as outfile:
-        json.dump(all_buckets, outfile)
+    # import json
+    # with open('all_sources.json', 'w') as outfile:
+    #     json.dump(all_buckets, outfile)
 
-    # for source_dict in all_buckets:
-    #     for group in source_dict['uris']:
-    #         process_uris_at_one_base_uri.delay(group['individual_uris'], async, kwargs=kwargs)
+    for source_dict in all_buckets:
+        for group in source_dict['uris']:
+            process_uris_at_one_base_uri.delay(group['individual_uris'], async, kwargs=kwargs)
 
 
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0)
