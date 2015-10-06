@@ -10,13 +10,20 @@ import six
 from furl import furl
 from lxml import etree
 
-from scrapi import util
 from scrapi import registry
 from scrapi import settings
 from scrapi.base.schemas import OAISCHEMA
 from scrapi.linter.document import RawDocument, NormalizedDocument
 from scrapi.base.transformer import XMLTransformer, JSONTransformer
-from scrapi.base.helpers import updated_schema, build_properties, oai_get_records_and_token
+from scrapi.base.helpers import (
+    updated_schema,
+    build_properties,
+    oai_get_records_and_token,
+    compose,
+    datetime_formatter,
+    null_on_error,
+    coerce_to_list
+)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -82,7 +89,8 @@ class JSONHarvester(BaseHarvester, JSONTransformer):
         transformed = self.transform(json.loads(raw_doc['doc']), fail=settings.RAISE_IN_TRANSFORMER)
         transformed['shareProperties'] = {
             'source': self.short_name,
-            'docID': raw_doc['docID']
+            'docID': raw_doc['docID'],
+            'filetype': raw_doc['filetype']
         }
         return NormalizedDocument(transformed, clean=True)
 
@@ -94,7 +102,8 @@ class XMLHarvester(BaseHarvester, XMLTransformer):
         transformed = self.transform(etree.XML(raw_doc['doc']), fail=settings.RAISE_IN_TRANSFORMER)
         transformed['shareProperties'] = {
             'source': self.short_name,
-            'docID': raw_doc['docID']
+            'docID': raw_doc['docID'],
+            'filetype': raw_doc['filetype']
         }
         return NormalizedDocument(transformed, clean=True)
 
@@ -141,12 +150,19 @@ class OAIHarvester(XMLHarvester):
     @property
     def formatted_properties(self):
         return {
-            'otherProperties': build_properties(*[(item, (
-                '//dc:{}/node()'.format(item),
-                '//ns0:{}/node()'.format(item),
-                self.resolve_property)
-            ) for item in self.property_list])
+            'otherProperties': build_properties(*map(self.format_property, self.property_list))
         }
+
+    def format_property(self, property):
+        if property == 'date':
+            fn = compose(lambda x: map(null_on_error(datetime_formatter), x), coerce_to_list, self.resolve_property)
+        else:
+            fn = self.resolve_property
+        return (property, (
+            '//dc:{}/node()'.format(property),
+            '//ns0:{}/node()'.format(property),
+            fn)
+        )
 
     def resolve_property(self, dc, ns0):
         ret = dc + ns0
@@ -169,21 +185,16 @@ class OAIHarvester(XMLHarvester):
 
         records = self.get_records(url.url, start_date, end_date)
 
-        rawdoc_list = []
-        for record in records:
-            doc_id = record.xpath(
-                'ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text
-            record = etree.tostring(record, encoding=self.record_encoding)
-            rawdoc_list.append(RawDocument({
-                'doc': record,
-                'source': util.copy_to_unicode(self.short_name),
-                'docID': util.copy_to_unicode(doc_id),
+        return [
+            RawDocument({
+                'doc': etree.tostring(record, encoding=self.record_encoding),
+                'source': self.short_name,
+                'docID': record.xpath('ns0:header/ns0:identifier', namespaces=self.namespaces)[0].text,
                 'filetype': 'xml'
-            }))
+            }) for record in records
+        ]
 
-        return rawdoc_list
-
-    def get_records(self, url, start_date, end_date):
+    def get_records(self, url, start_date, end_date=None):
         url = furl(url)
         all_records, token = oai_get_records_and_token(url.url, self.timeout, self.force_request_update, self.namespaces, self.verify)
 

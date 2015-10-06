@@ -4,11 +4,17 @@ import os
 import re
 import six
 import pytz
+import time
+import logging
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
 from api.webview.models import Document
+logger = logging.getLogger()
 
 URL_RE = re.compile(r'(https?:\/\/[^\/]*)')
+
+
+xrange = six.moves.xrange
 
 
 def timestamp():
@@ -21,18 +27,18 @@ def copy_to_unicode(element):
     necessary for linting """
 
     if isinstance(element, dict):
-        for key, val in element.items():
-            element[key] = copy_to_unicode(val)
+        return {
+            key: copy_to_unicode(val)
+            for key, val in element.items()
+        }
     elif isinstance(element, list):
-        for idx, item in enumerate(element):
-            element[idx] = copy_to_unicode(item)
+        return list(map(copy_to_unicode, element))
     else:
         try:
             # A dirty way to convert to unicode in python 2 + 3.3+
-            element = u''.join(element)
+            return u''.join(element)
         except TypeError:
-            pass
-    return element
+            return element
 
 
 def stamp_from_raw(raw_doc, **kwargs):
@@ -118,3 +124,14 @@ def uri_processing(uri, source, docID, source_dict, uritype):
         source_dict['all_bases'].append(base_uri)
 
     return source_dict
+
+
+def try_n_times(n, action, *args, **kwargs):
+    for _ in xrange(n):
+        try:
+            return action(*args, **kwargs)
+        except Exception as e:
+            logger.exception(e)
+            time.sleep(15)
+    if e:
+        raise e

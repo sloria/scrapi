@@ -14,20 +14,6 @@ from scrapi.base import OAIHarvester
 logger = logging.getLogger(__name__)
 
 
-def format_dois_dryad(*args):
-    prefix = 'http://dx.doi.org/{}'
-    urls = []
-    for arg in args:
-        if isinstance(arg, list):
-            for url in arg:
-                if 'doi:' in url:
-                    urls.append(prefix.format(url.replace('doi:', '')))
-        elif arg:
-            if 'doi:' in arg:
-                urls.append(prefix.format(arg.replace('doi:', '')))
-    return urls
-
-
 class DryadHarvester(OAIHarvester):
     short_name = 'dryad'
     long_name = 'Dryad Data Repository'
@@ -41,9 +27,7 @@ class DryadHarvester(OAIHarvester):
     @property
     def schema(self):
         return helpers.updated_schema(self._schema, {
-            "uris": {
-                "objectUris": ('//dc:relation/node()', '//dc:identifier/node()', format_dois_dryad)
-            }
+            "uris": ('//dc:relation/node()', '//dc:identifier/node()', helpers.oai_process_uris)
         })
 
     def normalize(self, raw_doc):

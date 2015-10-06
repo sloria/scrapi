@@ -1,17 +1,25 @@
 import logging
 
 import vcr
+import mock
 import pytest
-from freezegun import freeze_time
 
 from scrapi import base
 from scrapi import registry, requests
-from scrapi.base.helpers import compose
 
 logger = logging.getLogger(__name__)
 
 
-@freeze_time("2007-12-21")
+@pytest.fixture(autouse=True)
+def mock_maybe_load_response(monkeypatch):
+    mock_mlr = mock.Mock()
+    mock_mlr.return_value = None
+    mock_save = lambda x: x
+
+    monkeypatch.setattr(requests, '_maybe_load_response', mock_mlr)
+    monkeypatch.setattr(requests.HarvesterResponse, 'save', mock_save)
+
+
 @pytest.mark.parametrize('harvester_name', filter(lambda x: x != 'test', sorted(map(str, registry.keys()))))
 def test_harvester(monkeypatch, harvester_name, *args, **kwargs):
     monkeypatch.setattr(requests.time, 'sleep', lambda *_, **__: None)

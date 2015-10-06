@@ -20,14 +20,20 @@ logger = logging.getLogger()
 
 @task
 def reindex(src, dest):
-    from scrapi.processing.elasticsearch import es
+    from scrapi.processing.elasticsearch import DatabaseManager
+    dm = DatabaseManager()
+    dm.setup()
+    es = dm.es
     helpers.reindex(es, src, dest)
     es.indices.delete(src)
 
 
 @task
 def alias(alias, index):
-    from scrapi.processing.elasticsearch import es
+    from scrapi.processing.elasticsearch import DatabaseManager
+    dm = DatabaseManager()
+    dm.setup()
+    es = dm.es
     es.indices.delete_alias(index=alias, name='_all', ignore=404)
     es.indices.put_alias(alias, index)
 
@@ -114,17 +120,21 @@ def elasticsearch():
 
 
 @task
-def test(cov=True, verbose=False, debug=False):
+def test(cov=True, doctests=True, verbose=False, debug=False, pdb=False):
     """
     Runs all tests in the 'tests/' directory
     """
-    cmd = 'py.test tests'
+    cmd = 'py.test scrapi tests'
+    if doctests:
+        cmd += ' --doctest-modules'
     if verbose:
         cmd += ' -v'
     if debug:
         cmd += ' -s'
     if cov:
         cmd += ' --cov-report term-missing --cov-config .coveragerc --cov scrapi --cov api'
+    if pdb:
+        cmd += ' --pdb'
 
     run(cmd, pty=True)
 
@@ -160,8 +170,8 @@ def harvester(harvester_name, async=False, start=None, end=None):
     if not registry.get(harvester_name):
         raise ValueError('No such harvesters {}'.format(harvester_name))
 
-    start = parse(start).date() if start else date.today() - timedelta(settings.DAYS_BACK)
     end = parse(end).date() if end else date.today()
+    start = parse(start).date() if start else end - timedelta(settings.DAYS_BACK)
 
     run_harvester.delay(harvester_name, start_date=start, end_date=end)
 
@@ -213,7 +223,10 @@ def lint(name):
 
 @task
 def provider_map(delete=False):
-    from scrapi.processing.elasticsearch import es
+    from scrapi.processing.elasticsearch import DatabaseManager
+    dm = DatabaseManager()
+    dm.setup()
+    es = dm.es
     if delete:
         es.indices.delete(index='share_providers', ignore=[404])
 
@@ -242,12 +255,18 @@ def apiserver():
 
 
 @task
+def apidb():
+    os.system('python manage.py migrate')
+
+
+@task
 def reset_all():
-    try:
-        input = raw_input
-    except Exception:
-        pass
-    if input('Are you sure? y/N ') != 'y':
+    import sys
+
+    if sys.version[0] == "3":
+        raw_input = input
+
+    if raw_input('Are you sure? y/N ') != 'y':
         return
     os.system('psql -c "DROP DATABASE scrapi;"')
     os.system('psql -c "CREATE DATABASE scrapi;"')

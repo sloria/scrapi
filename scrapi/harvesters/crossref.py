@@ -18,7 +18,7 @@ from scrapi import requests
 from scrapi import settings
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
-from scrapi.base.helpers import build_properties, compose, date_formatter
+from scrapi.base.helpers import build_properties, compose, datetime_formatter
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +37,21 @@ def process_contributor(author, orcid):
 
 def process_sponsorships(funder):
     sponsorships = []
+
     for element in funder:
-        sponsorship = {
-            'sponsor': {
+        sponsorship = {}
+
+        if element.get('name'):
+            sponsorship['sponsor'] = {
                 'sponsorName': element['name']
-            },
-            'award': {
+            }
+
+        if element.get('award'):
+            sponsorship['award'] = {
                 'awardName': ', '.join(element['award'])
             }
-        }
-
-        if element.get('DOI'):
-            sponsorship['award']['awardIdentifier'] = 'http://dx.doi.org/{}'.format(element['DOI'])
+            if element.get('DOI'):
+                sponsorship['award']['awardIdentifier'] = 'http://dx.doi.org/{}'.format(element['DOI'])
 
         sponsorships.append(sponsorship)
 
@@ -69,7 +72,7 @@ class CrossRefHarvester(JSONHarvester):
         return {
             'title': ('/title', lambda x: x[0] if x else ''),
             'description': ('/subtitle', lambda x: x[0] if (isinstance(x, list) and x) else x or ''),
-            'providerUpdatedDateTime': ('/issued/date-parts', compose(date_formatter, lambda x: ' '.join([str(part) for part in x[0]]))),
+            'providerUpdatedDateTime': ('/issued/date-parts', compose(datetime_formatter, lambda x: ' '.join([str(part) for part in x[0]]))),
             'uris': {
                 'canonicalUri': '/URL'
             },
