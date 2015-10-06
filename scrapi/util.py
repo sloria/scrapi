@@ -66,8 +66,21 @@ def json_without_bytes(jobj):
     return jobj
 
 
-def parse_urls_into_groups(source):
+def gather_contributors(source):
+    source_contributors = []
+    source_dict = {'source': source}
+    for document in Document.objects.filter(source=source):
+        if document.normalized:
+            docID = document.normalized['shareProperties']['docID']
 
+            for person in document.normalized['contributors']:
+                source_contributors.append({'source': source, 'docID': docID, 'contributor': person})
+
+    source_dict['contributors'] = source_contributors
+    return source_dict
+
+
+def parse_urls_into_groups(source):
     source_dict = {'source': source, 'uris': [], 'all_bases': []}
     for document in Document.objects.filter(source=source):
         if document.normalized:
