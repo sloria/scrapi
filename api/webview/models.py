@@ -5,7 +5,9 @@ from django_pgjson.fields import JsonField
 class Person(models.Model):
     name = models.CharField(max_length=255)
     institution = models.CharField(max_length=255, null=True)
-    ids = JsonField(null=True)
+    id_osf = models.CharField(max_length=10, null=True)
+    id_orcid = models.CharField(max_length=100, null=True)
+    id_email = models.CharField(max_length=255, null=True)
 
 
 class HarvesterResponse(models.Model):
