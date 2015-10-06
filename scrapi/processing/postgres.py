@@ -8,12 +8,13 @@ import logging
 
 import django
 
-from api.webview.models import HarvesterResponse, Document
+from api.webview.models import HarvesterResponse, Document, URL
 
 from scrapi import events
 from scrapi.util import json_without_bytes
 from scrapi.linter import RawDocument, NormalizedDocument
 from scrapi.processing import DocumentTuple
+from scrapi.processing.helpers import save_status_of_uri
 from scrapi.processing.base import BaseProcessor, BaseHarvesterResponse, BaseDatabaseManager
 
 django.setup()
@@ -112,6 +113,17 @@ class PostgresProcessor(BaseProcessor):
             return Document.objects.filter(source=source, docID=docID)[0]
         except IndexError:
             return None
+
+    def process_uris(self, source, docID, uri, uritype, **kwargs):
+        document = Document.objects.get(source=source, docID=docID)
+        status = save_status_of_uri(uri, uritype)
+        url = URL(url=uri, status=status)
+        url.save()
+        document.urls.add(url)
+        document.save()
+
+    def process_contributors(self):
+        pass
 
 
 class HarvesterResponseModel(BaseHarvesterResponse):
