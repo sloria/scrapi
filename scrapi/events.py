@@ -23,6 +23,7 @@ HARVESTER_RUN = 'runHarvester'
 CHECK_ARCHIVE = 'checkArchive'
 NORMALIZATION = 'normalization'
 PROCESSSING_URIS = 'processingUris'
+PROCESSSING_CONTRIBUTORS = 'processingContributors'
 
 # statuses
 FAILED = 'failed'
