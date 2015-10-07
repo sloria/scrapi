@@ -150,7 +150,7 @@ def process_contributors_from_one_source(contributors, async=False, **kwargs):
 
 
 @task_autoretry(default_retry_delay=settings.CELERY_RETRY_DELAY, max_retries=0, rate_limit='5/s')
-@events.logged(events.PROCESSSING_URIS, 'uri_processing')
+@events.logged(events.PROCESSSING_CONTRIBUTORS, 'contributor_processing')
 def process_one_person(person, **kwargs):
     processing.process_contributors(
         source=person['source'],
@@ -173,10 +173,6 @@ def process_uris(async, **kwargs):
         for source in registry.keys():
             source_buckets = util.parse_urls_into_groups(source)
             all_buckets.append(source_buckets)
-
-    # import json
-    # with open('all_sources.json', 'w') as outfile:
-    #     json.dump(all_buckets, outfile)
 
     for source_dict in all_buckets:
         for group in source_dict['uris']:
