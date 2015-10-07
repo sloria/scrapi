@@ -47,6 +47,12 @@ def process_uris(source, docID, uri, uritype, kwargs):
         get_processor(p).process_uris(source, docID, uri, uritype, **extras)
 
 
+def process_contributors(source, docID, contributor_dict, kwargs):
+    for p in settings.POST_PROCESSING:
+        extras = kwargs.get(p, {})
+        get_processor(p).process_contributors(source, docID, contributor_dict, **extras)
+
+
 HarvesterResponse = get_processor(settings.RESPONSE_PROCESSOR).HarvesterResponseModel
 
 all_processors = map(get_processor, list(set(
