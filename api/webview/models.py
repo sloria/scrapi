@@ -4,6 +4,7 @@ from django_pgjson.fields import JsonField
 
 class Person(models.Model):
     name = models.CharField(max_length=255)
+    reconstructed_name = models.CharField(max_length=255)
     institution = models.CharField(max_length=255, null=True)
     id_osf = models.CharField(max_length=10, null=True)
     id_orcid = models.CharField(max_length=100, null=True)
@@ -41,5 +42,5 @@ class Document(models.Model):
     raw = JsonField()
     normalized = JsonField(null=True)
 
-    contributors = models.ManyToManyField(Person, related_name='contributors')
+    contributors = models.ManyToManyField(Person, related_name='documents')
     urls = models.ManyToManyField(URL, related_name='urls')
