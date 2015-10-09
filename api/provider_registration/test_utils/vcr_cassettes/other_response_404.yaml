@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.5.3 CPython/2.7.9 Darwin/13.4.0]
+    method: GET
+    uri: https://github.com:443/erinspace/thisisnotreal
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWSi0qyi9SslLyyy9RcMsvzUtRqgUAu/DzMBUAAAA=
+    headers:
+      cache-control: [no-cache]
+      content-encoding: [gzip]
+      content-security-policy: ['default-src ''none''; script-src ''self''; style-src
+          ''unsafe-inline''; img-src data:; connect-src ''self''']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 30 Mar 2015 14:03:06 GMT']
+      server: [GitHub.com]
+      status: [404 Not Found]
+      strict-transport-security: [max-age=31536000; includeSubdomains; preload]
+      transfer-encoding: [chunked]
+      vary: [X-PJAX]
+      x-content-type-options: [nosniff]
+      x-frame-options: [deny]
+      x-github-request-id: ['D8C54245:79C6:167B167:55195799']
+      x-request-id: [377ad91dd0a602c7ab5c1795230fbe83]
+      x-runtime: ['0.009022']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+version: 1

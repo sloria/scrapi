@@ -1,0 +1,50 @@
+{% extends "provider_registration/base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><small>Contact</small></li>
+            <li><small>Metadata</small></li>
+            <li  class="active"><b>Provider</b></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        {% if error_message %}<strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'provider_registration:register' %}" method="post">
+        {% csrf_token %}
+                <h2>Simple Provider Information</h2>
+            <div class="field_entry">
+                <p class="lead"><strong>Provider Name:</strong> {{ name }}</p>
+            </div>
+
+            <div class="field_entry">
+                <p class="lead"><strong>Base URL:</strong> {{ base_url }}</p>
+            </div>
+
+            <div class="field_entry">
+                <p class="lead"><strong>Approved Set List</strong></p>
+
+                <p>Enter the sets from your OAI-PMH data provider that you'd like to appear in SHARE Notify. A list of these options can usually be found at your provider's <a href="{{ base_url }}?verb=ListSets" target="_blank">ListSets OAI API endpoint</a>. Enter the sets you'd like to be included as they are represented in the setSpec element of your provider. Enter each set seperated by a comma.</p>
+
+                <p>Sets that you specify will be included in SHARE, and sets that you do not specify will be  ignored and not processed by SHARE.</p>
+                {{ form.approved_sets }}
+                <p><small>Example: 'academicsenate, agb_fac, biosp'</small></p>
+            </div>
+
+        {{ form.reg_id }}
+        {{ form.property_list }}
+        {{ form.provider_long_name }}
+
+        <input class="btn btn-primary btn-bottom" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

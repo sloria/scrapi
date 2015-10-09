@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet" media="screen"/>
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet" media="screen"/>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <img class="logo_jumbotron" src="{% static 'img/share.png' %}"/>
+
+                {% block header_content %}
+                {% endblock %}
+            </div>
+            <div class="below_jumbotron">
+                {% block under_header_content %}
+                {% endblock %}
+            </div>
+
+            <div class="help_information">
+                    Questions or feedback? Contact us at <a href="mailto:share-support@osf.io">share-support@osf.io</a>
+            </div>
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bower_components/pym.js/dist/pym.min.js' %}"></script>
+        <script>
+            var pymChild = new pym.Child({ id: 'share_registration_iframe' });
+            pymChild.sendMessage('scroll_top_now', ' ');
+            pymChild.sendMessage('height', 0);
+            $(window).load(function () {
+                setTimeout(pymChild.sendHeight(), 200);
+            });
+        </script>
+        {% block javascript_bottom %}
+        {% endblock %}
+    </body>
+</html>

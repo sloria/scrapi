@@ -1,0 +1,87 @@
+{% extends "provider_registration/base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><small>Contact</small></li>
+            <li><small>Metadata</small></li>
+            <li class="active"><b>Provider</b></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-xs-12">
+
+<br/>
+    <form action="{% url 'provider_registration:register' %}" method="post">
+    {% csrf_token %}
+        <h2>Basic Provider Information</h2>
+        {% if form.errors %}
+            <div class="text-danger">Please correct the error{{ form.errors|pluralize }} below.</div>
+        {% endif %}
+        <div class="field_entry">
+            {% if form.provider_long_name.errors %}
+              <span class="help-block">
+                {% for error in form.provider_long_name.errors %}{{ error }}{% endfor %}
+              </span>
+            {% endif %}
+            <p><strong>Name of your organization (required)</strong></p>
+            {{ form.provider_long_name }}
+        </div>
+
+        <div class="field_entry">
+            <p><strong>If there are rate limits for requests from your service, please list them below.</strong></p>
+            {{ form.rate_limit }}
+            <p><small>Example: 1 request/second</small></p>
+        </div>
+
+        <div class="field_entry">
+            {% if form.api_docs.errors %}
+              <span class="help-block">
+                {% for error in form.api_docs.errors %}{{ error }}{% endfor %}
+              </span>
+            {% endif %}
+            <p><strong>If your organization’s API has documentation online, please enter the URL below.</strong></p>
+            {{ form.api_docs }}
+        </div>
+
+        <div class="field_entry">
+            <p><strong>{{ form.oai_provider }} This content provider is based on OAI-PMH Standards.</strong></p>
+        </div>
+
+        <div class="field_entry">
+            <p><strong>Base URL (required)</strong></p>
+            <p>Enter the base URL for your content provider.<br/>
+            If you're entering an OAI-PMH provider, include everything before the ? in the base url.<br/></p>
+            {% if form.base_url.errors %}
+              <span class="help-block">
+                {% for error in form.base_url.errors %}{{ error }}{% endfor %}
+              </span>
+            {% endif %}
+            {{ form.base_url }}
+            <p><small>Example: http://repository.stcloudstate.edu/do/oai/
+            <br/>
+            Not:  http://repository.stcloudstate.edu/do/oai/?verb=ListRecords</small></p>
+        </div>
+
+        <div class="field_entry">
+            <p><strong>Description of your organization (required)</strong></p>
+            {% if form.description.errors %}
+              <span class="help-block">
+                {% for error in form.description.errors %}{{ error }}{% endfor %}
+              </span>
+            {% endif %}
+            {{ form.description }}
+        </div>
+
+    {{ form.reg_id }}
+
+    <input class="btn btn-primary btn-bottom" type="submit" value="Next" />
+    </form>
+
+</div>
+</div>
+{% endblock %}
