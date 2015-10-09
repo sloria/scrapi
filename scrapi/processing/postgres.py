@@ -162,13 +162,14 @@ class PostgresProcessor(BaseProcessor):
             reconstructed_name=reconstructed_name,
             id_osf=id_osf,
             id_email=id_email,
-            id_orcid=id_orcid) or Person(
-                name=contributor_dict['name'],
-                reconstructed_name=reconstructed_name,
-                id_osf=id_osf,
-                id_email=id_email,
-                id_orcid=id_orcid
-            )
+            id_orcid=id_orcid
+        ) or Person(
+            name=contributor_dict['name'],
+            reconstructed_name=reconstructed_name,
+            id_osf=id_osf,
+            id_email=id_email,
+            id_orcid=id_orcid
+        )
         person.save()
 
         document.contributors.add(person)
