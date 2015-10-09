@@ -8,11 +8,11 @@ from django import forms
 from django.utils import timezone
 from django.test import TestCase, RequestFactory, Client
 
-from provider_registration import views
-from provider_registration import utils
-from provider_registration import validators
-from provider_registration.models import RegistrationInfo
-from provider_registration.forms import InitialProviderForm, OAIProviderForm, ContactInfoForm
+from api.provider_registration import views
+from api.provider_registration import utils
+from api.provider_registration import validators
+from api.provider_registration.models import RegistrationInfo
+from api.provider_registration.forms import InitialProviderForm, OAIProviderForm, ContactInfoForm
 
 
 class RegistrationMethodTests(TestCase):
