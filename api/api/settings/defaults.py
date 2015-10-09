@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.contenttypes',
     'django.contrib.sites',
+    'rest_framework.authtoken',
     'api.webview',
     'api.provider_registration',
     'rest_framework',
