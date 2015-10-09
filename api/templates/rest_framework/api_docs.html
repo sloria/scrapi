@@ -1,0 +1,113 @@
+
+{% load static %}
+
+<html>
+
+  <head>
+    <title>SHARE API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>
+
+    <link href="{% static "swagger/css/typography.css" %}" media='screen' rel='stylesheet' type='text/css'/>
+    <link href="{% static "swagger/css/reset.css" %}" media='screen' rel='stylesheet' type='text/css'/>
+    <link href="{% static "swagger/css/screen.css" %}" media='screen' rel='stylesheet' type='text/css'/>
+    <link href="{% static "swagger/css/reset.css" %}" media='print' rel='stylesheet' type='text/css'/>
+    <link href="{% static "swagger/css/print.css" %}" media='print' rel='stylesheet' type='text/css'/>
+
+    <script src="{% static "swagger/lib/jquery-1.8.0.min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/jquery.slideto.min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/jquery.wiggle.min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/jquery.ba-bbq.min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/handlebars-2.0.0.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/underscore-min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/backbone-min.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/swagger-ui.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/highlight.7.3.pack.js" %}" type='text/javascript'></script>
+    <script src="{% static "swagger/lib/marked.js" %}" type='text/javascript'></script>
+
+    <link href="{% static "swagger/css/share_api_docs.css" %}" media='screen' rel='stylesheet' type='text/css'/>
+    <script type="text/javascript">
+      $(function () {
+        window.swaggerUi = new SwaggerUi({
+          url: "{% if DEBUG %}{% static "share_api_spec_debug.json" %}{% else %}{% static "share_api_spec.json" %}{% endif %}",
+          dom_id: "swagger-ui-container",
+          supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+          validatorUrl: null,
+          onComplete: function(swaggerApi, swaggerUi){
+            if(typeof initOAuth == "function") {
+              /*
+              initOAuth({
+                clientId: "your-client-id",
+                realm: "your-realms",
+                appName: "your-app-name"
+              });
+              */
+            }
+            $('pre code').each(function(i, e) {
+              hljs.highlightBlock(e)
+            });
+          },
+          onFailure: function(data) {
+            log("Unable to Load SwaggerUI");
+          },
+          docExpansion: "list",
+          sorter : "alpha"
+        });
+
+        function addApiKeyAuthorization() {
+          var key = encodeURIComponent($('#input_apiKey')[0].value);
+          log("key: " + key);
+          if(key && key.trim() != "") {
+              var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("api_key", key, "query");
+              window.swaggerUi.api.clientAuthorizations.add("api_key", apiKeyAuth);
+              log("added key " + key);
+          }
+        }
+
+        $('#input_apiKey').change(addApiKeyAuthorization);
+
+        // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
+        
+          // var apiKey = "myApiKeyXXXX123456789";
+          // $('#input_apiKey').val(apiKey);
+          // addApiKeyAuthorization();
+
+        window.swaggerUi.load();
+
+        function log() {
+          if ('console' in window) {
+            console.log.apply(console, arguments);
+          }
+        }
+    });
+    </script>
+  </head>
+
+  <body class="swagger-section">
+      <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <div id='api_doc_header'>
+                  <img src="{% static "/static/img/share.png" %}">
+              </div>
+              <div class="beta_warning">
+                <p>Note: This is a beta release of the SHARE API and may change in the future. Please see the <a href="https://github.com/CenterForOpenScience/SHARE/blob/master/CHANGELOG">SHARE Changelog</a> for details.</p>
+                <p>For more information about the organization, go to <a href='http://share-research.org'>share-research.org</a>. For more information about the infrastructure, including developer docs, visit the <a href='https://osf.io/t3j94/'>SHARE Documentation on the OSF</a>.</p>
+              </div>
+              <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+              <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+            </div>
+          </div>
+      </div>
+      <script src="{% static 'bower_components/pym.js/dist/pym.min.js' %}"></script>
+      <script>
+          var pymChild = new pym.Child({ id: 'share_registration_iframe' });
+          pymChild.sendMessage('scroll_top_now', ' ');
+          pymChild.sendMessage('height', 0);
+          $(window).load(function () {
+              setTimeout(pymChild.sendHeight(), 200);
+          });
+      </script>
+  </body>
+
+</html>
