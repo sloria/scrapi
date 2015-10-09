@@ -37,7 +37,7 @@ class RegistrationMethodTests(TestCase):
 
 class RegistrationFormTests(TestCase):
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_valid_oai_data(self):
         form = InitialProviderForm({
             'provider_long_name': 'Booyaka Booyaka',
@@ -48,7 +48,7 @@ class RegistrationFormTests(TestCase):
         })
         self.assertTrue(form.is_valid())
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response.yaml')
+    @vcr.use_cassette('tests/vcr/other_response.yaml')
     def test_valid_other_data(self):
         form = InitialProviderForm({
             'provider_long_name': 'Devon - Get the Tables',
@@ -81,7 +81,7 @@ class RegistrationFormTests(TestCase):
         })
         self.assertFalse(form.is_valid())
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_missing_contact_name(self):
         form = InitialProviderForm({
             'contact_name': '',
@@ -93,7 +93,7 @@ class RegistrationFormTests(TestCase):
         })
         self.assertFalse(form.is_valid())
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_missing_contact_email(self):
         form = InitialProviderForm({
             'contact_name': 'Spike Dudley',
@@ -105,7 +105,7 @@ class RegistrationFormTests(TestCase):
         })
         self.assertFalse(form.is_valid())
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_malformed_contact_email(self):
         form = InitialProviderForm({
             'contact_name': 'Spike Dudley',
@@ -117,7 +117,7 @@ class RegistrationFormTests(TestCase):
         })
         self.assertFalse(form.is_valid())
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_missing_provider_name(self):
         form = InitialProviderForm({
             'contact_name': 'Spike Dudley',
@@ -139,7 +139,7 @@ class RegistrationFormTests(TestCase):
 
 class TestOAIProviderForm(TestCase):
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response.yaml')
     def test_valid_oai_data(self):
         approved_set_set = [('totally', 'approved')]
         form = OAIProviderForm({
@@ -230,8 +230,8 @@ class ViewTests(TestCase):
         new_form_title = form_element[0].getchildren()[0].text
         self.assertEqual(new_form_title, 'Basic Provider Information')
 
-    @mock.patch('provider_registration.utils.get_oai_properties')
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response_datequery1.yaml')
+    @mock.patch('api.provider_registration.utils.get_oai_properties')
+    @vcr.use_cassette('tests/vcr/oai_response_datequery1.yaml')
     def test_render_oai_provider_form(self, mock_properties):
         mock_properties.return_value = {'properties': 'shtuff', 'sets': [('star', 'dust')]}
         RegistrationInfo(
@@ -254,7 +254,7 @@ class ViewTests(TestCase):
         title = form_element.getchildren()[0]
         self.assertEqual(title.text, 'Provider Information')
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/invalid_xml_oai_dataquery3.yaml')
+    @vcr.use_cassette('tests/vcr/invalid_xml_oai_dataquery3.yaml')
     def test_render_oai_provider_form_invaid_xml(self):
         RegistrationInfo(
             provider_long_name='Stardust Weekly',
@@ -263,7 +263,7 @@ class ViewTests(TestCase):
             approved_sets=['some', 'sets'],
             registration_date=timezone.now()
         ).save()
-        request = self.factory.post('provider_registration/register/')
+        request = self.factory.post('registration/register/')
         name = "Some Name"
         base_url = 'http://wwe.com'
         reg_id = RegistrationInfo.objects.last().pk
@@ -276,8 +276,8 @@ class ViewTests(TestCase):
         title = form_element.getchildren()[0]
         self.assertEqual(title.text, 'Simple Provider Information')
 
-    @mock.patch('provider_registration.utils.get_session_item')
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/invalid_xml_oai_redirect.yaml')
+    @mock.patch('api.provider_registration.utils.get_session_item')
+    @vcr.use_cassette('tests/vcr/invalid_xml_oai_redirect.yaml')
     def test_render_simple_oai_form(self, mocked_id):
         RegistrationInfo(
             provider_long_name='Stardust Weekly',
@@ -319,8 +319,8 @@ class ViewTests(TestCase):
 
 class ViewMethodTests(TestCase):
 
-    @mock.patch('provider_registration.utils.get_oai_properties')
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response_datequery2.yaml')
+    @mock.patch('api.provider_registration.utils.get_oai_properties')
+    @vcr.use_cassette('tests/vcr/oai_response_datequery2.yaml')
     def test_valid_oai_url(self, mock_properties):
         RegistrationInfo(
             provider_long_name='The Old Stardust Weekly',
@@ -340,7 +340,7 @@ class ViewMethodTests(TestCase):
         self.assertTrue(success['value'])
         self.assertEqual(success['reason'], 'New Stardust Weekly registered and saved successfully')
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response_oai.yaml')
+    @vcr.use_cassette('tests/vcr/other_response_oai.yaml')
     def test_invalid_oai_url(self):
         RegistrationInfo(
             provider_long_name='Golddust Monthly',
@@ -359,7 +359,7 @@ class ViewMethodTests(TestCase):
         self.assertFalse(success['value'])
         self.assertEqual(success['reason'], 'OAI Information could not be automatically processed.')
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response_oai.yaml')
+    @vcr.use_cassette('tests/vcr/other_response_oai.yaml')
     def test_save_other_provider(self):
         RegistrationInfo(
             provider_long_name='Stardust Weekly',
@@ -396,14 +396,14 @@ class TestUtils(TestCase):
 
 class TestValidators(TestCase):
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response_identify.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response_identify.yaml')
     def test_valid_oai_url(self):
         url = 'http://repository.stcloudstate.edu/do/oai/'
         oai_validator = validators.ValidOAIURL()
         call = oai_validator(url)
         self.assertTrue(call)
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response_identify.yaml')
+    @vcr.use_cassette('tests/vcr/other_response_identify.yaml')
     def test_invalid_oai_url(self):
         url = 'http://wwe.com'
         oai_validator = validators.ValidOAIURL()
@@ -411,7 +411,7 @@ class TestValidators(TestCase):
         with self.assertRaises(forms.ValidationError):
             oai_validator(url)
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/oai_response_invalid_identify.yaml')
+    @vcr.use_cassette('tests/vcr/oai_response_invalid_identify.yaml')
     def test_invalid_oai_url_with_xml(self):
         url = 'http://www.osti.gov/scitech/scitechxml?EntryDateFrom=02%2F02%2F2015&page=0'
         oai_validator = validators.ValidOAIURL()
@@ -419,7 +419,7 @@ class TestValidators(TestCase):
         with self.assertRaises(forms.ValidationError):
             oai_validator(url)
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response_404.yaml')
+    @vcr.use_cassette('tests/vcr/other_response_404.yaml')
     def test_url_returns_404(self):
         url = 'https://github.com/erinspace/thisisnotreal'
         url_validator = validators.URLResolves()
@@ -427,7 +427,7 @@ class TestValidators(TestCase):
         with self.assertRaises(forms.ValidationError):
             url_validator(url)
 
-    @vcr.use_cassette('provider_registration/test_utils/vcr_cassettes/other_response_404_oai.yaml')
+    @vcr.use_cassette('tests/vcr/other_response_404_oai.yaml')
     def test_oai_url_returns_404(self):
         url = 'https://github.com/erinspace/thisisnotreal'
         url_validator = validators.ValidOAIURL()
