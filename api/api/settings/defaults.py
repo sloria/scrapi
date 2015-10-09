@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'api.webview',
+    'api.provider_registration',
     'rest_framework',
     'corsheaders'
 )
