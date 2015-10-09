@@ -40,6 +40,9 @@ class ValidOAIURL(object):
         except etree.XMLSyntaxError:
             raise forms.ValidationError('URL does not return valid XML, please enter a valid OAI-PMH url')
 
+        if not doc or doc.tag == 'html':
+            raise forms.ValidationError('URL does not return valid XML, please enter a valid OAI-PMH url')
+
         repository_name = doc.xpath('//oai:repositoryName/node()', namespaces=NAMESPACES) or ['']
         if repository_name[0]:
             logger.info('OAI link valid for: {}'.format(repository_name))
