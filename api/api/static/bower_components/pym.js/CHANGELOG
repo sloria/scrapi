@@ -1,0 +1,31 @@
+0.4.1
+-----
+
+* Update README and add contributors.
+
+0.4.0
+-----
+
+* Fixed several broken examples.
+* Support nested iframes correctly. (#59)
+* Add browserify-supporting module definition. (#60)
+* Add example for child polling.
+* Support specifying parent id in child constructor. (#61, #62)
+
+0.3.1
+-----
+
+* Add API documentation. (#52)
+* Refactor public and private APIs to have more obvious names.
+* Add support for generic message passing. (#49)
+* Support specifying pym div's with data attributes. (#44)
+
+0.1.1
+-----
+
+* UMD pattern support. (#42)
+
+0.1.0
+-----
+
+* Initial release.

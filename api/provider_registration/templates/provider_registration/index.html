@@ -1,0 +1,38 @@
+{% extends "provider_registration/base.html" %}
+
+{% block header_content %}
+        <br/>
+        <p class="lead">To include your organization's publications, data, repository holdings, or other research in <a href="http://www.share-research.org/" target="_blank">SHARE</a>, please register here.</p>
+        <br/>
+        <a type="button" class="btn btn-primary btn-lg" href="{% url 'provider_registration:contact_information' %}">Register as a Provider</a>
+{% endblock %}
+
+{% block under_header_content %}
+<p class="lead"><a href="https://osf.io/share/?q=*" target="_blank"><strong>{{ doc_count }}</strong> research events and counting</a></p>
+{% endblock %}
+
+{% block content %}
+
+<hr/>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <p>We will look at your data, and see if it can be added to the system. For more information about who can register and what is included in the registration form, please see the section on <a href="https://osf.io/cpsin/wiki/home/" target="_blank">Frequently Asked Questions</a>.</p>
+
+            <p>If your data already conforms to the <a href="https://osf.io/wur56/wiki/Schema/" target="_blank">SHARE data schema</a>, no registration is necessary. You can push it directly to our system. See the <a href="https://osf.io/dajtq/wiki/Push%20API/?view" target="_blank">documentation</a> for more information.</p>
+
+        </div>
+    </div>
+
+    <div>
+        <h3>{{ number_of_providers }} Current Providers</h3>
+        <ul>
+        {% for key, value in providers.iteritems %}
+            <li id="provider_list"><img src={{ value.favicon }}>  <a href="{{ value.url }}">{{value.long_name}}</a> </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

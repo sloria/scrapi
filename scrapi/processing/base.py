@@ -14,6 +14,12 @@ class BaseProcessor(object):
     def process_normalized(self, raw_doc, normalized, **kwargs):
         pass  # pragma: no cover
 
+    def process_uris(self, source, docID, uri, uritype, **kwargs):
+        pass  # pragma: no cover
+
+    def process_contributors(self, source, docID, contributor_dict, **kwargs):
+        pass  # pragma: no cover
+
     @abstractmethod
     def documents(self, *sources):
         '''

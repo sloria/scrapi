@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.5.1 CPython/2.7.9 Darwin/13.4.0]
+    method: GET
+    uri: http://repository.stcloudstate.edu/do/oai/?verb=Identify
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA51V30/bMBB+bv4KKy+8LHHSCQSRGzaNoSHRDUGZtr05yUE9JXZmO/3x3++cpjSh
+        06BUfWidu+++fPfdmZ2vqpIsQBuh5MSPw8gnIHNVCPk48e9nl8Gpf5567NvHq+Bm+sUbYbg0E39u
+        bZ1QulwuQ1WD5DqfiwWYUOlHirF0HEbU76KTlRGDjOX7Nm4cRTH9Mb2+y+dQ8UBIY7nMwaUZkZj2
+        9Frl3LbUXlPRG41eE9a9TLgyhZ96I6bB1EoauOAW0nEUHwdxFERns/g0GZ8k8ckvRgchbcqfBox1
+        ymUT/6oAacXD2k+78hpqZYRVeh0am5eqKfDdLIRQNLRQVHFBHWaLgQwQcAuBWu+Sv/IKUjuH2yc4
+        wi25syH55DDxF4I6oG21NsFjGTdwf3t9EJttjsdqrazKVfl944oUe8no80OP8aIS8nPFRZkWeWCa
+        ulbafsigRq1MmKuK0V6Ix4DrUqBmTmVUo6pR6gh1joP4bBZFSftFqffjPFZACRaKW8iVLlKpGB2e
+        eOxRc9mUXAu7Tn/iJ5hOg4uL2XyeVFViDOL2IxyiybWonbecBbAjgdh0UYAm3oh0nwP8PsRAGw8w
+        Dp+Cp/Q3TsOQD87GFvA1MzJM3o7KiLVjCSk+ZrT7jWq5Gdp6sHMyypjuDvfGoO/aXoaj6OCwvaIS
+        FjGSttfdn/aZQe+U0EtCMsl/SiUZ/LaAMx0dI+fnydh8N4+97qfEczV7/njuFvS4kNaQjTmOXtIz
+        DmPapRxtcg41A3nLRuyVJQdQ3PU6V9LiYsP5wI5YWNkXdxHpLgJG23DXSdpDYRVYXnDLb1Qp8nUP
+        eNo9IDmXJAPSGChItia4RirQueAl4bIgUsmgd2RAL0QOBJfTAqdXm37d/Vrsn6Uvm7LEOu2rkoqv
+        sYh1FOZc442GW8fx0CpT2PClsHPVWCwolH5HlrhuUCHCa8cAOaoH8tK6Dvsch4SYabJKGHcV7wRC
+        y+6f4pbcWBCvi4FVUe9uMFBd5q5id22nfwEEjlSX5wcAAA==
+    headers:
+      cache-control: [private]
+      content-encoding: [gzip]
+      content-type: [text/xml; charset=UTF-8]
+      date: ['Fri, 09 Oct 2015 18:26:16 GMT']
+      server: [nginx/1.2.1]
+      set-cookie: [bp_plack_session=fef1317d2307215bc281321e937d2b4aa7414a30; path=/;
+          HttpOnly, SERVERID=athena_nginx; path=/]
+    status: {code: 200, message: OK}
+version: 1

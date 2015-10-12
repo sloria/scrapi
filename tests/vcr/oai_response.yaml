@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.5.1 CPython/2.7.9 Darwin/13.4.0]
+    method: GET
+    uri: http://repository.stcloudstate.edu/do/oai/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42RUUvDMBSFn9tfEfK8NmllMkvbIYgobCg4h/iWtdc20CY1N93mvzcN9WHgw8hb
+        +M4959ybr899R45gUGpV0CTmlICqdC1VU9D33WO0ousyzF/un6PX7VMYOFxhQVtrh4yx0+kU6wGU
+        MFUrj4CxNg1zLEtjzuhMZ2eUF4rTjedSzhP2sd28VS30IpIKrVAVTDKUGfrfja6E9dGucQyD4Bps
+        LhOfsaZlGOQGcNAK4UFYKFOeLKOER/xul6yy9Dbjy8+cXSBe8j0C2mlzh4LScrY1MGiUVpufGG3V
+        6bF2nSzEUI+s1kwLyaZZXuucgxyM0Ya4fUNBD6Leu3G03ItuBKK/iG3BOxBhmrEHZYlEorQlgnTQ
+        iI7MTTy0uMThj+8lorvmgjijfwe60OBC1nHOfBwXzL98uuR09fIXVp/wkSYCAAA=
+    headers:
+      cache-control: [private]
+      content-encoding: [gzip]
+      content-type: [text/xml; charset=UTF-8]
+      date: ['Fri, 09 Oct 2015 18:26:05 GMT']
+      server: [nginx/1.2.1]
+      set-cookie: [bp_plack_session=299d718bad78a0d498bb476457884b142a987f07; path=/;
+          HttpOnly, SERVERID=athena_nginx; path=/]
+    status: {code: 200, message: OK}
+version: 1

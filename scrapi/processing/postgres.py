@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
@@ -8,12 +8,13 @@ import logging
 
 import django
 
-from api.webview.models import HarvesterResponse, Document
+from api.webview.models import HarvesterResponse, Document, URL, Person
 
 from scrapi import events
 from scrapi.util import json_without_bytes
 from scrapi.linter import RawDocument, NormalizedDocument
 from scrapi.processing import DocumentTuple
+from scrapi.processing.helpers import save_status_of_uri
 from scrapi.processing.base import BaseProcessor, BaseHarvesterResponse, BaseDatabaseManager
 
 django.setup()
@@ -109,9 +110,70 @@ class PostgresProcessor(BaseProcessor):
 
     def _get_by_source_id(self, model, source, docID):
         try:
-            return Document.objects.filter(source=source, docID=docID)[0]
-        except IndexError:
+            return model.objects.get(source=source, docID=docID)
+        except model.DoesNotExist:
             return None
+
+    def process_uris(self, source, docID, uri, uritype, **kwargs):
+        document = Document.objects.get(source=source, docID=docID)
+        status = save_status_of_uri(uri, uritype)
+        url = URL(url=uri, status=status)
+        url.save()
+        document.urls.add(url)
+        document.save()
+
+    def get_person(self, model, name, reconstructed_name, id_osf, id_email, id_orcid):
+        try:
+            return model.objects.get(
+                name=name,
+                reconstructed_name=reconstructed_name,
+                id_osf=id_osf,
+                id_email=id_email,
+                id_orcid=id_orcid
+            )
+        except model.DoesNotExist:
+            return None
+
+    def process_contributors(self, source, docID, contributor_dict):
+        document = Document.objects.get(source=source, docID=docID)
+
+        id_osf = None
+        id_orcid = None
+        id_email = None
+        if contributor_dict.get('sameAs'):
+            for identifier in contributor_dict['sameAs']:
+                if 'osf.io' in identifier:
+                    id_osf = identifier
+                if 'orcid' in identifier:
+                    id_orcid = identifier
+
+        if contributor_dict.get('email'):
+            id_email = contributor_dict['email']
+
+        reconstructed_name = contributor_dict['givenName']
+        if contributor_dict.get('additionalName'):
+            reconstructed_name = '{} {}'.format(reconstructed_name, contributor_dict['additionalName'])
+        reconstructed_name = '{} {}'.format(reconstructed_name, contributor_dict['familyName'])
+
+        #  TODO check to see if the person exists first, if they do, don't make a new one
+        person = self.get_person(
+            Person,
+            name=contributor_dict['name'],
+            reconstructed_name=reconstructed_name,
+            id_osf=id_osf,
+            id_email=id_email,
+            id_orcid=id_orcid
+        ) or Person(
+            name=contributor_dict['name'],
+            reconstructed_name=reconstructed_name,
+            id_osf=id_osf,
+            id_email=id_email,
+            id_orcid=id_orcid
+        )
+        person.save()
+
+        document.contributors.add(person)
+        document.save()
 
 
 class HarvesterResponseModel(BaseHarvesterResponse):

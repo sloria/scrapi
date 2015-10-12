@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.5.3 CPython/2.7.9 Darwin/13.4.0]
+    method: GET
+    uri: http://www.osti.gov/scitech/scitechxml?EntryDateFrom=02%2F02%2F2015&page=0?verb=Identify
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7WU32/TMBDHn9lfcZQXkJakaWmH0mCpaEN927T1hUfXuTQGxw62U9ZN/d+5xl1b
+        2CZAYk92znef++FvnFe+ViyvkBcs99IrZNOGiwphbmrBfTKO+/HwDCK4sNZYsNgY6/MkuObOr7fL
+        6yiapXBfGu2jktdSrbM5r0zNT6dWcnXquHaRQyvLiTDK2OxHJT1OFlx8W1rT6iIK5jejwej8bDzp
+        QE7eYTYYNLeTDcwGL0JPx4E+fBn6+47+6fL8y7/wF4rQj/khLeH+Y60buPo72oGwQx6XetRxd1tT
+        uO+OIYPgsJnGmtf4yDy7Ppj2JUURy5OgK8iTIMyFKdYk0pTN5vMruPHctw5G/T7J8rNUHu1OnZdC
+        tNZiEVNgynLib8v62Et7oI2reEH73abH8obAzK8bzJMFg4tbgY2XRu813uxcanSOL4NX3rLnMrbs
+        EFKgE1Z2uIewOf1TNMwVhaIWNEqCYAFcg9xuNVeAHdJX3ENjcYVkL0B6KK2poWxVKZWSekke0lGV
+        31t0/rfE+NBFSEsY9pWv+G28Ta3Qxzdh3XebPTPBk1dLs4qN8zJ2gm5cVHHZOcbXIXEIiwsTNm9/
+        NW+TZh/SdydUGtVwKFAbj8cjobYUOE96AG+5QDAl9YdgjfEgeOsQqFmiScUXij50d/zkI6XM0h3m
+        8Yfbr4ZPvnSknCHFB8Ul3ev4EyHZaQ4kBQAA
+    headers:
+      content-encoding: [gzip]
+      content-length: ['540']
+      content-type: [text/html;charset=utf-8]
+      date: ['Mon, 30 Mar 2015 14:03:04 GMT']
+      server: [Apache-Coyote/1.1]
+      set-cookie: [BIGipServerlbapp_scitech=3858760202.41030.0000; path=/, BIGipServerwww.osti.gov_pool=1132494278.20480.0000;
+          path=/]
+      vary: [Accept-Encoding]
+      x-cnection: [close, close]
+    status: {code: 500, message: Internal Server Error}
+version: 1

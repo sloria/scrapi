@@ -1,0 +1,61 @@
+{% extends "provider_registration/base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><small>Contact</small></li>
+            <li class="active"><b>Metadata</b></li>
+            <li><small>Provider</small></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form action="{% url 'provider_registration:provider_information' %}" method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="text-danger">Please correct the error{{ form.errors|pluralize }} below.</div>
+            {% endif %}
+
+            <h2>Metadata Sharing</h2>
+            <p class="lead">Please confirm the following statements about the metadata you will be providing to SHARE:</p>
+            <p>Please note these statements only apply to the <strong>metadata</strong> in your API, not to the research objects themselves.</p><br/>
+
+                <p>{{ form.meta_tos }} Metadata gathering does not violate my organization's Terms of Service.</p>
+                <p>{{ form.meta_privacy }} Metadata gathering does not violate my organization's Privacy Policy.</p>
+
+                <p>{{ form.meta_sharing }} Distributing this metadata does not violate my organization's Terms of Service or Privacy Policy.</p>
+
+                  <p>{{ form.meta_license_cc0 }} I understand and acknowledge that the metadata my organization provides will be redistributed by SHARE.</p>
+
+                <p>{{ form.meta_rights }} I have the right to acknowledge the above statements for my organization.</p>
+            {{ form.reg_id }}
+
+            <button id="select-all" class="btn btn-default" style="margin-top:8px;">Select All</button>
+
+            <input class="btn btn-primary btn-bottom" type="submit" value="Next" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript_bottom %}
+
+<script type="application/javascript">
+    $(function () {
+        $('#select-all').click(function (event) {
+            event.preventDefault();
+            $('input[type^="checkbox"]').each(function () {
+                this.checked = true;
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,40 @@
+{% extends "provider_registration/base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><small>Contact</small></li>
+            <li><small>Metadata</small></li>
+            <li  class="active"><b>Provider</b></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        {% if error_message %}<strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'provider_registration:register' %}" method="post">
+        {% csrf_token %}
+
+            <div class="field_entry">
+                <p class="lead"><strong>Provider Name:</strong> {{ name }}</p>
+            </div>
+
+            <div class="field_entry">
+                <p class="lead"><strong>Base URL:</strong> {{ base_url }}</p>
+            </div>
+
+        {{ form.reg_id }}
+        {{ form.property_list }}
+        {{ form.provider_long_name}}
+
+        <input class="btn btn-primary btn-bottom" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

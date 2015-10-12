@@ -1,0 +1,77 @@
+{% extends "provider_registration/base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><small>Contact</small></li>
+            <li><small>Metadata</small></li>
+            <li  class="active"><b>Provider</b></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        {% if error_message %}<strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'provider_registration:register' %}" method="post">
+        {% csrf_token %}
+            <h2>Provider Information</h2>
+            <div class="field_entry">
+                <p class="lead"><strong>Provider Name:</strong> {{ name }}</p>
+            </div>
+
+            <div class="field_entry">
+                <p class="lead"><strong>Base URL:</strong> {{ base_url }}</p>
+            </div>
+            <br/>
+            <div class="field_entry">
+                <p class="lead">
+                    <strong>Approved Sets</strong>
+                    <button id="select-all" class="btn btn-xs" style="margin-left: 10px;">Select All</button>
+                    <button id="deselect-all" class="btn btn-xs">Deselect All</button>
+                </p>
+                <p>Check the sets that you'd like to appear in SHARE Notify. These options are automatically generated from your provider's <a href="{{ base_url }}?verb=ListSets" target="_blank">ListSets API endpoint</a>. Displayed here are the setNames for the corresponding setSpec options in your publically accessable database.</p>
+                <p>If you'd rather enter the approved sets manually, click here to access the <a href="/provider_registration/simple_oai_registration/">simple OAI registration form</a>.</p>
+
+                <p>Sets that you specify will be included in SHARE, and sets that you do not specify will be  ignored and not processed by SHARE.</p>
+                <br/>
+                {{ form.approved_sets }}
+            </div>
+
+        {{ form.reg_id }}
+        {{ form.property_list }}
+        {{ form.provider_long_name}}
+
+        <input class="btn btn-primary btn-bottom" type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block javascript_bottom %}
+
+<script type="application/javascript">
+    $(function () {
+        $('#select-all').click(function (event) {
+            event.preventDefault();
+            $('input[id^="id_approved_sets"]').each(function () {
+                this.checked = true;
+            });
+        });
+
+        $('#deselect-all').click(function (event) {
+            event.preventDefault();
+            $('input[id^="id_approved_sets"]').each(function () {
+                this.checked = false;
+            });
+        });
+    });
+</script>
+
+{% endblock %}

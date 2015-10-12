@@ -1,0 +1,32 @@
+div#api_doc_header img {
+  max-width: 75px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+div#api_doc_header {
+  background: #f5f5f5;
+}
+
+.swagger-section .swagger-ui-wrap {
+  line-height: 1;
+  font-family: "Droid Sans", sans-serif;
+  max-width: 960px;
+}
+
+#SHARE_post_share_search_content form div input.submit {
+    display: none !important;
+}
+
+#SHARE_post_share_data_content form div input.submit {
+    display: none !important;
+}
+
+div.beta_warning p {
+  margin-top: 25px;
+}
+
+div.beta_warning p a {
+  color: #0018BB;
+}

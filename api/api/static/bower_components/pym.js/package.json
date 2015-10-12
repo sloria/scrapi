@@ -1,0 +1,33 @@
+{
+  "name": "pym.js",
+  "version": "0.4.1",
+  "description": "Resize an iframe responsively depending on the height of its content and the width of its container.",
+  "main": "src/pym.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nprapps/pym.js.git"
+  },
+  "keywords": [
+    "iframe",
+    "responsive",
+    "browser"
+  ],
+  "author": "NPR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nprapps/pym.js/issues"
+  },
+  "devDependencies": {
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-jsdoc": "~0.5.6"
+  }
+}
