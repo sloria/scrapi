@@ -15,4 +15,11 @@ DATABASES = {
     }
 }
 
-STATIC_URL = '{}/static/'.format(DOMAIN)
+STATIC_URL = '/static/'
+
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:5000',
+    'osf.io',
+    'staging.osf.io'
+)

@@ -2,14 +2,13 @@ from django.db import models
 from django_pgjson.fields import JsonField
 
 
-class Document(models.Model):
-    source = models.CharField(max_length=255)
-    docID = models.TextField()
-
-    providerUpdatedDateTime = models.DateTimeField(null=True)
-
-    raw = JsonField()
-    normalized = JsonField(null=True)
+class Person(models.Model):
+    name = models.CharField(max_length=255)
+    reconstructed_name = models.CharField(max_length=255)
+    institution = models.CharField(max_length=255, null=True)
+    id_osf = models.CharField(max_length=10, null=True)
+    id_orcid = models.CharField(max_length=100, null=True)
+    id_email = models.CharField(max_length=255, null=True)
 
 
 class HarvesterResponse(models.Model):
@@ -26,3 +25,22 @@ class HarvesterResponse(models.Model):
     headers_str = models.TextField(null=True)
     status_code = models.IntegerField(null=True)
     time_made = models.DateTimeField(auto_now=True)
+
+
+class URL(models.Model):
+    url = models.CharField(max_length=500)
+    status = JsonField(null=True)
+    response = models.ForeignKey(HarvesterResponse, related_name='response', null=True)
+
+
+class Document(models.Model):
+    source = models.CharField(max_length=255)
+    docID = models.TextField()
+
+    providerUpdatedDateTime = models.DateTimeField(null=True)
+
+    raw = JsonField()
+    normalized = JsonField(null=True)
+
+    contributors = models.ManyToManyField(Person, related_name='documents')
+    urls = models.ManyToManyField(URL, related_name='urls')

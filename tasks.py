@@ -198,6 +198,22 @@ def harvesters(async=False, start=None, end=None):
 
 
 @task
+def process_uris(async=False, source=None):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import process_uris
+
+    process_uris.delay(async=async, source=source)
+
+
+@task
+def process_contributors(async=False, source=None):
+    settings.CELERY_ALWAYS_EAGER = not async
+    from scrapi.tasks import process_contributors
+
+    process_contributors.delay(async=async, source=source)
+
+
+@task
 def lint_all():
     for name in registry.keys():
         lint(name)
