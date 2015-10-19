@@ -14,7 +14,7 @@ from scrapi import events
 from scrapi.util import json_without_bytes
 from scrapi.linter import RawDocument, NormalizedDocument
 from scrapi.processing import DocumentTuple
-from scrapi.processing.helpers import save_status_of_uri
+from scrapi.processing.helpers import save_status_of_uri, query_orcid_api
 from scrapi.processing.base import BaseProcessor, BaseHarvesterResponse, BaseDatabaseManager
 
 django.setup()
@@ -155,16 +155,24 @@ class PostgresProcessor(BaseProcessor):
             reconstructed_name = '{} {}'.format(reconstructed_name, contributor_dict['additionalName'])
         reconstructed_name = '{} {}'.format(reconstructed_name, contributor_dict['familyName'])
 
-        #  TODO check to see if the person exists first, if they do, don't make a new one
+        if not id_orcid:
+            id_orcid = query_orcid_api(id_email)
+
         person = self.get_person(
             Person,
-            name=contributor_dict['name'],
-            reconstructed_name=reconstructed_name,
+            name=reconstructed_name,
+            raw_name=contributor_dict['name'],
+            family_name=contributor_dict.get('familyName'),
+            given_name=contributor_dict.get('givenName'),
+            additional_name=contributor_dict.get('additionalName'),
             id_osf=id_osf,
             id_email=id_email,
             id_orcid=id_orcid) or Person(
-                name=contributor_dict['name'],
-                reconstructed_name=reconstructed_name,
+                name=reconstructed_name,
+                raw_name=contributor_dict['name'],
+                family_name=contributor_dict.get('familyName'),
+                given_name=contributor_dict.get('givenName'),
+                additional_name=contributor_dict.get('additionalName'),
                 id_osf=id_osf,
                 id_email=id_email,
                 id_orcid=id_orcid
