@@ -1,9 +1,12 @@
 import ast
 import logging
-from datetime import date, timedelta
-
 import requests
 from lxml import etree
+from datetime import date, timedelta
+from requests.auth import HTTPBasicAuth
+
+from api.api import settings
+
 
 NAMESPACES = {'dc': 'http://purl.org/dc/elements/1.1/',
               'oai_dc': 'http://www.openarchives.org/OAI/2.0/',
@@ -75,3 +78,53 @@ def get_oai_properties(base_url):
     except Exception as e:
         logger.info(e)
         raise ValueError('OAI Processing Error - {}'.format(e))
+
+
+def compose_desk_email(reg_type, name, email):
+    if reg_type == 'incomplete':
+        body = 'Hello {},\n\nThank you for beginning to register a provider to participate in the beta of SHARE Notify! We see that you have started the registration process, but have not yet completed it, perhaps due to potential metadata license restrictions for your provider.'.format(name)
+
+        subject = 'SHARE registration follow-up'
+    else:
+        subject = 'SHARE - registration confirmation'
+
+        body = '''Hello {},
+
+Thank you for registering a provider to participate in the Beta release of SHARE Notify! We will evaluate your provider based on the information you have provided, and will get back to you soon soon with any questions we may have.
+'''.format(name)
+
+    body += '''Please let us know if you have any questions about the process. As SHARE Notify is currently in beta, we would also appreciate any feedback or insights about the provider registration process.  Subscribe to the SHARE email list to stay updated with ongoing progress (see form at the bottom of this page: http://www.share-research.org/).
+
+Sincerely,
+{}'''.format(settings.EMAIL_SIGNATURE)
+
+    message = {
+        "type": "email",
+        "subject": subject,
+        "priority": 4,
+        "status": "open",
+        "labels": ["Spam", "Ignore"],
+        "message": {
+            "direction": "out",
+            "body": body,
+            "to": email,
+            "from": settings.FROM_EMAIL,
+            "subject": "My email subject"
+        },
+        "_links": {
+            "customer": {
+                "class": "customer",
+                "href": "/api/v2/customers/1"
+            },
+            "assigned_group": {
+                "href": "/api/v2/groups/1",
+                "class": "group"
+            }
+        }
+    }
+
+    requests.post(
+        'http://openscience.desk.com/',
+        auth=HTTPBasicAuth(settings.DESK_EMAIL, settings.DESK_PASSWORD),
+        json=message
+    )
