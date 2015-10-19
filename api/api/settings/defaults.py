@@ -121,3 +121,7 @@ CORS_ORIGIN_WHITELIST = (
     'osf.io',
     'staging.osf.io'
 )
+
+DESK_EMAIL = 'setthis@cos.io'
+DESK_PASSWORD = 'password'
+FROM_EMAIL = 'setthis@cos.io'
