@@ -3,12 +3,16 @@ from django_pgjson.fields import JsonField
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=255)
-    reconstructed_name = models.CharField(max_length=255)
+    raw_name = models.CharField(max_length=255)  # source name we got
+    name = models.CharField(max_length=255)  # reconstructed - given+add+fam
+    family_name = models.CharField(max_length=255, null=True)
+    given_name = models.CharField(max_length=255, null=True)
+    additional_name = models.CharField(max_length=255, null=True)
     institution = models.CharField(max_length=255, null=True)
     id_osf = models.CharField(max_length=10, null=True)
     id_orcid = models.CharField(max_length=100, null=True)
     id_email = models.CharField(max_length=255, null=True)
+    raw_orcid = JsonField(null=True)
 
 
 class HarvesterResponse(models.Model):
