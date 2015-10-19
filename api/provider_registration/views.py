@@ -114,6 +114,7 @@ def save_metadata_render_provider(request):
         current_registration.save()
 
         if len(all_clear) < 5:
+            utils.compose_desk_email(reg_type='incomplete')
             current_registration.registration_complete = True
             current_registration.save()
             return render(
