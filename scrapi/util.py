@@ -6,6 +6,7 @@ import six
 import pytz
 import time
 import logging
+import sharefg
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.api.settings")
 from api.webview.models import Document
@@ -66,17 +67,21 @@ def json_without_bytes(jobj):
     return jobj
 
 
-def gather_contributors(source):
+def gather_contributors(source, production_es):
     source_contributors = []
     source_dict = {'source': source}
-    for document in Document.objects.filter(source=source):
-        if document.normalized:
-            docID = document.normalized['shareProperties']['docID']
 
-            for person in document.normalized['contributors']:
-                source_contributors.append({'source': source, 'docID': docID, 'contributor': person})
+    if production_es:
+        pass
+    else:
+        for document in Document.objects.filter(source=source):
+            if document.normalized:
+                docID = document.normalized['shareProperties']['docID']
 
-    source_dict['contributors'] = source_contributors
+                for person in document.normalized['contributors']:
+                    source_contributors.append({'source': source, 'docID': docID, 'contributor': person})
+
+        source_dict['contributors'] = source_contributors
     return source_dict
 
 
