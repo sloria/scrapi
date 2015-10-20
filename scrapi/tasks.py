@@ -130,11 +130,11 @@ def process_contributors(async, **kwargs):
 
     all_buckets = []
     if kwargs.get('source'):
-        source_buckets = util.gather_contributors(kwargs['source'])
+        source_buckets = util.gather_contributors(kwargs['source'], kwargs.get('production_es'))
         all_buckets.append(source_buckets)
     else:
         for source in registry.keys():
-            source_buckets = util.gather_contributors(source)
+            source_buckets = util.gather_contributors(source, kwargs.get('production_es'))
             all_buckets.append(source_buckets)
 
     for source in all_buckets:
