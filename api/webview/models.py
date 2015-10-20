@@ -48,3 +48,21 @@ class Document(models.Model):
 
     contributors = models.ManyToManyField(Person, related_name='documents')
     urls = models.ManyToManyField(URL, related_name='urls')
+
+
+class ESPersonDocument(models.Model):
+    # Person
+    raw_name = models.CharField(max_length=255)  # source name we got
+    name = models.CharField(max_length=255)  # reconstructed - given+add+fam
+    family_name = models.CharField(max_length=255, null=True)
+    given_name = models.CharField(max_length=255, null=True)
+    additional_name = models.CharField(max_length=255, null=True)
+    institution = models.CharField(max_length=255, null=True)
+    id_osf = models.CharField(max_length=10, null=True)
+    id_orcid = models.CharField(max_length=100, null=True)
+    id_email = models.CharField(max_length=255, null=True)
+    raw_orcid = JsonField(null=True)
+
+    # Which document they come from
+    source = models.CharField(max_length=255)
+    docID = models.TextField()
