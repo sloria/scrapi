@@ -206,11 +206,11 @@ def process_uris(async=False, source=None):
 
 
 @task
-def process_contributors(async=False, source=None):
+def process_contributors(async=False, source=None, production_es=False):
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi.tasks import process_contributors
 
-    process_contributors.delay(async=async, source=source)
+    process_contributors.delay(async=async, source=source, production_es=production_es)
 
 
 @task
