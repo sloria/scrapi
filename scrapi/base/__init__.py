@@ -247,6 +247,8 @@ class AutoOAIHarvester(XMLHarvester):
         if metadata:
             for child in metadata[0].getchildren():
                 self.namespaces(child)
+        else:
+            logger.info('No metadata element found, was this a proper request?')
         self.namespaces(record_xml)
 
         return record_xml
