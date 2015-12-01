@@ -118,7 +118,7 @@ class AutoOAIHarvester(XMLHarvester):
     _timezone_granularity = None
     _metadata_prefixes = None
     _property_list = None
-    _record_encoding = None
+    _record_encoding = 'utf8'
 
     timeout = 0.5
     approved_sets = None
@@ -136,7 +136,6 @@ class AutoOAIHarvester(XMLHarvester):
                 namespaces['ns0'] = value
         namespaces.pop(None)
         self.all_namespaces.update(namespaces)
-        print('UPDATING NSPS WITH {}'.format(namespaces))
         return namespaces
 
     @property
@@ -163,12 +162,11 @@ class AutoOAIHarvester(XMLHarvester):
 
     @property
     def record_encoding(self):
-        if self._record_encoding:
-            return self._record_encoding
         url = furl(self.base_url)
         url.args['verb'] = 'Identify'
 
-        self._record_encoding = requests.get(url.url).encoding
+        if requests.get(url.url).encoding != 'None':
+            self._record_encoding = requests.get(url.url).encoding
         return self._record_encoding
 
     @property
@@ -274,17 +272,17 @@ class AutoOAIHarvester(XMLHarvester):
 
                 records.append(self.get_record(url.url))
 
-                # For testing only!
-                if len(records) % 3 == 0:
-                    print('Collected {} records...'.format(len(records)))
-        return [
-            RawDocument({
-                'doc': etree.tostring(record, encoding=self.record_encoding),
-                'source': self.short_name,
-                'docID': record.xpath('//ns0:header/ns0:identifier', namespaces=self.namespaces(record))[0].text,
-                'filetype': 'xml'
-            }) for record in records
-        ]
+        try:
+            return [
+                RawDocument({
+                    'doc': etree.tostring(record, encoding=self.record_encoding),
+                    'source': self.short_name,
+                    'docID': record.xpath('//ns0:header/ns0:identifier', namespaces=self.namespaces(record))[0].text,
+                    'filetype': 'xml'
+                }) for record in records
+            ]
+        except Exception:
+            import ipdb; ipdb.set_trace()
 
     def normalize(self, raw_doc):
         str_result = raw_doc.get('doc')
