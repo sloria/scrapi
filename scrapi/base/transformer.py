@@ -90,6 +90,7 @@ class BaseTransformer(object):
 class XMLTransformer(BaseTransformer):
 
     namespaces = {}
+    all_namespaces = {}
 
     def _transform_string(self, string, doc):
         return doc.xpath(string, namespaces=self.all_namespaces)
