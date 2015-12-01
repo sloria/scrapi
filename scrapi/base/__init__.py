@@ -118,15 +118,16 @@ class AutoOAIHarvester(XMLHarvester):
     _timezone_granularity = None
     _metadata_prefixes = None
     _property_list = None
-    _record_encoding = 'utf8'
+    _record_encoding = None
 
     timeout = 0.5
-    approved_sets = None
-    timezone_granularity = False
-    property_list = ['date', 'type']
-    force_request_update = False
     verify = True
     all_namespaces = {}
+    approved_sets = None
+    default_encoding = 'utf8'
+    timezone_granularity = False
+    force_request_update = False
+    property_list = ['date', 'type']
 
     def namespaces(self, element):
         namespaces = element.nsmap
@@ -162,11 +163,17 @@ class AutoOAIHarvester(XMLHarvester):
 
     @property
     def record_encoding(self):
+        if self._record_encoding:
+            return self._record_encoding
         url = furl(self.base_url)
         url.args['verb'] = 'Identify'
 
-        if requests.get(url.url).encoding != 'None':
+        encoding = requests.get(url.url).encoding
+
+        if encoding != 'None':
             self._record_encoding = requests.get(url.url).encoding
+        else:
+            self._record_encoding = self.default_encoding
         return self._record_encoding
 
     @property
@@ -237,8 +244,9 @@ class AutoOAIHarvester(XMLHarvester):
 
         # make sure we add all of the namespaces to all_namespaces
         metadata = record_xml.xpath('//ns0:metadata', namespaces=self.namespaces(record_xml))
-        for child in metadata[0].getchildren():
-            self.namespaces(child)
+        if metadata:
+            for child in metadata[0].getchildren():
+                self.namespaces(child)
         self.namespaces(record_xml)
 
         return record_xml
@@ -256,7 +264,8 @@ class AutoOAIHarvester(XMLHarvester):
         records = []
         # Get a list of all identifiers for each metadata prefix given the date range
         for prefix in self.metadata_prefixes:
-            print('checking out the prefix {}'.format(prefix))
+            if url.args.get('identifier'):
+                url.args.pop('identifier')
             url.args['verb'] = 'ListIdentifiers'
             url.args['metadataPrefix'] = prefix
             url.args['from'] = start_date
@@ -269,20 +278,16 @@ class AutoOAIHarvester(XMLHarvester):
             for identifier in prefix_ids:
                 url.args['verb'] = 'GetRecord'
                 url.args['identifier'] = identifier
-
                 records.append(self.get_record(url.url))
 
-        try:
-            return [
-                RawDocument({
-                    'doc': etree.tostring(record, encoding=self.record_encoding),
-                    'source': self.short_name,
-                    'docID': record.xpath('//ns0:header/ns0:identifier', namespaces=self.namespaces(record))[0].text,
-                    'filetype': 'xml'
-                }) for record in records
-            ]
-        except Exception:
-            import ipdb; ipdb.set_trace()
+        return [
+            RawDocument({
+                'doc': etree.tostring(record, encoding=self.record_encoding),
+                'source': self.short_name,
+                'docID': record.xpath('//ns0:header/ns0:identifier', namespaces=self.namespaces(record))[0].text,
+                'filetype': 'xml'
+            }) for record in records
+        ]
 
     def normalize(self, raw_doc):
         str_result = raw_doc.get('doc')
