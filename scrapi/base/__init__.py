@@ -364,7 +364,7 @@ class OAIHarvester(XMLHarvester):
 
     def format_property(self, property):
         if property == 'date':
-            force_date = null_on_error(datetime_formatter)
+            null_on_error(datetime_formatter)
             fn = compose(lambda x: list(
                 map(
                     null_on_error(datetime_formatter),
