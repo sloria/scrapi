@@ -93,7 +93,9 @@ class XMLTransformer(BaseTransformer):
     all_namespaces = {}
 
     def _transform_string(self, string, doc):
-        return doc.xpath(string, namespaces=self.all_namespaces)
+        if self.all_namespaces:
+            return doc.xpath(string, namespaces=self.all_namespaces)
+        return doc.xpath(string, namespaces=self.namespaces)
 
 
 @six.add_metaclass(abc.ABCMeta)
