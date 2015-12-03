@@ -9,7 +9,7 @@ from nameparser import HumanName
 from scrapi import requests, settings
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
-from scrapi.base.helpers import default_name_parser, compose, build_properties, datetime_formatter
+from scrapi.base.helpers import build_properties, datetime_formatter
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +81,7 @@ class USGSHarvester(JSONHarvester):
 
         # This API does not support date ranges
         start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
-        
+
         # days_back = the number of days between start_date and now, defaulting to settings.DAYS_BACK
         days_back = settings.DAYS_BACK
         search_url = '{0}mod_x_days={1}'.format(
