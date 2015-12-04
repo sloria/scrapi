@@ -2,31 +2,24 @@ from __future__ import unicode_literals
 
 import json
 import logging
-from datetime import date, timedelta
-
+from datetime import date, timedelta, datetime
 import six
+import sys
+import urllib2
+from datetime import datetime
+from decimal import Decimal
 from nameparser import HumanName
 from scrapi import requests, settings
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
-from scrapi.base.helpers import build_properties, datetime_formatter
+from scrapi.base.helpers import default_name_parser, compose, build_properties, datetime_formatter
 
 logger = logging.getLogger(__name__)
 
 
 def process_contributors(authors):
-    all_processed_authors = []
-
-    for author in authors:
-        author_d = {}
-        author_d['name'] = author['text']
-        name = HumanName(
-            author['text']
-        )
-        author_d['additionalName'] = name.middle
-        author_d['givenName'] = name.first
-        author_d['familyName'] = name.last
-    return all_processed_authors
+    names = [author['text'] for author in authors]
+    return default_name_parser(names)
 
 
 class USGSHarvester(JSONHarvester):
@@ -46,14 +39,20 @@ class USGSHarvester(JSONHarvester):
             'providerUris': [('/id', 'https://pubs.er.usgs.gov/publication/{}'.format)],
             'descriptorUris': [('/doi', 'https://dx.doi.org/{}'.format)]
         },
+        'publisher': {
+                'name': '/publisher'
+            },
+        'language': ['/language'],
 
-        'contributors': ('/contributors/authors', process_contributors),
+        'contributors': ('/contributors/authors', compose(
+            default_name_parser,
+            lambda authors: [author['text'] for author in authors]
+        )),
         'otherProperties': build_properties(
             ('serviceID', ('/id', str)),
             ('definedType', '/defined_type'),
             ('type', '/type'),
             ('links', '/links'),
-            ('publisher', '/publisher'),
             ('publishedDate', '/displayToPublicDate'),
             ('publicationYear', '/publicationYear'),
             ('issue', '/issue'),
@@ -68,9 +67,6 @@ class USGSHarvester(JSONHarvester):
             ('country', '/country'),
             ('state', '/state'),
             ('ipdsId', '/ipdsId'),
-            ('links', '/links'),
-            ('doi', '/doi'),
-            ('contributors', '/contributors'),
             ('otherGeospatial', '/otherGeospatial'),
             ('geographicExtents', '/geographicExtents'),
 
@@ -78,36 +74,34 @@ class USGSHarvester(JSONHarvester):
     }
 
     def harvest(self, start_date=None, end_date=None):
+        start_date = 2014
+        end_date = 2015
 
-        # This API does not support date ranges
-        start_date = start_date or date.today() - timedelta(settings.DAYS_BACK)
-
-        # days_back = the number of days between start_date and now, defaulting to settings.DAYS_BACK
-        days_back = settings.DAYS_BACK
+        # if start_date > 0:
+        #     url = "&startYear="+str(start_date)
+        #     print url
+        # if end_date> 0:
+        #     url =  "&endYear="+str(end_date)
+        #     print url
+        #
+        # # days_back = the number of days between start_date and now, defaulting to settings.DAYS_BACK
+        days_back = 1 + settings.DAYS_BACK
         search_url = '{0}mod_x_days={1}'.format(
             self.URL,
-            days_back
+            days_back,
         )
+        search_url2 = "{}&startYear={}&endYear={}".format(self.URL, start_date, end_date)
+        return [
+            RawDocument({
+                'doc': json.dumps(record),
+                'source': self.short_name,
+                'docID': six.text_type(record['id']),
+                'filetype': 'json'
+            }) for record in self.get_records(search_url, search_url2)
+            ]
 
-        record_list = []
-        for record in self.get_records(search_url):
-            doc_id = record['id']
-
-            record_list.append(
-                RawDocument(
-                    {
-                        'doc': json.dumps(record),
-                        'source': self.short_name,
-                        'docID': six.text_type(doc_id),
-                        'filetype': 'json'
-                    }
-                )
-            )
-
-        return record_list
-
-    def get_records(self, search_url):
-        records = requests.get(search_url)
+    def get_records(self, search_url, search_url2):
+        records = requests.get(search_url, search_url2)
         total_records = records.json()['recordCount']
         logger.info('Harvesting {} records'.format(total_records))
         page_number = 1
@@ -120,5 +114,5 @@ class USGSHarvester(JSONHarvester):
                 yield record
 
             page_number += 1
-            records = requests.get(search_url + '&page_number={}'.format(page_number), throttle=3)
+            records = requests.get(search_url + '&page_number={}'.format(page_number))
             logger.info('{} documents harvested'.format(count))
