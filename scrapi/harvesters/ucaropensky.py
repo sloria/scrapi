@@ -9,7 +9,7 @@ from scrapi.base import OAIHarvester
 
 
 class UcarHarvester(OAIHarvester):
-    short_name = 'ucar'
+    short_name = 'ucaropensky'
     long_name = 'NCAR OpenSky Institutional Repository'
     url = 'http://opensky.ucar.edu'
 
