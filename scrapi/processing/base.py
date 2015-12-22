@@ -17,7 +17,7 @@ class BaseProcessor(object):
     @abstractmethod
     def documents(self, *sources):
         '''
-        an iterator that will return documents
+        an iterator that will return DocumentTuple objects
         '''
         raise NotImplementedError
 
@@ -65,6 +65,22 @@ class BaseDatabaseManager(object):
         '''Performs the necessary operations to allow a new process to connect to the database
         '''
         raise NotImplementedError
+
+
+class FakeDataBaseManager(BaseDatabaseManager):
+    '''A database manager for backends that don't need a database manager'''
+
+    def setup(self):
+        return True
+
+    def tear_down(self):
+        pass
+
+    def clear(self, force=False):
+        pass
+
+    def celery_setup(self, *args, **kwargs):
+        pass
 
 
 class BaseHarvesterResponse(object):
