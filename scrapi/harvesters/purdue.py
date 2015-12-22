@@ -16,5 +16,3 @@ class PurdueHarvester(OAIHarvester):
     base_url = 'http://purr.purdue.edu/oaipmh'
     property_list = ['date', 'relation', 'identifier', 'type', 'setSpec']
     timezone_granularity = True
-
-    approved_sets = [u'publications:databases', u'publications:files']
