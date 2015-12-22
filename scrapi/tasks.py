@@ -11,6 +11,7 @@ from scrapi import settings
 from scrapi import registry
 from scrapi import processing
 from scrapi.util import timestamp
+from scrapi.base.helpers import null_on_error
 
 app = Celery()
 app.config_from_object(settings)
@@ -105,7 +106,7 @@ def normalize(raw_doc, harvester_name):
     normalized_started = timestamp()
     harvester = registry[harvester_name]
 
-    normalized = harvester.normalize(raw_doc)
+    normalized = null_on_error(harvester.normalize)(raw_doc)
 
     if not normalized:
         raise events.Skip('Did not normalize document with id {}'.format(raw_doc['docID']))
@@ -134,7 +135,7 @@ def migrate(migration, source_db=None, sources=tuple(), async=False, dry=True, g
     if async:
         segment = list(islice(docs, group_size))
         while segment:
-            migration.s(segment, sources=sources, dry=dry, **kwargs).apply_async()
+            migration.s(segment, sources=sources, dry=dry, source_db=source_db, **kwargs).apply_async()
             segment = list(islice(docs, group_size))
     else:
         for doc in docs:

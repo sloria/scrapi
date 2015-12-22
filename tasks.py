@@ -22,6 +22,7 @@ WHEELHOUSE_PATH = os.environ.get('WHEELHOUSE')
 
 @task
 def reindex(src, dest):
+    ''' Reindexes documents from index {src} to index {dest}'''
     from elasticsearch import helpers
     from scrapi.processing.elasticsearch import DatabaseManager
     dm = DatabaseManager()
@@ -33,6 +34,7 @@ def reindex(src, dest):
 
 @task
 def alias(alias, index):
+    ''' Creates an Elasticsearch index alias '''
     from scrapi.processing.elasticsearch import DatabaseManager
     dm = DatabaseManager()
     dm.setup()
@@ -92,13 +94,8 @@ def migrate(migration, sources=None, kwargs_string=None, dry=True, async=False, 
 
 
 @task
-def migrate_to_source_partition(dry=True, async=False):
-    from scrapi.tasks import migrate_to_source_partition
-    migrate_to_source_partition(dry=dry, async=async)
-
-
-@task
 def reset_search():
+    ''' Restarts Elasticsearch '''
     run("curl -XPOST 'http://localhost:9200/_shutdown'")
     if platform.linux_distribution()[0] == 'Ubuntu':
         run("sudo service elasticsearch restart")
@@ -124,7 +121,7 @@ def elasticsearch():
 @task
 def test(cov=True, doctests=True, verbose=False, debug=False, pdb=False):
     """
-    Runs all tests in the 'tests/' directory
+    Runs all tests in the 'tests/' directory, and all doctests in the scrAPI directory
     """
     cmd = 'py.test scrapi tests'
     if doctests:
@@ -143,6 +140,7 @@ def test(cov=True, doctests=True, verbose=False, debug=False, pdb=False):
 
 @task
 def wheelhouse(develop=False):
+    ''' Sets up the wheelhouse for requirements '''
     req_file = 'dev-requirements.txt' if develop else 'requirements.txt'
     cmd = 'pip wheel --find-links={} -r {} --wheel-dir={}'.format(WHEELHOUSE_PATH, req_file, WHEELHOUSE_PATH)
     run(cmd, pty=True)
@@ -150,6 +148,7 @@ def wheelhouse(develop=False):
 
 @task
 def requirements(develop=False, upgrade=False):
+    ''' Installs all Python dependencies '''
     req_file = 'dev-requirements.txt' if develop else 'requirements.txt'
     cmd = 'pip install -r {}'.format(req_file)
 
@@ -162,6 +161,7 @@ def requirements(develop=False, upgrade=False):
 
 @task
 def beat(setup=True):
+    ''' Runs the Celery Beat service '''
     from scrapi import registry
     from scrapi.tasks import app
     # Set up the provider map for elasticsearch
@@ -173,18 +173,22 @@ def beat(setup=True):
 
 
 @task
-def worker(loglevel='INFO', hostname='%h'):
+def worker(loglevel='INFO', hostname='%h', autoreload=False):
+    ''' Runs the Celery worker service '''
     from scrapi.tasks import app
     command = ['worker']
     if loglevel:
         command.extend(['--loglevel', loglevel])
     if hostname:
         command.extend(['--hostname', hostname])
+    if autoreload:
+        command.extend(['--autoreload'])
     app.worker_main(command)
 
 
 @task
 def harvester(harvester_name, async=False, start=None, end=None):
+    ''' Runs a specific harvester '''
     from scrapi import settings
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi import registry
@@ -202,6 +206,7 @@ def harvester(harvester_name, async=False, start=None, end=None):
 
 @task
 def harvesters(async=False, start=None, end=None):
+    ''' Runs all harvesters '''
     from scrapi import settings
     settings.CELERY_ALWAYS_EAGER = not async
     from scrapi import registry
@@ -225,66 +230,55 @@ def harvesters(async=False, start=None, end=None):
 
 
 @task
-def lint_all():
-    from scrapi import registry
-    for name in registry.keys():
-        lint(name)
-
-
-@task
-def lint(name):
-    from scrapi import linter
-    from scrapi import registry
-    harvester = registry[name]
-    try:
-        linter.lint(harvester.harvest, harvester.normalize)
-    except Exception as e:
-        print('Harvester {} raise the following exception'.format(harvester.short_name))
-        print(e)
-
-
-@task
 def provider_map(delete=False):
+    ''' Adds favicons and metadata for harvesters to Elasticsearch '''
     from six.moves.urllib import parse as urllib_parse
     from scrapi import registry
+    from scrapi.base.helpers import null_on_error
     from scrapi.processing.elasticsearch import DatabaseManager
     dm = DatabaseManager()
     dm.setup()
     es = dm.es
     if delete:
         es.indices.delete(index='share_providers', ignore=[404])
+    from scrapi.harvesters.push_api import gen_harvesters
+    gen_harvesters()
 
     for harvester_name, harvester in registry.items():
-        with open("img/favicons/{}_favicon.ico".format(harvester.short_name), "rb") as f:
-            favicon = urllib_parse.quote(base64.encodestring(f.read()))
+        if not null_on_error(es.get, log=False)(index='share_providers', doc_type=harvester_name, id=harvester_name):
+            with open("img/favicons/{}_favicon.ico".format(harvester.short_name), "rb") as f:
+                favicon = urllib_parse.quote(base64.encodestring(f.read()))
 
-        es.index(
-            'share_providers',
-            harvester.short_name,
-            body={
-                'favicon': 'data:image/png;base64,' + favicon,
-                'short_name': harvester.short_name,
-                'long_name': harvester.long_name,
-                'url': harvester.url
-            },
-            id=harvester.short_name,
-            refresh=True
-        )
+            es.index(
+                'share_providers',
+                harvester.short_name,
+                body={
+                    'favicon': 'data:image/png;base64,' + favicon,
+                    'short_name': harvester.short_name,
+                    'long_name': harvester.long_name,
+                    'url': harvester.url
+                },
+                id=harvester.short_name,
+                refresh=True
+            )
     print(es.count('share_providers', body={'query': {'match_all': {}}})['count'])
 
 
 @task
 def apiserver():
+    ''' Runs the Django apiserver '''
     os.system('python manage.py runserver')
 
 
 @task
 def apidb():
+    ''' Runs the Django migrations '''
     os.system('python manage.py migrate')
 
 
 @task
 def reset_all():
+    ''' WARNING: Nukes all databases and sets them back up. Only run in development '''
     import sys
     from scrapi import settings
 
@@ -300,3 +294,41 @@ def reset_all():
     os.system("curl -XDELETE '{}/share*'".format(settings.ELASTIC_URI))
     os.system("invoke alias share share_v2")
     os.system("invoke provider_map")
+
+
+@task
+def institutions(grid_file='institutions/grid_2015_11_05.json', ipeds_file='institutions/hd2014.csv'):
+    ''' Loads the institution data into Elasticsearch '''
+    grid(grid_file)
+    ipeds(ipeds_file)
+
+
+@task
+def remove_institutions(force=False):
+    ''' Removes the institutions index from Elasticsearch '''
+    import six
+    if not force:
+        resp = six.moves.input('You are about to delete the institutions index. Are you sure? (y, n)\n')
+        if resp not in ('y', 'Y', 'Yes', 'yes'):
+            print('Remove institutions stopped.')
+            return
+    from institutions.institutions import remove
+    remove()
+
+
+def grid(filepath):
+    from institutions import institutions, grid
+    institutions.setup()
+    grid.populate(filepath)
+
+
+def ipeds(filepath):
+    from institutions import institutions, ipeds
+    institutions.setup()
+    ipeds.populate(filepath)
+
+
+@task(default=True)
+def usage():
+    ''' Lists the available commands '''
+    run('invoke --list')
