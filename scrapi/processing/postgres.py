@@ -51,7 +51,7 @@ class PostgresProcessor(BaseProcessor):
         q = Document.objects.all()
         querysets = (q.filter(source=source) for source in sources) if sources else [q]
         for query in querysets:
-            for doc in paginated(query):
+            for doc in paginated(query, page_size=1000):
                 try:
                     raw = RawDocument(doc.raw, clean=False, validate=False)
                 except AttributeError as e:
