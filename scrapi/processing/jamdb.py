@@ -35,11 +35,11 @@ class JamDBProcessor(BaseProcessor):
     def url_for(self, type_):
         return '{}namespaces/{}/collections/{}/documents'.format(self.base_url, self.namespace, self.collections[type_])
 
-    def format_data(self, attributes, source, docID, type_):
+    def format_data(self, attributes, source, docID):
         return {
             'data': {
                 'id': self.get_id(source, docID),
-                'type': type_,
+                'type': 'documents',
                 'attributes': attributes
             }
         }
@@ -50,20 +50,20 @@ class JamDBProcessor(BaseProcessor):
         ).hexdigest()
 
     def upsert(self, url, data):
-        response = requests.put(url, cookies=self.cookies, json=data)
+        response = requests.patch(url + '/{}'.format(data['data']['id']), cookies=self.cookies, json=data)
         if response.status_code == 404:
             response = requests.post(url, cookies=self.cookies, json=data)
         return response
 
     @events.logged(events.PROCESSING, 'raw.jamdb')
     def process_raw(self, raw_doc):
-        data = self.format_data({'raw': raw_doc.attributes}, raw_doc['source'], raw_doc['docID'], 'documents')
+        data = self.format_data({'raw': raw_doc.attributes}, raw_doc['source'], raw_doc['docID'])
         self.upsert(self.url_for('documents'), data)
 
     @events.logged(events.PROCESSING, 'normalized.jamdb')
     def process_normalized(self, raw_doc, normalized):
         normalized = self.process_contributors(raw_doc, normalized)
-        data = self.format_data({'normalized': normalized.attributes}, raw_doc['source'], raw_doc['docID'], 'documents')
+        data = self.format_data({'normalized': normalized.attributes}, raw_doc['source'], raw_doc['docID'])
         self.upsert(self.url_for('documents'), data)
 
     def process_contributors(self, raw_doc, normalized):
@@ -71,7 +71,7 @@ class JamDBProcessor(BaseProcessor):
         id_ = self.get_id(raw_doc['source'], raw_doc['docID'])
         for i, contributor in enumerate(normalized['contributors']):
             contributor['researchObjectId'] = id_
-            data = self.format_data(contributor, raw_doc['source'], raw_doc['docID'], 'contributors')
+            data = self.format_data(contributor, raw_doc['source'], raw_doc['docID'])
             self.upsert(self.url_for('contributors'), data)
             normalized['contributors'][i]['id'] = id_
         return normalized
