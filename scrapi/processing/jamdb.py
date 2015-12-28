@@ -8,7 +8,7 @@ import requests
 from scrapi import events
 # from scrapi.linter import RawDocument, NormalizedDocument
 # from scrapi.processing import DocumentTuple
-from scrapi.processing.base import BaseProcessor, FakeDataBaseManager
+from scrapi.processing.base import BaseProcessor, BaseDatabaseManager
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class JamDBProcessor(BaseProcessor):
     NAME = 'jamdb'
 
-    manager = FakeDataBaseManager()
+    manager = BaseDatabaseManager()
     base_url = 'http://localhost:1212/v1/'
     namespace = 'SHARE'
     token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjI0NDc3Nzk5MDgsInN1YiI6InRyYWNrZWQtU0hBUkV8dXNlcnMtY2hyaXMifQ.kVvJaZcIDDIzNb5hyey_7YqsrfZurZcqMH65aRysq_4'

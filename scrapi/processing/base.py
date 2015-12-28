@@ -39,47 +39,27 @@ class BaseDatabaseManager(object):
         All errors should be logged, but not thrown
     '''
 
-    @abstractmethod
     def setup(self):
         '''Sets up the database connection. Returns True if the database connection
             is successful, False otherwise
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def tear_down(self):
         '''Tears down the database connection.
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def clear(self, force=False):
         '''Deletes everything in a table/keyspace etc
             Should fail if called on the production database
             for testing purposes only
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def celery_setup(self, *args, **kwargs):
         '''Performs the necessary operations to allow a new process to connect to the database
         '''
-        raise NotImplementedError
-
-
-class FakeDataBaseManager(BaseDatabaseManager):
-    '''A database manager for backends that don't need a database manager'''
-
-    def setup(self):
-        return True
-
-    def tear_down(self):
-        pass
-
-    def clear(self, force=False):
-        pass
-
-    def celery_setup(self, *args, **kwargs):
         pass
 
 
