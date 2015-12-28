@@ -44,9 +44,9 @@ class JamDBProcessor(BaseProcessor):
             }
         }
 
-    def get_id(self, source, docID):
+    def get_id(self, *args):
         return hashlib.sha1(
-            '{}|{}'.format(source, docID).encode('utf-8')
+            '|'.join(args).encode('utf-8')
         ).hexdigest()
 
     def upsert(self, url, data):
@@ -68,8 +68,8 @@ class JamDBProcessor(BaseProcessor):
 
     def process_contributors(self, raw_doc, normalized):
         normalized = copy.deepcopy(normalized)
-        id_ = self.get_id(raw_doc['source'], raw_doc['docID'])
         for i, contributor in enumerate(normalized['contributors']):
+            id_ = self.get_id(raw_doc['source'], raw_doc['docID'], contributor['name'])
             contributor['researchObjects'] = [{'title': normalized['title'], 'id': id_}]
             data = self.format_data(contributor, raw_doc['source'], raw_doc['docID'])
             self.upsert(self.url_for('contributors'), data)
