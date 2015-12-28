@@ -70,7 +70,7 @@ class JamDBProcessor(BaseProcessor):
         normalized = copy.deepcopy(normalized)
         id_ = self.get_id(raw_doc['source'], raw_doc['docID'])
         for i, contributor in enumerate(normalized['contributors']):
-            contributor['researchObjectId'] = id_
+            contributor['researchObjects'] = [{'title': normalized['title'], 'id': id_}]
             data = self.format_data(contributor, raw_doc['source'], raw_doc['docID'])
             self.upsert(self.url_for('contributors'), data)
             normalized['contributors'][i]['id'] = id_
