@@ -52,5 +52,5 @@ all_processors = list(map(get_processor, list(set(
 ))))
 
 for processor in all_processors:
-    processor.manager.setup()
+    assert processor.manager.setup()
     worker_process_init.connect(processor.manager.celery_setup)

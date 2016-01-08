@@ -6,31 +6,48 @@ import hashlib
 import requests
 
 from scrapi import events
-# from scrapi.linter import RawDocument, NormalizedDocument
-# from scrapi.processing import DocumentTuple
+from scrapi import settings
 from scrapi.processing.base import BaseProcessor, BaseDatabaseManager
 
 logger = logging.getLogger(__name__)
 
 
+class JamManager(BaseDatabaseManager):
+
+    def setup(self):
+        success = True
+        for collection in ['research-objects', 'contributors']:
+            response = requests.post(
+                '{}namespaces/{}/collections/'.format(JamDBProcessor.base_url, JamDBProcessor.namespace),
+                headers=JamDBProcessor.headers,
+                json={
+                    'data': {
+                        'type': 'collections',
+                        'attributes': {},
+                        'id': collection
+                    }
+                }
+            )
+            success = success and response.status_code in [201, 409]
+        return success
+
+
 class JamDBProcessor(BaseProcessor):
     NAME = 'jamdb'
 
-    manager = BaseDatabaseManager()
-    base_url = 'http://localhost:1212/v1/'
-    namespace = 'SHARE'
-    token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjI0NDc3Nzk5MDgsInN1YiI6InRyYWNrZWQtU0hBUkV8dXNlcnMtY2hyaXMifQ.kVvJaZcIDDIzNb5hyey_7YqsrfZurZcqMH65aRysq_4'
+    manager = JamManager()
+    # base_url = 'http://localhost:1212/v1/'
+    base_url = settings.JAMDB_BASE_URL
+    namespace = settings.JAMDB_NAMESPACE
+
+    headers = {'Authorization': settings.JAMDB_TOKEN }
 
     @property
     def collections(self):
         return {
-            'documents': '{}-data'.format(self.namespace.lower()),
-            'contributors': '{}-contributor'.format(self.namespace.lower())
+            'documents': 'research-objects'.format(self.namespace.lower()),
+            'contributors': 'contributors'.format(self.namespace.lower())
         }
-
-    @property
-    def cookies(self):
-        return {'cookies': self.token}
 
     def url_for(self, type_):
         return '{}namespaces/{}/collections/{}/documents'.format(self.base_url, self.namespace, self.collections[type_])
@@ -50,9 +67,10 @@ class JamDBProcessor(BaseProcessor):
         ).hexdigest()
 
     def upsert(self, url, data):
-        response = requests.patch(url + '/{}'.format(data['data']['id']), cookies=self.cookies, json=data)
+        response = requests.patch(url + '/{}'.format(data['data']['id']), headers=self.headers, json=data)
         if response.status_code == 404:
-            response = requests.post(url, cookies=self.cookies, json=data)
+            response = requests.post(url, headers=self.headers, json=data)
+            assert response.status_code == 201
         return response
 
     @events.logged(events.PROCESSING, 'raw.jamdb')
