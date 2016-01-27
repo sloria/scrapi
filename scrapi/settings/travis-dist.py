@@ -6,9 +6,9 @@ RECORD_HTTP_TRANSACTIONS = False
 
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
-RAW_PROCESSING = ['cassandra', 'postgres']
-NORMALIZED_PROCESSING = ['elasticsearch', 'cassandra', 'postgres']
-RESPONSE_PROCESSOR = 'cassandra'
+RAW_PROCESSING = ['postgres']
+NORMALIZED_PROCESSING = ['elasticsearch', 'postgres']
+RESPONSE_PROCESSOR = 'postgres'
 CANONICAL_PROCESSOR = 'postgres'
 
 SENTRY_DSN = None
@@ -34,13 +34,4 @@ VIVO_ACCESS = {
 
 disabled = ['stepic', 'nih']
 
-FRONTEND_KEYS = [
-    u'description',
-    u'contributors',
-    u'tags',
-    u'raw',
-    u'title',
-    u'id',
-    u'source',
-    u'dateUpdated'
-]
+SHARE_REG_URL = None
