@@ -9,7 +9,7 @@ from nameparser import HumanName
 from scrapi import requests, settings
 from scrapi.base import JSONHarvester
 from scrapi.linter.document import RawDocument
-from scrapi.base.helpers import default_name_parser, compose, build_properties, datetime_formatter
+from scrapi.base.helpers import build_properties, datetime_formatter
 
 logger = logging.getLogger(__name__)
 
