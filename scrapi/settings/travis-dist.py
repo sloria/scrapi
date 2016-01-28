@@ -6,9 +6,9 @@ RECORD_HTTP_TRANSACTIONS = False
 
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
-RAW_PROCESSING = ['postgres']
-NORMALIZED_PROCESSING = ['elasticsearch', 'postgres']
-RESPONSE_PROCESSOR = 'postgres'
+RAW_PROCESSING = ['cassandra', 'postgres']
+NORMALIZED_PROCESSING = ['cassandra', 'elasticsearch', 'postgres']
+RESPONSE_PROCESSOR = 'cassandra'
 CANONICAL_PROCESSOR = 'postgres'
 
 SENTRY_DSN = None
