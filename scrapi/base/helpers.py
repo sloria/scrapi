@@ -309,7 +309,12 @@ def oai_get_records_and_token(url, throttle, force, namespaces, verify):
     """
     data = requests.get(url, throttle=throttle, force=force, verify=verify)
 
-    doc = etree.XML(data.content)
+    encoding = data.encoding or 'utf-8'
+    if encoding.lower() == 'none':
+        encoding = 'utf-8'
+
+    parser = etree.XMLParser(recover=True, encoding=encoding)
+    doc = etree.XML(data.content, parser=parser)
 
     records = doc.xpath(
         '//ns0:record',

@@ -84,8 +84,13 @@ class PushApiHarvester(BaseHarvester):
     def get_records(self, start_date, end_date):
         response = requests.get(
             '{}/established'.format(settings.SHARE_REG_URL),
-            params={'from': start_date.isoformat(), 'to': end_date.isoformat()}
-        ).json()
+            params={
+                'from': start_date.isoformat(),
+                'to': end_date.isoformat(),
+                'source': self.short_name
+            }
+        )
+        response = response.json()
         for record in response['results']:
             yield record
 
@@ -95,7 +100,12 @@ class PushApiHarvester(BaseHarvester):
                 yield record
 
     def normalize(self, raw):
-        return NormalizedDocument(json.loads(json.loads(raw['doc'])['jsonData']))
+        document = json.loads(raw['doc'])['jsonData']
+        # This is a workaround for the push API did not have proper email validation
+        for contributor in document['contributors']:
+            if contributor['email'] == '':
+                del contributor['email']
+        return NormalizedDocument(document)
 
     @property
     def run_at(self):
