@@ -144,7 +144,6 @@ def clear():
     Clears out all storage providers from elasticsearch
     """
     cmd = "curl -XDELETE 'localhost:9200/share_v2/*'"
-
     run(cmd, pty=True)
 
 
