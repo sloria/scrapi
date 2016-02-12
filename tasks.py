@@ -150,6 +150,14 @@ def one_test(shortname):
 
 
 @task
+def clear():
+    """
+    Clears out all storage providers from elasticsearch
+    """
+    cmd = "curl -XDELETE 'localhost:9200/share_v2/*'"
+    run(cmd, pty=True)
+
+@task
 def wheelhouse(develop=False):
     ''' Sets up the wheelhouse for requirements '''
     req_file = 'dev-requirements.txt' if develop else 'requirements.txt'
