@@ -108,10 +108,10 @@ class BiomedCentralHarvester(JSONHarvester):
             format_type = record['publisher']
             if format_type.lower() == "biomed central":
                 records_list.append(RawDocument({
-                         'doc': json.dumps(record),
-                         'source': self.short_name,
-                         'docID': record['identifier'],
-                         'filetype': 'json'
+                    'doc': json.dumps(record),
+                    'source': self.short_name,
+                    'docID': record['identifier'],
+                    'filetype': 'json'
                 }))
         return records_list
 
