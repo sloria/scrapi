@@ -60,3 +60,4 @@ class APIViewTests(TestCase):
         )
         response = view(request)
         self.assertEqual(response.status_code, 200)
+        
