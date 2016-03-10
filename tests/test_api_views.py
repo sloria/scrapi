@@ -82,7 +82,7 @@ class APIViewTests2(APITestCase):
         create_new_document(source = "tooearly",providerUpdatedDateTime= parse("2012-01-01"))
         create_new_document(source = "rightontime", providerUpdatedDateTime= parse("2013-01-05"))
         create_new_document(source= "toolate", providerUpdatedDateTime = parse("2015-01-01"))
-        response = self.client.get('/documents/2013-01-01&2014-12-30/', kwargs= {'from':"2013-01-01",'until':'2014-12-30'})
+        response = self.client.get('/documents/from=2013-01-01&until=2014-12-30/', kwargs= {'from':"2013-01-01",'until':'2014-12-30'})
         force_authenticate(response)
         self.assertNotContains(response, "tooearly", status_code=200)
         self.assertContains(response, "rightontime", status_code=200)

@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^documents/status', views.status, name='status'),
     url(r'^documents/(?P<source>\w+)/$', views.DocumentsFromSource.as_view(), name='source'),
     url(r'^documents/(?P<source>[a-z]+)/(?P<docID>(.*))/$', views.document_detail, name='document_detail'),
-    url(r'^documents/(?P<from>\d{4}-\d{2}-\d{2})&(?P<until>\d{4}-\d{2}-\d{2})/$', views.DocumentsByProviderUpdatedDateTime.as_view(), name='providerupdate'),
+    url(r'^documents/from=(?P<from>\d{4}-\d{2}-\d{2})&until=(?P<until>\d{4}-\d{2}-\d{2})/$', views.DocumentsByProviderUpdatedDateTime.as_view(), name='providerupdate'),
     url(r'^institutions', views.institutions, name='institutions'),
     url(r'^robots\.txt$', include('robots.urls')),
 ]
