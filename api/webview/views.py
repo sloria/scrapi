@@ -9,8 +9,8 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from elasticsearch import Elasticsearch
 
 from scrapi import settings
-from api.webview.models import Document
-from api.webview.serializers import DocumentSerializer
+from api.webview.models import Document, LastHarvest
+from api.webview.serializers import DocumentSerializer, LastHarvestSerializer
 
 es = Elasticsearch(settings.ELASTIC_URI, request_timeout=settings.ELASTIC_TIMEOUT)
 
@@ -69,6 +69,21 @@ def status(request):
     Show the status of the API
     """
     return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=200)
+
+
+@api_view(['GET'])
+@xframe_options_exempt
+def harvester_status(request):
+    """
+    Show the last harvested dates for each harvester
+    """
+    try:
+        result_set = LastHarvest.objects.all()
+    except Document.DoesNotExist:
+        return Response(status=404)
+
+    harvester_statuses = [obj.as_json() for obj in result_set]
+    return HttpResponse(json.dumps(harvester_statuses), content_type='application/json', status=200)
 
 
 @api_view(['GET', 'POST'])
