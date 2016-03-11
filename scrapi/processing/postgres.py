@@ -8,7 +8,9 @@ import logging
 
 import django
 
-from api.webview.models import HarvesterResponse, Document, Version
+from dateutil.parser import parse
+
+from api.webview.models import HarvesterResponse, Document, Version, LastHarvest
 
 from scrapi import events
 from scrapi.util import json_without_bytes
@@ -100,6 +102,18 @@ class PostgresProcessor(BaseProcessor):
 
         document.save()
 
+    def last_harvested(self, document):
+        document_date = parse(document.providerUpdatedDateTime)
+        document_source = document.source
+        if LastHarvest.objects.filter(source=document_source).exists():
+            most_recent = LastHarvest.objects.get(source=document_source)
+            if document_date > most_recent.last_harvest:
+                    most_recent.last_harvest = document_date
+                    most_recent.save()
+        else:
+            new_source = LastHarvest(source=document_source, last_harvest=document_date)
+            new_source.save()
+
     @events.logged(events.PROCESSING, 'normalized.postgres')
     def process_normalized(self, raw_doc, normalized):
         document = self.version(raw=raw_doc, normalized=normalized)
@@ -111,6 +125,9 @@ class PostgresProcessor(BaseProcessor):
         document.providerUpdatedDateTime = normalized['providerUpdatedDateTime']
 
         document.save()
+
+        self.last_harvested(document)
+
 
     def _get_by_source_id(self, source, docID):
         try:
