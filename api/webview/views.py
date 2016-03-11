@@ -54,12 +54,12 @@ class DocumentsByProviderUpdatedDateTime(generics.ListAPIView):
     """
     serializer_class = DocumentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    
+
     def perform_create(self, serializer):
         serializer.save(source=self.request.user)
-    
+
     def get_queryset(self):
-        """ Return queryset based on source
+        """ Return queryset based on provider update time
         """
         queryset = Document.objects.all()
         queryset = queryset.filter(providerUpdatedDateTime__gte=parse(self.kwargs['from'])).filter(providerUpdatedDateTime__lte=parse(self.kwargs['until']))
