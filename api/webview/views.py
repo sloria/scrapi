@@ -53,24 +53,6 @@ class DocumentsFromSource(generics.ListAPIView):
         return Document.objects.filter(source=self.kwargs['source']).exclude(normalized=None)
 
 
-class DocumentsByProviderUpdatedDateTime(generics.ListAPIView):
-    """
-    List all documents updated within specified time frame
-    """
-    serializer_class = DocumentSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def perform_create(self, serializer):
-        serializer.save(source=self.request.user)
-
-    def get_queryset(self):
-        """ Return queryset based on provider update time
-        """
-        queryset = Document.objects.all()
-        queryset = queryset.filter(providerUpdatedDateTime__gte=parse(self.kwargs['from'])).filter(providerUpdatedDateTime__lte=parse(self.kwargs['until']))
-        return queryset
-
-
 @api_view(['GET'])
 @xframe_options_exempt
 def document_detail(request, source, docID):
