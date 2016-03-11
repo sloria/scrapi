@@ -5,7 +5,7 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.clickjacking import xframe_options_exempt
-
+from dateutil.parser import parse
 from elasticsearch import Elasticsearch
 
 from scrapi import settings
@@ -28,7 +28,13 @@ class DocumentList(generics.ListAPIView):
     def get_queryset(self):
         """ Return all documents
         """
-        return Document.objects.all()
+        filters={}
+        if self.kwargs.get('from',None):
+            filters['providerUpdatedDateTime__gte'] = parse(self.kwargs['from'])
+        if self.kwargs.get('until',None):
+            filters['providerUpdatedDateTime__lte'] = parse(self.kwargs['until'])
+
+        return Document.objects.filter(**filters)
 
 
 class DocumentsFromSource(generics.ListAPIView):
@@ -44,7 +50,25 @@ class DocumentsFromSource(generics.ListAPIView):
     def get_queryset(self):
         """ Return queryset based on source
         """
-        return Document.objects.filter(source=self.kwargs['source'])
+        return Document.objects.filter(source=self.kwargs['source']).exclude(normalized=None)
+
+
+class DocumentsByProviderUpdatedDateTime(generics.ListAPIView):
+    """
+    List all documents updated within specified time frame
+    """
+    serializer_class = DocumentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(source=self.request.user)
+
+    def get_queryset(self):
+        """ Return queryset based on provider update time
+        """
+        queryset = Document.objects.all()
+        queryset = queryset.filter(providerUpdatedDateTime__gte=parse(self.kwargs['from'])).filter(providerUpdatedDateTime__lte=parse(self.kwargs['until']))
+        return queryset
 
 
 @api_view(['GET'])
