@@ -52,3 +52,14 @@ class HarvesterResponse(models.Model):
     headers_str = models.TextField(null=True)
     status_code = models.IntegerField(null=True)
     time_made = models.DateTimeField(auto_now=True)
+
+
+class LastHarvest(models.Model):
+
+    source = models.TextField(primary_key=True)
+
+    last_harvest = models.DateTimeField(auto_now=True)
+
+    def as_json(self):
+        return dict(
+            source=self.source, last_harvest=str(self.last_harvest))
