@@ -38,7 +38,7 @@ class DocumentsFromSource(generics.ListAPIView):
     """
     serializer_class = DocumentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    
+
     def perform_create(self, serializer):
         serializer.save(source=self.request.user)
 
