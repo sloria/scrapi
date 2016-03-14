@@ -10,7 +10,7 @@ from elasticsearch import Elasticsearch
 
 from scrapi import settings
 from api.webview.models import Document, LastHarvest
-from api.webview.serializers import DocumentSerializer, LastHarvestSerializer
+from api.webview.serializers import DocumentSerializer
 
 es = Elasticsearch(settings.ELASTIC_URI, request_timeout=settings.ELASTIC_TIMEOUT)
 

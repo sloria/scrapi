@@ -128,7 +128,6 @@ class PostgresProcessor(BaseProcessor):
 
         self.last_harvested(document)
 
-
     def _get_by_source_id(self, source, docID):
         try:
             return Document.objects.get(key=Document._make_key(source, docID))
