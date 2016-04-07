@@ -187,6 +187,13 @@
     ],
     "type": "object",
     "properties": {
+        "documentType": {
+            "type": "string",
+            "description": "The type of the document",
+            "enum": [
+               "article", "abstract", "dataset", "book", "book-chapter", "dissertation", "correction", "preprint", "source-code", "clinical-trial", "reference-entry", "monograph"
+            ]
+        },
         "publisher": {
             "type": "object",
             "anyOf": [

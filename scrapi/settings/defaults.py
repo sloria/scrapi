@@ -47,6 +47,7 @@ CASSANDRA_KEYSPACE = 'scrapi'
 FRONTEND_KEYS = [
     "uris",
     "contributors",
+    "documentType",
     "providerUpdatedDateTime",
     "description",
     "title",

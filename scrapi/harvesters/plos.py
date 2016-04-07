@@ -106,9 +106,15 @@ class PlosHarvester(XMLHarvester):
         'publisher': {
             'name': ('//str[@name="journal"]/node()', single_result)
         },
+        'documentType': ('//str[@name="article_type"]/node()', lambda x: document_type_mapping.get(single_result(x).lower(), None)),
         'otherProperties': build_properties(
             ('eissn', '//str[@name="eissn"]/node()'),
             ('articleType', '//str[@name="article_type"]/node()'),
             ('score', '//float[@name="score"]/node()')
         )
     }
+
+document_type_mapping = {
+    'research article': 'article',
+    'correction': 'correction',
+}
