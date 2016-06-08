@@ -86,6 +86,7 @@ class CrossRefHarvester(JSONHarvester):
             'sponsorships': ('/funder', lambda x: process_sponsorships(x) if x else []),
             'tags': ('/subject', '/container-title', lambda x, y: [tag.lower() for tag in (x or []) + (y or [])]),
             'subjects': ('/subject', '/container-title', lambda x, y: [tag.lower() for tag in (x or []) + (y or [])]),
+            'documentType': ('/type', lambda x: document_type_mapping.get(x)),
             'otherProperties': build_properties(
                 ('journalTitle', '/container-title'),
                 ('volume', '/volume'),
@@ -131,3 +132,15 @@ class CrossRefHarvester(JSONHarvester):
                 }))
 
         return doc_list
+
+document_type_mapping = {
+    "book": "book",
+    "book-chapter": "book-chapter",
+    "dataset": "dataset",
+    "dissertation": "dissertation",
+    "journal-article": "article",
+    "monograph": "monograph",
+    "proceedings-article": "article",
+    "reference-entry": "reference-entry",
+    "report": "article",
+}

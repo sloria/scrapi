@@ -15,7 +15,6 @@ from .helpers import (
     dif_process_contributors
 )
 
-
 DOESCHEMA = {
     "description": ('//dc:description/node()', compose(lambda x: x.strip(), single_result)),
     "contributors": ('//dc:creator/node()', compose(doe_process_contributors, lambda x: x.split(';'), single_result)),
