@@ -17,7 +17,7 @@ class BaseProcessor(object):
     @abstractmethod
     def documents(self, *sources):
         '''
-        an iterator that will return documents
+        an iterator that will return DocumentTuple objects
         '''
         raise NotImplementedError
 
@@ -39,32 +39,28 @@ class BaseDatabaseManager(object):
         All errors should be logged, but not thrown
     '''
 
-    @abstractmethod
     def setup(self):
         '''Sets up the database connection. Returns True if the database connection
             is successful, False otherwise
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def tear_down(self):
         '''Tears down the database connection.
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def clear(self, force=False):
         '''Deletes everything in a table/keyspace etc
             Should fail if called on the production database
             for testing purposes only
         '''
-        raise NotImplementedError
+        pass
 
-    @abstractmethod
     def celery_setup(self, *args, **kwargs):
         '''Performs the necessary operations to allow a new process to connect to the database
         '''
-        raise NotImplementedError
+        pass
 
 
 class BaseHarvesterResponse(object):

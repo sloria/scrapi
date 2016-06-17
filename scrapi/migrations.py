@@ -48,7 +48,6 @@ def cross_db(docs, source_db=None, target_db=None, index=None, versions=False, *
     target_db will be specified when the task is called
     """
     assert target_db, 'Please specify a target db for the migration -- either postgres or elasticsearch'
-    assert target_db in ['postgres', 'cassandra', 'elasticsearch'], 'Invalid target database - please specify either postgres, cassandra or elasticsearch'
     source_processor = get_processor(source_db or settings.CANONICAL_PROCESSOR)
     target_processor = get_processor(target_db)
     for doc in docs:
