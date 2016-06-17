@@ -10,6 +10,7 @@ import six
 from furl import furl
 from lxml import etree
 
+from scrapi import requests
 from scrapi import registry
 from scrapi import settings
 from scrapi.base.schemas import OAISCHEMA
@@ -108,6 +109,211 @@ class XMLHarvester(BaseHarvester, XMLTransformer):
         return NormalizedDocument(transformed, clean=True)
 
 
+class AutoOAIHarvester(XMLHarvester):
+    """ Take a given URL and approved sets, and harvest everything that repo
+    has on the sets from all available
+    """
+
+    _identify_element = None
+    _timezone_granularity = None
+    _metadata_prefixes = None
+    _property_list = None
+    _record_encoding = None
+
+    timeout = 0.5
+    verify = True
+    all_namespaces = {}
+    approved_sets = None
+    default_encoding = 'utf8'
+    timezone_granularity = False
+    force_request_update = False
+    property_list = ['date', 'type']
+
+    def namespaces(self, element):
+        namespaces = element.nsmap
+
+        for key, value in namespaces.items():
+            if not key:
+                namespaces['ns0'] = value
+        namespaces.pop(None)
+        self.all_namespaces.update(namespaces)
+        return namespaces
+
+    @property
+    def identify_element(self):
+        if self._identify_element:
+            return self._identify_element
+        url = furl(self.base_url)
+        url.args['verb'] = 'Identify'
+        self._identify_element = etree.XML(requests.get(url.url).content)
+
+        return self._identify_element
+
+    @property
+    def metadata_prefixes(self):
+        if self._metadata_prefixes:
+            return self._metadata_prefixes
+        url = furl(self.base_url)
+        url.args['verb'] = 'ListMetadataFormats'
+        xml_content = etree.XML(requests.get(url.url).content)
+        namespaces = self.namespaces(xml_content)
+        self._metadata_prefixes = xml_content.xpath('//ns0:metadataPrefix/node()', namespaces=namespaces)
+
+        return self._metadata_prefixes
+
+    @property
+    def record_encoding(self):
+        if self._record_encoding:
+            return self._record_encoding
+        url = furl(self.base_url)
+        url.args['verb'] = 'Identify'
+
+        encoding = requests.get(url.url).encoding
+
+        if encoding != 'None':
+            self._record_encoding = requests.get(url.url).encoding
+        else:
+            self._record_encoding = self.default_encoding
+        return self._record_encoding
+
+    @property
+    def long_name(self):
+        namespaces = self.namespaces(self.identify_element)
+        return self.identify_element.xpath('//ns0:repositoryName/node()', namespaces=namespaces)
+
+    @property
+    def timezone_granularity(self):
+        if self._timezone_granularity:
+            return self._timezone_granularity
+        namespaces = self.namespaces(self.identify_element)
+        granularity = self.identify_element.xpath('//ns0:granularity/node()', namespaces=namespaces)
+
+        if 'hh:mm:ss' in granularity:
+            return True
+        else:
+            return False
+
+    @property
+    def schema(self):
+        return self._schema
+
+    @property
+    def _schema(self):
+        return updated_schema(OAISCHEMA, self.formatted_properties)
+
+    @property
+    def formatted_properties(self):
+        return {
+            'otherProperties': build_properties(
+                *list(
+                    map(
+                        self.format_property,
+                        self.property_list
+                    )
+                )
+            )
+        }
+
+    def format_property(self, property):
+        if property == 'date':
+            null_on_error(datetime_formatter)
+            fn = compose(lambda x: list(
+                map(
+                    null_on_error(datetime_formatter),
+                    x
+                )
+            ), coerce_to_list, self.resolve_property)
+        else:
+            fn = self.resolve_property
+        inner_tuple = ['//{}:{}/node()'.format(namespace, property) for namespace in self.all_namespaces]
+        inner_tuple.append(fn)
+        return (property, tuple(inner_tuple))
+
+    def resolve_property(self, *args):
+        ret = [item for sublist in args for item in sublist]
+        return ret[0] if len(ret) == 1 else ret
+
+    def get_identifiers(self, identifiers_url):
+        identifier_content = requests.get(identifiers_url).content
+        identifiers = etree.XML(identifier_content)
+        return identifiers.xpath('//ns0:identifier/node()', namespaces=self.namespaces(identifiers))
+
+    def get_record(self, record_url):
+        record_content = requests.get(record_url, throttle=0.5).content
+        record_xml = etree.XML(record_content)
+
+        # make sure we add all of the namespaces to all_namespaces
+        metadata = record_xml.xpath('//ns0:metadata', namespaces=self.namespaces(record_xml))
+        if metadata:
+            for child in metadata[0].getchildren():
+                self.namespaces(child)
+        else:
+            logger.info('No metadata element found, was this a proper request?')
+        self.namespaces(record_xml)
+
+        return record_xml
+
+    def harvest(self, start_date=None, end_date=None):
+        start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
+        end_date = (end_date or date.today()).isoformat()
+
+        url = furl(self.base_url)
+
+        if self.timezone_granularity:
+            start_date += 'T00:00:00Z'
+            end_date += 'T00:00:00Z'
+
+        records = []
+        # Get a list of all identifiers for each metadata prefix given the date range
+        for prefix in self.metadata_prefixes:
+            if url.args.get('identifier'):
+                url.args.pop('identifier')
+            url.args['verb'] = 'ListIdentifiers'
+            url.args['metadataPrefix'] = prefix
+            url.args['from'] = start_date
+            url.args['until'] = end_date
+            prefix_ids = self.get_identifiers(url.url)
+
+            url.args.pop('from')
+            url.args.pop('until')
+            # request each of those identifiers records for that prefix
+            for identifier in prefix_ids:
+                url.args['verb'] = 'GetRecord'
+                url.args['identifier'] = identifier
+                records.append(self.get_record(url.url))
+
+        return [
+            RawDocument({
+                'doc': etree.tostring(record, encoding=self.record_encoding),
+                'source': self.short_name,
+                'docID': record.xpath('//ns0:header/ns0:identifier', namespaces=self.namespaces(record))[0].text,
+                'filetype': 'xml'
+            }) for record in records
+        ]
+
+    def normalize(self, raw_doc):
+        str_result = raw_doc.get('doc')
+        result = etree.XML(str_result)
+
+        if self.approved_sets:
+            set_spec = result.xpath(
+                '//ns0:header/ns0:setSpec/node()',
+                namespaces=self.namespaces
+            )
+            # check if there's an intersection between the approved sets and the
+            # setSpec list provided in the record. If there isn't, don't normalize.
+            if not {x.replace('publication:', '') for x in set_spec}.intersection(self.approved_sets):
+                logger.info('Series {} not in approved list'.format(set_spec))
+                return None
+
+        status = result.xpath('//ns0:header/@status', namespaces=self.namespaces(result))
+        if status and status[0] == 'deleted':
+            logger.info('Deleted record, not normalizing {}'.format(raw_doc['docID']))
+            return None
+
+        return super(AutoOAIHarvester, self).normalize(raw_doc)
+
+
 class OAIHarvester(XMLHarvester):
     """ Create a harvester with a oai_dc namespace, that will harvest
     documents within a certain date range
@@ -150,12 +356,21 @@ class OAIHarvester(XMLHarvester):
     @property
     def formatted_properties(self):
         return {
-            'otherProperties': build_properties(*list(map(self.format_property, self.property_list)))
-        }
+            'otherProperties': build_properties(
+                *list(
+                    map(
+                        self.format_property,
+                        self.property_list)))}
 
     def format_property(self, property):
         if property == 'date':
-            fn = compose(lambda x: list(map(null_on_error(datetime_formatter), x)), coerce_to_list, self.resolve_property)
+            null_on_error(datetime_formatter)
+            fn = compose(lambda x: list(
+                map(
+                    null_on_error(datetime_formatter),
+                    x
+                )
+            ), coerce_to_list, self.resolve_property)
         else:
             fn = self.resolve_property
         return (property, (
@@ -169,7 +384,6 @@ class OAIHarvester(XMLHarvester):
         return ret[0] if len(ret) == 1 else ret
 
     def harvest(self, start_date=None, end_date=None):
-
         start_date = (start_date or date.today() - timedelta(settings.DAYS_BACK)).isoformat()
         end_date = (end_date or date.today()).isoformat()
 
