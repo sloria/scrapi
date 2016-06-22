@@ -16,6 +16,7 @@ def parse_authors(authors):
     authors = list(filter(None, authors))
     return default_name_parser(authors)
 
+
 class UcarHarvester(OAIHarvester):
     short_name = 'ucaropensky'
     long_name = 'NCAR OpenSky Institutional Repository'

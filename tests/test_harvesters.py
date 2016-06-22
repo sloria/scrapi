@@ -19,6 +19,7 @@ def mock_maybe_load_response(monkeypatch):
     monkeypatch.setattr(requests, '_maybe_load_response', mock_mlr)
     monkeypatch.setattr(requests.HarvesterResponse, 'save', mock_save)
 
+
 @pytest.mark.parametrize('harvester_name', filter(lambda x: x != 'test', sorted(map(str, registry.keys()))))
 def test_harvester(monkeypatch, harvester_name, *args, **kwargs):
     monkeypatch.setattr(requests.time, 'sleep', lambda *_, **__: None)
