@@ -6,7 +6,15 @@ Example API call: http://opensky.ucar.edu/oai2?verb=ListRecords&metadataPrefix=o
 from __future__ import unicode_literals
 
 from scrapi.base import OAIHarvester
+from scrapi.base.helpers import (updated_schema, default_name_parser)
 
+
+def parse_authors(authors):
+    if authors is None:
+        return []
+    authors = [w.replace("(Author)", "").strip() for w in authors]
+    authors = list(filter(None, authors))
+    return default_name_parser(authors)
 
 class UcarHarvester(OAIHarvester):
     short_name = 'ucaropensky'
@@ -37,4 +45,11 @@ class UcarHarvester(OAIHarvester):
         'archives_lie',
         'opensky_archives',
     ]
+
+    @property
+    def schema(self):
+        return updated_schema(self._schema, {
+            'contributors': ('//dc:contributor/node()', parse_authors)
+        })
+
     timezone_granularity = True
