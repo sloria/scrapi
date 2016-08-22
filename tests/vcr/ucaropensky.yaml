@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.4.1 CPython/3.4.3 Linux/3.19.0-61-generic]
+    method: GET
+    uri: http://opensky.ucar.edu/oai2?verb=ListRecords&metadataPrefix=oai_dc&from=2016-06-19T00:00:00Z&until=2016-06-21T00:00:00Z
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['no-cache, must-revalidate, post-check=0, pre-check=0']
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Language: [en]
+      Content-Type: [text/xml]
+      Date: ['Wed, 22 Jun 2016 02:51:40 GMT']
+      Expires: ['Sun, 19 Nov 1978 05:00:00 GMT']
+      Keep-Alive: ['timeout=5, max=500']
+      Server: [Apache]
+      Vary: [Accept-Encoding]
+      Via: [1.1 opensky.ucar.edu]
+      X-Content-Type-Options: [nosniff, nosniff]
+      X-Powered-By: [PHP/5.3.10-1ubuntu3.23]
+    status: {code: 200, message: OK}
+version: 1
