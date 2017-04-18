@@ -236,7 +236,7 @@ class CassandraProcessor(BaseProcessor):
 
 
 @DatabaseManager.registered_model
-class DocumentModel(models.Model):
+class DocumentModelOld(models.Model):
     '''
     Defines the schema for a metadata document in cassandra
 
@@ -245,11 +245,11 @@ class DocumentModel(models.Model):
     a list of version IDs that refer to previous versions of this
     metadata.
     '''
-    __table_name__ = 'documents_source_partitioned'
+    __table_name__ = 'documents'
 
     # Raw
-    source = columns.Text(primary_key=True, partition_key=True)
-    docID = columns.Text(primary_key=True, index=True, clustering_order='ASC')
+    docID = columns.Text(primary_key=True)
+    source = columns.Text(primary_key=True, clustering_order="DESC")
 
     doc = columns.Bytes()
     filetype = columns.Text()
@@ -278,7 +278,7 @@ class DocumentModel(models.Model):
 
 
 @DatabaseManager.registered_model
-class DocumentModelOld(models.Model):
+class DocumentModel(models.Model):
     '''
     Defines the schema for a metadata document in cassandra
 
@@ -287,11 +287,11 @@ class DocumentModelOld(models.Model):
     a list of version IDs that refer to previous versions of this
     metadata.
     '''
-    __table_name__ = 'documents'
+    __table_name__ = 'documents_source_partitioned'
 
     # Raw
-    docID = columns.Text(primary_key=True)
-    source = columns.Text(primary_key=True, clustering_order="DESC")
+    source = columns.Text(primary_key=True, partition_key=True)
+    docID = columns.Text(primary_key=True, index=True, clustering_order='ASC')
 
     doc = columns.Bytes()
     filetype = columns.Text()
